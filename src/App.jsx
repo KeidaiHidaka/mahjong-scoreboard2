@@ -39,6 +39,8 @@ function App() {
     { name: "西", score: 25000, reached: false },
     { name: "北", score: 25000, reached: false },
   ];
+  const reachSound = new Audio(import.meta.env.BASE_URL + 'sounds/reach.mp3');
+  const ryuukyokuAudio = new Audio(import.meta.env.BASE_URL + 'sounds/ryuukyoku.wav');
 
   const [players, setPlayers] = useState(initialPlayers);
   const [reachSticks, setReachSticks] = useState(0);
@@ -106,8 +108,7 @@ function App() {
   };
 
   const handleDraw = () => {
-    const audio = new Audio("/sounds/ryuukyoku.wav");
-    audio.play();
+    ryuukyokuAudio.play();
     setShowTenpaiModal(true);
   };
 
@@ -233,8 +234,10 @@ function App() {
 
   const handleReach = (index) => {
     if (players[index].reached || players[index].score < 1000) return;
-    const audio = new Audio("/sounds/reach.mp3");
-    audio.play();
+    // const reachSound = new Audio();
+
+    // const reachSound = new Audio(import.meta.env.BASE_URL + 'sounds/reach.mp3');
+    reachSound.play();
     const updated = [...players];
     updated[index].score -= 1000;
     updated[index].reached = true;
