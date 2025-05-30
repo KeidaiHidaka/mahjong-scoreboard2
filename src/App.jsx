@@ -151,7 +151,7 @@ function App() {
 
     setShowResultModal(true);
     resetReach();
-    setReachSticks(0);
+    // setReachSticks(0);
     advanceRound(null, indexes);
   };
 
