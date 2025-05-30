@@ -1,42 +1,59 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* src/App.css */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #fafafa;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 12px; /* 少しだけ増やすと余裕が出る */
+  box-sizing: border-box;
+}
+
+.top-half,
+.bottom-half {
+  display: flex;
+  justify-content: space-around; /* 均等に広がる */
+  flex: 1;
+  padding: 0 8px; /* 横に少しだけ余白を追加 */
+}
+
+
+.player-panel {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+  width: 45%;
   text-align: center;
+  background-color: white;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.player-panel.reversed {
+  transform: rotate(180deg);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.player-name {
+  font-weight: bold;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.player-buttons button {
+  margin: 4px;
+  padding: 4px 8px;
 }
 
-.card {
-  padding: 2em;
+.center-info {
+  text-align: center;
+  padding: 8px;
+  margin: 8px 0;
+  background-color: #eee;
+  border-radius: 8px;
 }
 
-.read-the-docs {
-  color: #888;
+.draw-button {
+  margin-top: 4px;
+  padding: 6px 12px;
+  font-size: 16px;
 }
