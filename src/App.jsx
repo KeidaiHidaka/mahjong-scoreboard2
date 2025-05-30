@@ -34,11 +34,11 @@ function calculateScore(han, fu, method, winnerIsDealer) {
 
 function App() {
   const initialPlayers = [
-    { name: "東", score: 25000, reached: false },
-    { name: "南", score: 25000, reached: false },
-    { name: "西", score: 25000, reached: false },
-    { name: "北", score: 25000, reached: false },
-  ];
+  { name: "プレイヤー1", score: 25000, reached: false },
+  { name: "プレイヤー2", score: 25000, reached: false },
+  { name: "プレイヤー3", score: 25000, reached: false },
+  { name: "プレイヤー4", score: 25000, reached: false },
+];
   const reachSound = new Audio(import.meta.env.BASE_URL + 'sounds/reach.mp3');
   const ryuukyokuAudio = new Audio(import.meta.env.BASE_URL + 'sounds/ryuukyoku.wav');
 
@@ -54,6 +54,12 @@ function App() {
   const [tenpaiIndexes, setTenpaiIndexes] = useState([]);
 
   const winds = ["東", "南", "西", "北"];
+
+  const handleNameChange = (index, newName) => {
+    const updated = [...players];
+    updated[index].name = newName;
+    setPlayers(updated);
+  };
 
   const advanceRound = (winnerIndex = null, tenpaiIndexes = []) => {
     setRound((prev) => {
@@ -274,7 +280,8 @@ function App() {
           onReach={() => handleReach(1)}
           onRequestCancel={() => handleRequestCancel(1)}
           onWin={() => handleWin(1)}
-          isDealer={round.dealerIndex === 1}
+          isDealer={round.dealerIndex === 1}          
+          onNameChange={(newName) => handleNameChange(1, newName)} // 👈 追加
         />
         <PlayerPanel
           {...players[0]}
@@ -283,6 +290,8 @@ function App() {
           onRequestCancel={() => handleRequestCancel(0)}
           onWin={() => handleWin(0)}
           isDealer={round.dealerIndex === 0}
+          onNameChange={(newName) => handleNameChange(0, newName)} // 👈 追加
+
         />
       </div>
 
@@ -295,6 +304,8 @@ function App() {
           onRequestCancel={() => handleRequestCancel(2)}
           onWin={() => handleWin(2)}
           isDealer={round.dealerIndex === 2}
+          onNameChange={(newName) => handleNameChange(2, newName)} // 👈 追加
+
         />
         <PlayerPanel
           {...players[3]}
@@ -302,6 +313,8 @@ function App() {
           onRequestCancel={() => handleRequestCancel(3)}
           onWin={() => handleWin(3)}
           isDealer={round.dealerIndex === 3}
+          onNameChange={(newName) => handleNameChange(3, newName)} // 👈 追加
+
         />
       </div>
 

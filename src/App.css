@@ -57,3 +57,27 @@ body {
   padding: 6px 12px;
   font-size: 16px;
 }
+
+.player-name {
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.player-name.dealer {
+  color: red;
+  font-weight: bold;
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column; /* ← 縦並びにする */
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+
+
+.player-score {
+  font-size: 1.5rem; /* ← 点数のフォント大きくする */
+  font-weight: bold;
+}
