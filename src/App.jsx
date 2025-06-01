@@ -315,8 +315,11 @@ function App() {
   { name: "プレイヤー3", score: 25000, reached: false },
   { name: "プレイヤー4", score: 25000, reached: false },
 ];
-  const reachSound = new Audio(import.meta.env.BASE_URL + 'sounds/reach.mp3');
+  const reachSound = new Audio(import.meta.env.BASE_URL + 'sounds/reach.wav');
   const ryuukyokuAudio = new Audio(import.meta.env.BASE_URL + 'sounds/ryuukyoku.wav');
+  const ronAudio = new Audio(import.meta.env.BASE_URL + 'sounds/ron.wav');
+  const tsumoAudio = new Audio(import.meta.env.BASE_URL + 'sounds/tsumo.wav');
+
 
   const [players, setPlayers] = useState(initialPlayers);
   const [reachSticks, setReachSticks] = useState(0);
@@ -443,6 +446,11 @@ function App() {
   };
 
   const handleWin = (index,mothod) => {
+    if (mothod === "tsumo") {
+      tsumoAudio.play();
+    } else{
+      ronAudio.play();
+    }
     setInitialMethod(mothod);
     setWinnerIndex(index);
     setShowWinModal(true);
