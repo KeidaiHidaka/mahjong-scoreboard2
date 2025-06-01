@@ -34,7 +34,7 @@ function ResultModal({ visible, result, players, onClose }) {
         {result.han >= 5 ? (
           <p>
             {result.han}翻
-            {result.label ? `（${result.label}）` : ""}
+            {/* {result.label ? `（${result.label}）` : ""} */}
           </p>
         ) : (
           <p>{result.han}翻 {result.fu}符</p>
