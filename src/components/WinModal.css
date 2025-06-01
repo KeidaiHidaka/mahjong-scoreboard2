@@ -12,7 +12,8 @@
 }
 
 .modal-box {
-  background: white;
+  background: #ffffff !important;
+  color: #000000 !important;
   padding: 16px;
   border-radius: 8px;
   text-align: center;
@@ -23,17 +24,25 @@
   margin: 8px;
   padding: 4px 8px;
   width: 80%;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ccc;
 }
 
 .modal-box button {
   margin: 8px;
   padding: 8px 16px;
+  background-color: #f0f0f0;
+  color: #000000 !important;
+  border: 1px solid #ccc;
+  cursor: pointer;
 }
 
 .modal-box label {
   display: block;
   margin: 8px 0;
   text-align: left;
+  color: #000000 !important;
 }
 
 .method-options {
@@ -47,14 +56,14 @@
   align-items: center;
   font-size: 1rem;
   cursor: pointer;
+  color: #000000 !important;
 }
 
 .method-options input[type="radio"] {
   margin-right: 0.4rem;
 }
 
-
-/* WinModal.css */
+/* Overlay */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -67,11 +76,13 @@
   justify-content: center;
 }
 
+/* Modal content */
 .win-modal {
-  background: white;
+  background: #ffffff !important;
+  color: #000000 !important;
   padding: 20px;
   border-radius: 10px;
-  width: 320px; /* 横幅固定 */
+  width: 320px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -85,12 +96,16 @@
 .centered-field label {
   margin-bottom: 4px;
   text-align: center;
+  color: #000000 !important;
 }
 
 .centered-field select {
   width: 100px;
   text-align: center;
   margin: 0 auto;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ccc;
 }
 
 .modal-buttons {

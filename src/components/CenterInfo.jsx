@@ -3,7 +3,7 @@ import React from "react";
 function CenterInfo({ round, reachSticks = 0, onDraw }) {
   const wind = round?.wind ?? "東";
   const number = round?.number ?? 1;
-  console.log("CenterInfo表示:", round.wind, round.number);
+  // console.log("CenterInfo表示:", round.wind, round.number);
 
   return (
     <div className="center-info">

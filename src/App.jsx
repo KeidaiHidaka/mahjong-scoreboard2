@@ -1,3 +1,5 @@
+// App.jsxのコード
+
 import React, { useState } from "react";
 import PlayerPanel from "./components/PlayerPanel";
 import CenterInfo from "./components/CenterInfo";
@@ -7,30 +9,303 @@ import ResultModal from "./components/ResultModal";
 import TenpaiModal from "./components/TenpaiModal";
 import "./App.css";
 
-function calculateScore(han, fu, method, winnerIsDealer) {
-  if (han >= 13) return { score: 32000, label: "数え役満" };
-  if (han >= 11) return { score: 24000, label: "三倍満" };
-  if (han >= 8) return { score: 16000, label: "倍満" };
-  if (han >= 6) return { score: 12000, label: "跳満" };
-  if (han >= 5 || (han === 4 && fu >= 40) || (han === 3 && fu >= 70))
-    return { score: 8000, label: "満貫" };
 
-  const base = fu * Math.pow(2, 2 + han);
 
-  if (method === "ron") {
-    const score = Math.ceil((base * 4) / 100) * 100;
-    return { score };
-  } else {
-    if (winnerIsDealer) {
-      const each = Math.ceil((base * 2) / 100) * 100;
-      return { total: each * 3, each };
-    } else {
-      const child = Math.ceil(base / 100) * 100;
-      const parent = Math.ceil((base * 2) / 100) * 100;
-      return { total: child * 2 + parent, child, parent };
+
+
+function calculateScore({ han, fu, isDealer, isTsumo }) {
+  
+
+  
+  const tsumoChildScoreTable = {
+    1: {
+      30: { child: 300, parent: 500 },
+      40: { child: 400, parent: 700 },
+      50: { child: 400, parent: 800 },
+      60: { child: 500, parent: 1000 },
+      70: { child: 600, parent: 1200 },
+      80: { child: 700, parent: 1300 },
+      90: { child: 800, parent: 1500 },
+      100: { child: 800, parent: 1600 },
+      110: { child: 900, parent: 1800 },
+    },
+    2: {
+      20: { child: 400, parent: 700 },
+      25: { child: 800, parent: 1600 },
+      30: { child: 500, parent: 1000 },
+      40: { child: 700, parent: 1300 },
+      50: { child: 800, parent: 1600 },
+      60: { child: 1000, parent: 2000 },
+      70: { child: 1200, parent: 2300 },
+      80: { child: 1300, parent: 2600 },
+      90: { child: 1500, parent: 2900 },
+      100: { child: 1600, parent: 3200 },
+      110: { child: 1800, parent: 3600 },
+    },
+    3: {
+      20: { child: 700, parent: 1300 },
+      25: { child: 800, parent: 1600 },
+      30: { child: 1000, parent: 2000 },
+      40: { child: 1300, parent: 2600 },
+      50: { child: 1600, parent: 3200 },
+      60: { child: 2000, parent: 3900 },
+      70: { child: 2000, parent: 4000 },
+      80: { child: 2000, parent: 4000 },
+      90: { child: 2000, parent: 4000 },
+      100: { child: 2000, parent: 4000 },
+      110: { child: 2000, parent: 4000 },
+    },
+    4: {
+      20: { child: 1300, parent: 2600 },
+      25: { child: 1600, parent: 3200 },
+      30: { child: 2000, parent: 3900 },
+      40: { child: 2000, parent: 4000 },
+      50: { child: 2000, parent: 4000 },
+      60: { child: 2000, parent: 4000 },
+      70: { child: 2000, parent: 4000 },
+      80: { child: 2000, parent: 4000 },
+      90: { child: 2000, parent: 4000 },
+      100: { child: 2000, parent: 4000 },
+      110: { child: 2000, parent: 4000 },      
+    },
+    
+  };
+  const tsumoDealerScoreTable = {
+    1: {
+      30: { child: 500 },
+      40: { child: 700 },
+      50: { child: 800 },
+      60: { child: 1000 },
+      70: { child: 1200 },
+      80: { child: 1300 },
+      90: { child: 1500 },
+      100: { child: 1600 },
+      110: { child: 1800 }, // 違うかも？
+    },
+    2: {
+      20: { child: 700 }, // 違うかも？
+      25: { child: 800 }, // 違うかも？
+      30: { child: 500 },
+      40: { child: 1300 },
+      50: { child: 1600 },
+      60: { child: 2000 },
+      70: { child: 2300 },
+      80: { child: 2600 },
+      90: { child: 2900 },
+      100: { child: 3200 },
+      110: { child: 3600 },
+    },
+    3: {
+      20: { child: 1300 },
+      25: { child: 1600 },
+      30: { child: 2000 },
+      40: { child: 2600 },
+      50: { child: 3200 },
+      60: { child: 3900 },
+      70: { child: 4000 },
+      80: { child: 4000 },
+      90: { child: 4000 },
+      100: { child: 4000 },
+      110: { child: 4000 },
+    },
+    4: {
+      20: { child: 2600 },
+      25: { child: 3200 },
+      30: { child: 3900 },
+      40: { child: 4000 },
+      50: { child: 4000 },
+      60: { child: 4000 },
+      70: { child: 4000 },
+      80: { child: 4000 },
+      90: { child: 4000 },
+      100: { child: 4000 },
+      110: { child: 4000 },    
+    },
+  };
+  const ronChildScoreTable = {
+    1: {
+      30: 1000, 40: 1300, 50: 1600,
+      60: 2000, 70: 2300, 80: 2600,
+      90: 2900, 100: 3200, 110: 3600,
+    },
+    2: {
+      25: 1600, 30: 2000, 40: 2600,
+      50: 3200, 60: 3900, 70: 4500,
+      80: 5200, 90: 5800, 100: 6400, 110: 7100,
+    },
+    3: {
+      30: 3900, 40: 5200,
+    },
+    4: {
+      30: 7700, 40: 8000,
+    },
+  };
+  const ronDealerScoreTable = {
+    1: {
+      30: 1500, 40: 2000, 50: 2400,
+      60: 2900, 70: 3400, 80: 3900,
+      90: 4400, 100: 4800, 110: 5300,
+    },
+    2: {
+      25: 2400, 30: 2900, 40: 3900,
+      50: 4800, 60: 5800, 70: 6800,
+      80: 7700, 90: 8700, 100: 9600, 110: 10600,
+    },
+    3: {
+      30: 5800, 40: 7700,
+    },
+    4: {
+      30: 11600, 40: 12000,
+    },
+  };
+
+  // 5翻以上
+  const tsumoManganPlusChild = {
+    5: { child: 2000, parent: 4000 },
+    6: { child: 3000, parent: 6000 },
+    7: { child: 3000, parent: 6000 },
+    8: { child: 4000, parent: 8000 },
+    9: { child: 4000, parent: 8000 },
+    10: { child: 4000, parent: 8000 },
+    11: { child: 6000, parent: 12000 },
+    12: { child: 6000, parent: 12000 },
+    13: { child: 8000, parent: 16000 },
+  };
+  const tsumoManganPlusDealer = {
+    5: { child: 4000 },
+    6: { child: 6000 },
+    7: { child: 6000 },
+    8: { child: 8000 },
+    9: { child: 8000 },
+    10: { child: 8000 },
+    11: { child: 12000 },
+    12: { child: 12000 },
+    13: { child: 16000 },
+  };
+  const ronManganPlusChild = { 5: 8000, 6: 12000, 7: 12000, 8: 16000, 9: 16000, 10: 16000, 11: 24000, 12: 24000, 13: 32000 };
+  const ronManganPlusDealer = { 5: 12000, 6: 18000, 7: 18000, 8: 24000, 9: 24000, 10: 24000, 11: 36000, 12: 36000, 13: 48000 };
+
+
+
+  if (isTsumo) {//ツモ
+    //ツモ
+    if (isDealer) {
+      // 親
+      if (han >= 5) {// 5翻以上
+        // 5翻以上
+        const score = tsumoManganPlusDealer[han];
+        return {
+          type: 'ツモ（親）',
+          payments: [
+            { from: '他家1', to: '親', points: score.child },
+            { from: '他家2', to: '親', points: score.child },
+            { from: '他家3', to: '親', points: score.child },
+          ],
+          total: score.child * 3, 
+          child: score.child,
+        };
+      } else {// 4翻以下
+        // 4翻以下
+        const score = tsumoDealerScoreTable[han]?.[fu];
+        if (!score) return { error: '無効な符・翻の組み合わせ（親ツモ）' };
+        return {
+          type: 'ツモ（親）',
+          payments: [
+            { from: '他家1', to: '親', points: score.child },
+            { from: '他家2', to: '親', points: score.child },
+            { from: '他家3', to: '親', points: score.child },
+          ],
+          total: score.child * 3,
+          child: score.child,
+        };
+      }
+    } else {// 子
+      // 子
+      if (han >= 5) {// 5翻以上
+        // 5翻以上
+        const score = tsumoManganPlusChild[han];
+        return {
+          type: 'ツモ（子）',
+          payments: [
+            { from: '親', to: '子', points: score.parent },
+            { from: '子1', to: '子', points: score.child },
+            { from: '子2', to: '子', points: score.child },
+          ],
+          total: score.parent + (score.child * 2),
+          parent: score.parent,
+          child: score.child,
+        };
+      } else {// 4翻以下
+        // 4翻以下
+        const score = tsumoChildScoreTable[han]?.[fu];
+        if (!score) return { error: '無効な符・翻の組み合わせ（子ツモ）' };
+        return {
+          type: 'ツモ（子）',
+          payments: [
+            { from: '親', to: '子', points: score.parent },
+            { from: '子1', to: '子', points: score.child },
+            { from: '子2', to: '子', points: score.child },
+          ],
+          total: score.parent + (score.child * 2),
+          parent: score.parent,
+          child: score.child,
+        };
+      }
+    }
+  } else { //ロン
+    // ロン
+    if (isDealer) {// 親
+      // 親
+      if (han >= 5) {//5翻以上
+        //5翻以上
+        const score = ronManganPlusDealer[han] || 48000;
+        return {
+          type: 'ロン（親）',
+          payments: [{ from: '振り込み者', to: '親', points: score }],
+          total: score,
+        };
+      } else {//4翻以下
+        //4翻以下
+        const score = ronDealerScoreTable[han]?.[fu];
+        if (!score) return { error: '無効な符・翻の組み合わせ（親ロン）' };
+        return {
+          type: 'ロン（親）',
+          payments: [{ from: '振り込み者', to: '親', points: score }],
+          total: score,
+        };
+      }
+    } else {// 子
+      // 子
+      if (han >= 5) {//5翻以上
+        //5翻以上
+        const total = ronManganPlusChild[han] || 32000;
+        return {
+          type: 'ロン（子）',
+          payments: [{ from: '振り込み者', to: '子', points: total }],
+          total,
+          score: total,
+        };
+      } else {//4翻以下
+        //4翻以下
+        const score = ronChildScoreTable[han]?.[fu];
+        if (!score) return { error: '無効な符・翻の組み合わせ（子ロン）' };
+        return {
+          type: 'ロン（子）',
+          payments: [{ from: '振り込み者', to: '子', points: score }],
+          total: score,
+        };
+      }
     }
   }
 }
+
+
+
+
+
+
+
+
 
 function App() {
   const initialPlayers = [
@@ -153,6 +428,7 @@ function App() {
       details,
       reachBonus: 0,
       totalGain: totalPenalty,
+      dealerIndex: round.dealerIndex, // ← ★これを追加
     });
 
     setShowResultModal(true);
@@ -175,26 +451,40 @@ function App() {
     const winner = updatedPlayers[winnerIndex];
     const winnerIsDealer = winnerIndex === round.dealerIndex;
 
-    const result = calculateScore(han, fu, method, winnerIsDealer);
+    const result = calculateScore({
+      han,
+      fu,
+      isDealer: winnerIsDealer,
+      isTsumo: method === "tsumo",
+    });
+
+    console.log("🧮 計算結果:", result);
+
+    if (result.error) {
+      alert(result.error);
+      return;
+    }
+
     let details = [];
-    let gain = 0;
+    let gain = 0; //場のリーチ棒も加算するため
 
     if (method === "ron") {
       const loser = updatedPlayers[loserIndex];
-      loser.score -= result.score;
-      winner.score += result.score;
-      gain += result.score;
+      loser.score -= result.total;
+      winner.score += result.total;
+      gain += result.total;
       details.push({
         from: loser.name,
         to: winner.name,
-        points: result.score,
+        points: result.total,
       });
     } else {
+      // tsumo（自摸）
       updatedPlayers.forEach((p, i) => {
         if (i === winnerIndex) return;
         const isDealer = i === round.dealerIndex;
         const pay = winnerIsDealer
-          ? result.each
+          ? result.child
           : isDealer
           ? result.parent
           : result.child;
@@ -207,9 +497,11 @@ function App() {
           points: pay,
         });
       });
+
     }
 
-    let reachBonus = reachSticks * 1000;
+    // リーチ棒
+    const reachBonus = reachSticks * 1000;
     if (reachSticks > 0) {
       winner.score += reachBonus;
       gain += reachBonus;
@@ -228,11 +520,14 @@ function App() {
       details,
       reachBonus,
       totalGain: gain,
+      dealerIndex: round.dealerIndex,
+      label: result.type || null, // 表示ラベル（例：ロン（親））
     });
 
     setShowResultModal(true);
     advanceRound(winnerIndex, []);
   };
+
 
   const handleWinCancel = () => {
     setShowWinModal(false);
@@ -335,8 +630,13 @@ function App() {
       <ResultModal
         visible={showResultModal}
         result={winResult}
+        players={players.map((p, i) => ({
+          ...p,
+          isDealer: i === winResult?.dealerIndex, // ← winResultのdealerIndexを見る！
+        }))}
         onClose={() => setShowResultModal(false)}
       />
+
 
       <TenpaiModal
         visible={showTenpaiModal}
