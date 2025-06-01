@@ -409,6 +409,7 @@ function App() {
   const ronAudio = new Audio(import.meta.env.BASE_URL + 'sounds/ron.wav');
   const tsumoAudio = new Audio(import.meta.env.BASE_URL + 'sounds/tsumo.wav');
 
+  const dealerIndexParam = parseInt(params.get("dealerIndex"), 10);
 
   const [players, setPlayers] = useState(initialPlayers);
   const [reachSticks, setReachSticks] = useState(0);
@@ -417,7 +418,11 @@ function App() {
   const [winnerIndex, setWinnerIndex] = useState(null);
   const [showResultModal, setShowResultModal] = useState(false);
   const [winResult, setWinResult] = useState(null);
-  const [round, setRound] = useState({ wind: "東", number: 1, dealerIndex: 0 });
+  const [round, setRound] = useState({
+    wind: "東",
+    number: 1,
+    dealerIndex: isNaN(dealerIndexParam) ? 0 : dealerIndexParam,
+  });
   const [showTenpaiModal, setShowTenpaiModal] = useState(false);
   const [tenpaiIndexes, setTenpaiIndexes] = useState([]);
 
