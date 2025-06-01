@@ -1,3 +1,5 @@
+//PlayerPanel.jsx
+
 import React, { useState } from "react";
 
 function PlayerPanel({
@@ -9,7 +11,7 @@ function PlayerPanel({
   onRequestCancel,
   onWin,
   isDealer,
-  onNameChange, // 👈 追加
+  onNameChange,
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [inputName, setInputName] = useState(name);

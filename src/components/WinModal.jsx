@@ -74,11 +74,11 @@ function WinModal({ visible, winnerIndex, players, onSubmit, onCancel }) {
             onChange={(e) => setFu(Number(e.target.value))}
             disabled={han >= 5}
           />
-          {han >= 5 && (
+          {/* {han >= 5 && (
             <div style={{ fontSize: "0.85rem", color: "#666", marginTop: "4px" }}>
               ※満貫以上のため符入力は不要です
             </div>
-          )}
+          )} */}
         </div>
         <div>
           <label>和了方法</label>
