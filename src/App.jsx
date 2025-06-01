@@ -388,15 +388,22 @@ function calculateScore({ han, fu, isDealer, isTsumo }) {
 
 
 
-
 function App() {
   const [initialMethod, setInitialMethod] = useState("ron");
+  const params = new URLSearchParams(window.location.search);
+
   const initialPlayers = [
-  { name: "プレイヤー1", score: 25000, reached: false },
-  { name: "プレイヤー2", score: 25000, reached: false },
-  { name: "プレイヤー3", score: 25000, reached: false },
-  { name: "プレイヤー4", score: 25000, reached: false },
-];
+    { name: params.get("player1") || "プレイヤー1", score: 25000, reached: false },
+    { name: params.get("player2") || "プレイヤー2", score: 25000, reached: false },
+    { name: params.get("player3") || "プレイヤー3", score: 25000, reached: false },
+    { name: params.get("player4") || "プレイヤー4", score: 25000, reached: false },
+  ];
+  // const initialPlayers = [
+  //   { name: "プレイヤー1", score: 25000, reached: false },
+  //   { name: "プレイヤー2", score: 25000, reached: false },
+  //   { name: "プレイヤー3", score: 25000, reached: false },
+  //   { name: "プレイヤー4", score: 25000, reached: false },
+  // ];
   const reachSound = new Audio(import.meta.env.BASE_URL + 'sounds/reach.wav');
   const ryuukyokuAudio = new Audio(import.meta.env.BASE_URL + 'sounds/ryuukyoku.wav');
   const ronAudio = new Audio(import.meta.env.BASE_URL + 'sounds/ron.wav');
