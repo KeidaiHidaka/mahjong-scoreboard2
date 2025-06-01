@@ -8,10 +8,7 @@ function isValidHanFu(han, fu) {
   if (!validFuList.includes(fu)) return false;
 
   const invalidCombinations = [
-    [1, 25], [1, 50], [1, 60], [1, 70], [1, 80], [1, 90], [1, 100], [1, 110],
-    [2, 25], [2, 50], [2, 60], [2, 70], [2, 80], [2, 90], [2, 100], [2, 110],
-    [3, 25], [3, 70], [3, 80], [3, 90], [3, 100], [3, 110],
-    [4, 25], [4, 70], [4, 80], [4, 90], [4, 100], [4, 110],
+    [1, 20], [1, 25], 
   ];
 
   return !invalidCombinations.some(([h, f]) => h === han && f === fu);
@@ -56,29 +53,28 @@ function WinModal({ visible, winnerIndex, players, onSubmit, onCancel, initialMe
         <h2>和了入力</h2>
         <div>
           <label>翻（1〜13+）</label>
-          <input
-            type="number"
-            min="1"
-            max="13"
-            value={han}
-            onChange={(e) => setHan(Number(e.target.value))}
-          />
+          <select value={han} onChange={(e) => setHan(Number(e.target.value))}>
+            {Array.from({ length: 12 }, (_, i) => (
+              <option key={i + 1} value={i + 1}>
+                {i + 1}
+              </option>
+            ))}
+            <option value={13}>13+</option>
+          </select>
         </div>
         <div>
           <label>符（満貫以上は不要）</label>
-          <input
-            type="number"
-            min="20"
-            step="5"
+          <select
             value={fu}
             onChange={(e) => setFu(Number(e.target.value))}
             disabled={han >= 5}
-          />
-          {/* {han >= 5 && (
-            <div style={{ fontSize: "0.85rem", color: "#666", marginTop: "4px" }}>
-              ※満貫以上のため符入力は不要です
-            </div>
-          )} */}
+          >
+            {[20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110].map((val) => (
+              <option key={val} value={val}>
+                {val}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label>和了方法</label>
