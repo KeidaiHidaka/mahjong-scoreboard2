@@ -44,7 +44,10 @@ function ResultModal({ visible, result, players, onClose }) {
         <ul>
           {result.details.map((item, idx) => (
             <li key={idx}>
-              {item.from} → {item.to}: {item.points}点
+              {item.from} → {item.to}:{" "}
+              {item.from === "ノーテン" && item.points === 3000
+                ? "1000点"
+                : `${item.points}点`}
             </li>
           ))}
         </ul>
