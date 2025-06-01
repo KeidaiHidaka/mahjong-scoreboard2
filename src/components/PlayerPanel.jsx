@@ -58,7 +58,8 @@ function PlayerPanel({
         ) : (
           <button onClick={onReach}>リーチ</button>
         )}
-        <button onClick={onWin}>和了</button>
+        <button onClick={() => onWin("ron")}>ロン</button>
+        <button onClick={() => onWin("tsumo")}>ツモ</button>
       </div>
     </div>
   );

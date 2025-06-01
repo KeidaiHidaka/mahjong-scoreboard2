@@ -4,7 +4,7 @@ import "./ResultModal.css";
 function ResultModal({ visible, result, players, onClose }) {
   if (!visible || !result) return null;
   // console.log("players in ResultModal:", players);
-  console.log("players in ResultModal:", players);
+  // console.log("players in ResultModal:", players);
   // players.forEach((p, i) => {
   //   console.log(`Player ${i}:`, p.name, "isDealer:", p.isDealer);
   // });

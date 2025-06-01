@@ -308,6 +308,7 @@ function calculateScore({ han, fu, isDealer, isTsumo }) {
 
 
 function App() {
+  const [initialMethod, setInitialMethod] = useState("ron");
   const initialPlayers = [
   { name: "プレイヤー1", score: 25000, reached: false },
   { name: "プレイヤー2", score: 25000, reached: false },
@@ -441,7 +442,8 @@ function App() {
     setShowTenpaiModal(false);
   };
 
-  const handleWin = (index) => {
+  const handleWin = (index,mothod) => {
+    setInitialMethod(mothod);
     setWinnerIndex(index);
     setShowWinModal(true);
   };
@@ -574,7 +576,7 @@ function App() {
           reversed
           onReach={() => handleReach(1)}
           onRequestCancel={() => handleRequestCancel(1)}
-          onWin={() => handleWin(1)}
+          onWin={(method) => handleWin(1,method)}
           isDealer={round.dealerIndex === 1}          
           onNameChange={(newName) => handleNameChange(1, newName)} // 👈 追加
         />
@@ -583,7 +585,7 @@ function App() {
           reversed
           onReach={() => handleReach(0)}
           onRequestCancel={() => handleRequestCancel(0)}
-          onWin={() => handleWin(0)}
+          onWin={(method) => handleWin(0,method)}
           isDealer={round.dealerIndex === 0}
           onNameChange={(newName) => handleNameChange(0, newName)} // 👈 追加
 
@@ -597,7 +599,7 @@ function App() {
           {...players[2]}
           onReach={() => handleReach(2)}
           onRequestCancel={() => handleRequestCancel(2)}
-          onWin={() => handleWin(2)}
+          onWin={(method) => handleWin(2,method)}
           isDealer={round.dealerIndex === 2}
           onNameChange={(newName) => handleNameChange(2, newName)} // 👈 追加
 
@@ -606,7 +608,7 @@ function App() {
           {...players[3]}
           onReach={() => handleReach(3)}
           onRequestCancel={() => handleRequestCancel(3)}
-          onWin={() => handleWin(3)}
+          onWin={(method) => handleWin(3,method)}
           isDealer={round.dealerIndex === 3}
           onNameChange={(newName) => handleNameChange(3, newName)} // 👈 追加
 
@@ -625,6 +627,7 @@ function App() {
         players={players}
         onSubmit={handleWinSubmit}
         onCancel={handleWinCancel}
+        initialMethod={initialMethod}
       />
 
       <ResultModal

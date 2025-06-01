@@ -17,10 +17,10 @@ function isValidHanFu(han, fu) {
   return !invalidCombinations.some(([h, f]) => h === han && f === fu);
 }
 
-function WinModal({ visible, winnerIndex, players, onSubmit, onCancel }) {
+function WinModal({ visible, winnerIndex, players, onSubmit, onCancel, initialMethod = "ron"}) {
   const [han, setHan] = useState(3);
   const [fu, setFu] = useState(40);
-  const [method, setMethod] = useState("ron");
+  const [method, setMethod] = useState(initialMethod);
   const [loserIndex, setLoserIndex] = useState(null);
   const [error, setError] = useState("");
 
@@ -28,11 +28,11 @@ function WinModal({ visible, winnerIndex, players, onSubmit, onCancel }) {
     if (visible) {
       setHan(3);
       setFu(40);
-      setMethod("ron");
+      setMethod(initialMethod);
       setLoserIndex(null);
       setError("");
     }
-  }, [visible]);
+  }, [visible,initialMethod]);
 
   const handleSubmit = () => {
     if (!isValidHanFu(han, fu)) {
@@ -44,7 +44,7 @@ function WinModal({ visible, winnerIndex, players, onSubmit, onCancel }) {
       return;
     }
     setError(""); // エラーなしの場合はクリアしてから送信
-    console.log("WinModal.jsxのhandleSubmitのloserIndex",loserIndex);
+    // console.log("WinModal.jsxのhandleSubmitのloserIndex",loserIndex);
     onSubmit({ han, fu, method, loserIndex });
   };
 
