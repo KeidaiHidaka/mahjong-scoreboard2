@@ -14,10 +14,23 @@ function ResultModal({ visible, result, players, onClose }) {
   return (
     <div className="modal-backdrop">
       <div className="modal">
-        <h2>和了結果</h2>
+        <h2>{
+          result.method === "ryukyoku"
+                ? "流局結果"
+                : "和了結果"
+        }</h2>
+        
         <p>和了者: {result.winner}</p>
         <p>親: {dealerName}</p>
-        <p>形式: {result.method === "ron" ? "ロン" : "ツモ"}</p>
+        <p>形式: {
+          result.method === "ron"
+            ? "ロン"
+            : result.method === "tsumo"
+              ? "ツモ"
+              : result.method === "ryukyoku"
+                ? "流局"
+                : ""
+        }</p>
         {result.han >= 5 ? (
           <p>
             {result.han}翻

@@ -422,7 +422,7 @@ function App() {
     setPlayers(updated);
     setWinResult({
       winner: "流局",
-      method: "流局",
+      method: "ryukyoku",
       han: 0,
       fu: 0,
       details,
