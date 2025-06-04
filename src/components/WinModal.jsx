@@ -1,4 +1,7 @@
+// WinModal.jsx
+
 import React, { useState, useEffect } from "react";
+import FuCalculatorModal from "./FuCalculatorModal"; // ← 同じディレクトリなので './FuCalculatorModal' 
 import "./WinModal.css";
 
 const validFuList = [20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110];
@@ -20,6 +23,9 @@ function WinModal({ visible, winnerIndex, players, onSubmit, onCancel, initialMe
   const [method, setMethod] = useState(initialMethod);
   const [loserIndex, setLoserIndex] = useState(null);
   const [error, setError] = useState("");
+  
+  // 符計算モーダルの状態を追加
+  const [showFuCalculator, setShowFuCalculator] = useState(false);
 
   useEffect(() => {
     if (visible) {
@@ -28,8 +34,9 @@ function WinModal({ visible, winnerIndex, players, onSubmit, onCancel, initialMe
       setMethod(initialMethod);
       setLoserIndex(null);
       setError("");
+      setShowFuCalculator(false); // 追加
     }
-  }, [visible,initialMethod]);
+  }, [visible, initialMethod]);
 
   const handleSubmit = () => {
     if (!isValidHanFu(han, fu)) {
@@ -41,8 +48,19 @@ function WinModal({ visible, winnerIndex, players, onSubmit, onCancel, initialMe
       return;
     }
     setError(""); // エラーなしの場合はクリアしてから送信
-    // console.log("WinModal.jsxのhandleSubmitのloserIndex",loserIndex);
     onSubmit({ han, fu, method, loserIndex });
+  };
+
+  // 符計算モーダルから符が確定された時の処理
+  const handleFuCalculated = (calculatedFu) => {
+    setFu(calculatedFu);
+    setShowFuCalculator(false);
+    setError(""); // エラーをクリア
+  };
+
+  // 符計算モーダルがキャンセルされた時の処理
+  const handleFuCalculatorCancel = () => {
+    setShowFuCalculator(false);
   };
 
   if (!visible) return null;
@@ -64,17 +82,31 @@ function WinModal({ visible, winnerIndex, players, onSubmit, onCancel, initialMe
         </div>
         <div>
           <label>符（満貫以上は不要）</label>
-          <select
-            value={fu}
-            onChange={(e) => setFu(Number(e.target.value))}
-            disabled={han >= 5}
-          >
-            {[20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110].map((val) => (
-              <option key={val} value={val}>
-                {val}
-              </option>
-            ))}
-          </select>
+          <div className="fu-input-section">
+            <select
+              value={fu}
+              onChange={(e) => setFu(Number(e.target.value))}
+              disabled={han >= 5}
+            >
+              {[20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110].map((val) => (
+                <option key={val} value={val}>
+                  {val}
+                </option>
+              ))}
+            </select>
+            {han < 5 && (
+              <div>
+              <button 
+                type="button"
+                onClick={() => setShowFuCalculator(true)}
+                className="fu-calculator-button"
+                disabled={han >= 5}
+              >
+                符計算
+              </button>
+              </div>
+            )}
+          </div>
         </div>
         <div>
           <label>和了方法</label>
@@ -109,6 +141,13 @@ function WinModal({ visible, winnerIndex, players, onSubmit, onCancel, initialMe
           <button onClick={onCancel}>キャンセル</button>
         </div>
       </div>
+
+      {/* 符計算モーダル */}
+      <FuCalculatorModal
+        visible={showFuCalculator}
+        onCalculated={handleFuCalculated}
+        onCancel={handleFuCalculatorCancel}
+      />
     </div>
   );
 }
