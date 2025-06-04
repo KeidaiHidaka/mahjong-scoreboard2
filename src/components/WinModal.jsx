@@ -16,7 +16,7 @@ function isValidHanFu(han, fu) {
 
 function WinModal({ visible, winnerIndex, players, onSubmit, onCancel, initialMethod = "ron"}) {
   const [han, setHan] = useState(3);
-  const [fu, setFu] = useState(40);
+  const [fu, setFu] = useState(30);
   const [method, setMethod] = useState(initialMethod);
   const [loserIndex, setLoserIndex] = useState(null);
   const [error, setError] = useState("");
@@ -24,7 +24,7 @@ function WinModal({ visible, winnerIndex, players, onSubmit, onCancel, initialMe
   useEffect(() => {
     if (visible) {
       setHan(3);
-      setFu(40);
+      setFu(30);
       setMethod(initialMethod);
       setLoserIndex(null);
       setError("");
