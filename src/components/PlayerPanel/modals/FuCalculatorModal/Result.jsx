@@ -1,5 +1,5 @@
 // Result.jsx
-import questions from './questions'; // ← 同じディレクトリなので './questions'
+import questions from '../../../questions'; // ← 同じディレクトリなので './questions'
 
 function Result({ roundUpPoints, history, totalPoints }) {
     const last = history[history.length - 1];

@@ -1,18 +1,14 @@
 // App.jsxのコード
 
 import React, { useState } from "react";
-import PlayerPanel from "./components/PlayerPanel";
+import PlayerPanel from "./components/PlayerPanel/PlayerPanel";
 import CenterInfo from "./components/CenterInfo";
-import CancelModal from "./components/CancelModal";
-import WinModal from "./components/WinModal";
-import ResultModal from "./components/ResultModal";
-import TenpaiModal from "./components/TenpaiModal";
+import CancelModal from "./components/PlayerPanel/modals/CancelModal/CancelModal";
+import WinModal from "./components/PlayerPanel/modals/WinModal/WinModal";
+import ResultModal from "./components/PlayerPanel/modals/ResultModal/ResultModal";
+import TenpaiModal from "./components/PlayerPanel/modals/TenpaiModal/TenpaiModal";
 import scoreTable from "./scoreTable";
-import "./App.css";
-
-
-
-
+import styles from "./App.module.css";
 
 function calculateScore({ han, fu, isDealer, isTsumo }) {
   
@@ -128,13 +124,6 @@ function calculateScore({ han, fu, isDealer, isTsumo }) {
   }
 }
 
-
-
-
-
-
-
-
 function App() {
   const [initialMethod, setInitialMethod] = useState("ron");
   const params = new URLSearchParams(window.location.search);
@@ -145,12 +134,7 @@ function App() {
     { name: params.get("player3") || "プレイヤー3", score: 25000, reached: false },
     { name: params.get("player4") || "プレイヤー4", score: 25000, reached: false },
   ];
-  // const initialPlayers = [
-  //   { name: "プレイヤー1", score: 25000, reached: false },
-  //   { name: "プレイヤー2", score: 25000, reached: false },
-  //   { name: "プレイヤー3", score: 25000, reached: false },
-  //   { name: "プレイヤー4", score: 25000, reached: false },
-  // ];
+  
   const reachSound = new Audio(import.meta.env.BASE_URL + 'sounds/reach.wav');
   const ryuukyokuAudio = new Audio(import.meta.env.BASE_URL + 'sounds/ryuukyoku.wav');
   const ronAudio = new Audio(import.meta.env.BASE_URL + 'sounds/ron.wav');
@@ -273,12 +257,11 @@ function App() {
       details,
       reachBonus: 0,
       totalGain: totalPenalty,
-      dealerIndex: round.dealerIndex, // ← ★これを追加
+      dealerIndex: round.dealerIndex,
     });
 
     setShowResultModal(true);
     resetReach();
-    // setReachSticks(0);
     advanceRound(null, indexes);
   };
 
@@ -286,13 +269,13 @@ function App() {
     setShowTenpaiModal(false);
   };
 
-  const handleWin = (index,mothod) => {
-    if (mothod === "tsumo") {
+  const handleWin = (index, method) => {
+    if (method === "tsumo") {
       tsumoAudio.play();
-    } else{
+    } else {
       ronAudio.play();
     }
-    setInitialMethod(mothod);
+    setInitialMethod(method);
     setWinnerIndex(index);
     setShowWinModal(true);
   };
@@ -317,7 +300,7 @@ function App() {
     }
 
     let details = [];
-    let gain = 0; //場のリーチ棒も加算するため
+    let gain = 0;
 
     if (method === "ron") {
       const loser = updatedPlayers[loserIndex];
@@ -348,7 +331,6 @@ function App() {
           points: pay,
         });
       });
-
     }
 
     // リーチ棒
@@ -372,13 +354,12 @@ function App() {
       reachBonus,
       totalGain: gain,
       dealerIndex: round.dealerIndex,
-      label: result.type || null, // 表示ラベル（例：ロン（親））
+      label: result.type || null,
     });
 
     setShowResultModal(true);
     advanceRound(winnerIndex, []);
   };
-
 
   const handleWinCancel = () => {
     setShowWinModal(false);
@@ -386,9 +367,7 @@ function App() {
 
   const handleReach = (index) => {
     if (players[index].reached || players[index].score < 1000) return;
-    // const reachSound = new Audio();
-
-    // const reachSound = new Audio(import.meta.env.BASE_URL + 'sounds/reach.mp3');
+    
     reachSound.play();
     const updated = [...players];
     updated[index].score -= 1000;
@@ -418,49 +397,46 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <div className="top-half">
+    <div className={styles.container}>
+      <div className={styles.topHalf}>
         <PlayerPanel
           {...players[1]}
           reversed
           onReach={() => handleReach(1)}
           onRequestCancel={() => handleRequestCancel(1)}
-          onWin={(method) => handleWin(1,method)}
+          onWin={(method) => handleWin(1, method)}
           isDealer={round.dealerIndex === 1}          
-          onNameChange={(newName) => handleNameChange(1, newName)} // 👈 追加
+          onNameChange={(newName) => handleNameChange(1, newName)}
         />
         <PlayerPanel
           {...players[0]}
           reversed
           onReach={() => handleReach(0)}
           onRequestCancel={() => handleRequestCancel(0)}
-          onWin={(method) => handleWin(0,method)}
+          onWin={(method) => handleWin(0, method)}
           isDealer={round.dealerIndex === 0}
-          onNameChange={(newName) => handleNameChange(0, newName)} // 👈 追加
-
+          onNameChange={(newName) => handleNameChange(0, newName)}
         />
       </div>
 
       <CenterInfo round={round} reachSticks={reachSticks} onDraw={handleDraw} />
 
-      <div className="bottom-half">
+      <div className={styles.bottomHalf}>
         <PlayerPanel
           {...players[2]}
           onReach={() => handleReach(2)}
           onRequestCancel={() => handleRequestCancel(2)}
-          onWin={(method) => handleWin(2,method)}
+          onWin={(method) => handleWin(2, method)}
           isDealer={round.dealerIndex === 2}
-          onNameChange={(newName) => handleNameChange(2, newName)} // 👈 追加
-
+          onNameChange={(newName) => handleNameChange(2, newName)}
         />
         <PlayerPanel
           {...players[3]}
           onReach={() => handleReach(3)}
           onRequestCancel={() => handleRequestCancel(3)}
-          onWin={(method) => handleWin(3,method)}
+          onWin={(method) => handleWin(3, method)}
           isDealer={round.dealerIndex === 3}
-          onNameChange={(newName) => handleNameChange(3, newName)} // 👈 追加
-
+          onNameChange={(newName) => handleNameChange(3, newName)}
         />
       </div>
 
@@ -484,11 +460,10 @@ function App() {
         result={winResult}
         players={players.map((p, i) => ({
           ...p,
-          isDealer: i === winResult?.dealerIndex, // ← winResultのdealerIndexを見る！
+          isDealer: i === winResult?.dealerIndex,
         }))}
         onClose={() => setShowResultModal(false)}
       />
-
 
       <TenpaiModal
         visible={showTenpaiModal}

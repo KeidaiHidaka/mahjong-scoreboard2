@@ -1,7 +1,7 @@
 // WinModal.jsx
 
 import React, { useState, useEffect } from "react";
-import FuCalculatorModal from "./FuCalculatorModal"; // ← 同じディレクトリなので './FuCalculatorModal' 
+import FuCalculatorModal from "../FuCalculatorModal/FuCalculatorModal"; // ← 同じディレクトリなので './FuCalculatorModal' 
 import "./WinModal.css";
 
 const validFuList = [20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110];

@@ -1,0 +1,53 @@
+/* CSS Variables */
+:root {
+  --color-background: #ffffff;
+  --color-text: #000000;
+  --color-border: #ddd;
+  --color-light-gray: #f9f9f9;
+  --color-primary: #007bff;
+  --color-primary-hover: #0056b3;
+  --color-success: #28a745;
+  --color-success-hover: #218838;
+  --color-secondary: #6c757d;
+  --color-secondary-hover: #5a6268;
+  --color-danger: #dc3545;
+  --color-light: #f8f9fa;
+  --color-border-light: #dee2e6;
+  
+  --modal-z-index: 9999;
+  --modal-backdrop-z-index: 9998;
+  
+  --border-radius: 8px;
+  --border-radius-small: 4px;
+  --border-radius-large: 12px;
+  
+  --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  --box-shadow-modal: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+/* Common Modal Backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: var(--modal-backdrop-z-index);
+}

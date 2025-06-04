@@ -1,0 +1,61 @@
+.playerPanel {
+  background-color: var(--color-light-gray);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius-large);
+  padding: 1rem;
+  width: 140px;
+  text-align: center;
+  box-shadow: var(--box-shadow);
+  color: var(--color-text);
+}
+
+.playerPanel.dealer {
+  border: 2px solid red;
+}
+
+.playerPanel.reached {
+  background-color: #fff5e0;
+}
+
+.playerPanel.reversed {
+  transform: rotate(180deg);
+}
+
+.playerName {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.playerName.dealer {
+  color: red;
+  font-weight: bold;
+}
+
+.playerScore {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.playerButtons button {
+  margin: 0.2rem;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+  border: none;
+  background-color: #e0e0e0;
+  border-radius: var(--border-radius-small);
+  cursor: pointer;
+}
+
+.playerButtons button:hover {
+  background-color: #d0d0d0;
+}
+
+.playerInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 8px;
+}

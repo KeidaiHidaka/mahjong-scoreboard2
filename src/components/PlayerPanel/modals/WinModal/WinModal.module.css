@@ -1,0 +1,110 @@
+.winModal {
+  background: var(--color-background);
+  color: var(--color-text);
+  padding: 20px;
+  border-radius: 10px;
+  width: 90vw;
+  max-width: 800px;
+  min-width: 600px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.winModal input,
+.winModal select {
+  margin: 8px;
+  padding: 4px 8px;
+  width: 200px;
+  max-width: 80%;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  border: 1px solid #ccc;
+}
+
+.winModal button {
+  margin: 8px;
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  color: var(--color-text);
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.winModal label {
+  display: block;
+  margin: 8px 0;
+  text-align: left;
+  color: var(--color-text);
+}
+
+.methodOptions {
+  display: flex;
+  gap: 1.5rem;
+  margin: 1rem 0;
+}
+
+.methodOptions label {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.methodOptions input[type="radio"] {
+  margin-right: 0.4rem;
+}
+
+.centeredField {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.centeredField label {
+  margin-bottom: 4px;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.centeredField select {
+  width: 120px;
+  text-align: center;
+  margin: 0 auto;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  border: 1px solid #ccc;
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+}
+
+.fuInputSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fuCalculatorButton {
+  padding: 6px 12px;
+  font-size: 12px;
+  background-color: var(--color-success);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-small);
+  cursor: pointer;
+  width: fit-content;
+  align-self: flex-start;
+}
+
+.fuCalculatorButton:hover {
+  background-color: var(--color-success-hover);
+}
+
+.fuCalculatorButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
