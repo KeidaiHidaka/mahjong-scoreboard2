@@ -5,7 +5,7 @@ const questions = {
       { label: "はい", next: "RESULT", points: 25 },
       { label: "いいえ", next: "Q2" }
     ],
-	image:"/mahjangScoreCalc/images/chitoitsu.png",
+	image:"/mahjong-scoreboard2/images/chitoitsu.png",
   },
   Q2: {
     text: "Q2. 平和（ﾋﾟﾝﾌ）ですか？",
@@ -13,7 +13,7 @@ const questions = {
       { label: "はい", next: "Q2_1" },
       { label: "いいえ", next: "Q3", points:20 }
     ],
-	image:"/mahjangScoreCalc/images/pinfu.png",
+	image:"/mahjong-scoreboard2/images/pinfu.png",
   },
   Q2_1: {
     text: "Q2-1. アガリ方はなんですか？",
@@ -28,7 +28,7 @@ const questions = {
       { label: "はい", next: "Q4", points: 2 },
       { label: "いいえ", next: "Q4" }
     ],
-	image:"/mahjangScoreCalc/images/yakuhai.jpg",
+	image:"/mahjong-scoreboard2/images/yakuhai.jpg",
   },
   Q4: {
     text: "Q4. 待ちの形はﾘｬﾝﾒﾝ・ｼｬﾝﾎﾟﾝですか？",
@@ -36,7 +36,7 @@ const questions = {
       { label: "はい", next: "Q5"},
       { label: "いいえ", next: "Q5", points: 2 },
     ],
-	image:"/mahjangScoreCalc/images/machi.png", // 画像URL（`public/images` に配置）
+	image:"/mahjong-scoreboard2/images/machi.png", // 画像URL（`public/images` に配置）
   },
   Q5: {
     text: "Q5. アガリ方はどちらですか？",
@@ -51,7 +51,7 @@ const questions = {
       { label: "はい", next: "Q6"},
       { label: "いいえ（門前）", next: "Q6", points: 10  }
     ],
-	image:"/mahjangScoreCalc/images/ponChiKan.png", 
+	image:"/mahjong-scoreboard2/images/ponChiKan.png", 
   },
     Q6: {
     text: "Q6. 面子は順子（ｼｭﾝﾂ）「のみ」ですか？",
@@ -59,7 +59,7 @@ const questions = {
         { label: "はい", next: "Q6_1" },
         { label: "いいえ", next: "Q7_1_1" } // 
     ],
-	image:"/mahjangScoreCalc/images/kotsuSyuntsu.jpg", 
+	image:"/mahjong-scoreboard2/images/kotsuSyuntsu.jpg", 
     },
     Q6_1: {
     text: "Q6_1. チーしましたか？",
@@ -67,7 +67,7 @@ const questions = {
         { label: "はい", next: "RESULT", points: 30, override: true }, // 例外的な処理フラグ
         { label: "いいえ", next: "RESULT", points: 0 }
     ],
-	image:"/mahjangScoreCalc/images/ponChiKan.png", 
+	image:"/mahjong-scoreboard2/images/ponChiKan.png", 
     },
 	// 刻子1組目
 	Q7_1_1: {
@@ -77,7 +77,7 @@ const questions = {
 	    { label: "いいえ", next: "Q7_1_2", isPon: false },
 	    { label: "刻子は1組もない", next: "Q8_1_1" }
 	  ],
-	  image:"/mahjangScoreCalc/images/kotsuSyuntsu.jpg", 
+	  image:"/mahjong-scoreboard2/images/kotsuSyuntsu.jpg", 
 	},
 	Q7_1_2: {
 	  text: "Q7-1-2. 刻子（1組目）の牌は？",
@@ -95,7 +95,7 @@ const questions = {
 	    { label: "いいえ", next: "Q7_2_2", isPon: false },
 	    { label: "刻子はこれ以上ない", next: "Q8_1_1" }
 	  ],
-	  image:"/mahjangScoreCalc/images/kotsuSyuntsu.jpg", 
+	  image:"/mahjong-scoreboard2/images/kotsuSyuntsu.jpg", 
 	},
 	Q7_2_2: {
 	  text: "Q7-2-2. 刻子（2組目）の牌は？",
@@ -113,7 +113,7 @@ const questions = {
 	    { label: "いいえ", next: "Q7_3_2", isPon: false },
 	    { label: "刻子はこれ以上ない", next: "Q8_1_1" }
 	  ],
-	  image:"/mahjangScoreCalc/images/kotsuSyuntsu.jpg", 
+	  image:"/mahjong-scoreboard2/images/kotsuSyuntsu.jpg", 
 	},
 	Q7_3_2: {
 	  text: "Q7-3-2. 刻子（3組目）の牌は？",
@@ -131,7 +131,7 @@ const questions = {
 	    { label: "いいえ", next: "Q7_4_2", isPon: false },
 	    { label: "刻子はこれ以上ない", next: "Q8_1_1" }
 	  ],
-	  image:"/mahjangScoreCalc/images/kotsuSyuntsu.jpg", 
+	  image:"/mahjong-scoreboard2/images/kotsuSyuntsu.jpg", 
 	},
 	Q7_4_2: {
 	  text: "Q7-4-2. 刻子（4組目）の牌は？",
@@ -148,7 +148,7 @@ const questions = {
 	    { label: "いいえ（明槓）", next: "Q8_1_2", isAnkan: false },
 	    { label: "槓子は1組もない", next: "RESULT" }
 	  ],
-	  image:"/mahjangScoreCalc/images/kantsu.png", 
+	  image:"/mahjong-scoreboard2/images/kantsu.png", 
 	},
 	Q8_1_2: {
 	  text: "Q8-1-2. 槓子（1組目）の牌は？",
@@ -166,7 +166,7 @@ const questions = {
 	    { label: "いいえ（明槓）", next: "Q8_2_2", isAnkan: false },
 	    { label: "槓子はこれ以上ない", next: "RESULT" }
 	  ],
-	  image:"/mahjangScoreCalc/images/kantsu.png", 
+	  image:"/mahjong-scoreboard2/images/kantsu.png", 
 	},
 	Q8_2_2: {
 	  text: "Q8-2-2. 槓子（2組目）の牌は？",
@@ -184,7 +184,7 @@ const questions = {
 	    { label: "いいえ（明槓）", next: "Q8_3_2", isAnkan: false },
 	    { label: "槓子はこれ以上ない", next: "RESULT" }
 	  ],
-	  image:"/mahjangScoreCalc/images/kantsu.png", 
+	  image:"/mahjong-scoreboard2/images/kantsu.png", 
 	},
 	Q8_3_2: {
 	  text: "Q8-3-2. 槓子（3組目）の牌は？",
@@ -202,7 +202,7 @@ const questions = {
 	    { label: "いいえ（明槓）", next: "Q8_4_2", isAnkan: false },
 	    { label: "槓子はこれ以上ない", next: "RESULT" }
 	  ],
-	  image:"/mahjangScoreCalc/images/kantsu.png", 
+	  image:"/mahjong-scoreboard2/images/kantsu.png", 
 	},
 	Q8_4_2: {
 	  text: "Q8-4-2. 槓子（4組目）の牌は？",
