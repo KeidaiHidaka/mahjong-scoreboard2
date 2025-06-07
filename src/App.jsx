@@ -1,14 +1,29 @@
-// App.jsxのコード
+// src/App.jsx
 
-import React, { useState } from "react";
-import PlayerPanel from "./components/PlayerPanel";
-import CenterInfo from "./components/CenterInfo";
-import CancelModal from "./components/CancelModal";
-import WinModal from "./components/WinModal";
-import ResultModal from "./components/ResultModal";
-import TenpaiModal from "./components/TenpaiModal";
-import scoreTable from "./scoreTable";
-import "./App.css";
+
+// ========================================
+// App.jsx - メインアプリケーション
+// ========================================
+
+import { useState, useEffect } from 'react'
+import PlayerPanel from './components/PlayerPanel'
+import CenterInfo from './components/CenterInfo'
+import WinModal from './components/WinModal'
+import TenpaiModal from './components/TenpaiModal'
+import ResultModal from './components/ResultModal'
+import CancelModal from './components/CancelModal'
+import scoreTable  from './scoreTable'
+
+// 共通スタイル（main.jsxで読み込み済み）
+// コンポーネント固有スタイル
+import './components/modals.css'    // モーダル共通
+import './components/buttons.css'   // ボタン共通
+import './components/panels.css'    // パネル共通
+
+// メインアプリ固有のスタイル
+import './App.css'  // または './pages/mahjong.css'
+
+
 
 
 
@@ -418,10 +433,11 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <div className="top-half">
+    <div className="mahjong-app">
+      <div className="mahjong-app__top-half">
         <PlayerPanel
           {...players[1]}
+          className="panel--reversed"
           reversed
           onReach={() => handleReach(1)}
           onRequestCancel={() => handleRequestCancel(1)}
@@ -431,6 +447,7 @@ function App() {
         />
         <PlayerPanel
           {...players[0]}
+          className="panel--reversed"
           reversed
           onReach={() => handleReach(0)}
           onRequestCancel={() => handleRequestCancel(0)}
@@ -441,9 +458,9 @@ function App() {
         />
       </div>
 
-      <CenterInfo round={round} reachSticks={reachSticks} onDraw={handleDraw} />
+      <CenterInfo round={round} reachSticks={reachSticks} onDraw={handleDraw} className="mahjong-app__center-info" />
 
-      <div className="bottom-half">
+      <div className="mahjong-app__bottom-half">
         <PlayerPanel
           {...players[2]}
           onReach={() => handleReach(2)}

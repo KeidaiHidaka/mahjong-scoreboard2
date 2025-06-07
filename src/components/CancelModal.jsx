@@ -1,4 +1,5 @@
 // src/components/CancelModal.jsx
+
 import React from "react";
 import "./CancelModal.css";
 
@@ -9,8 +10,8 @@ function CancelModal({ visible, onConfirm, onCancel }) {
     <div className="modal-backdrop">
       <div className="modal-box">
         <p>リーチを取り消しますか？</p>
-        <button onClick={onConfirm}>はい</button>
-        <button onClick={onCancel}>キャンセル</button>
+        <button className="btn btn--primary" onClick={onConfirm}>はい</button>
+        <button className="btn btn--secondary" onClick={onCancel}>キャンセル</button>
       </div>
     </div>
   );

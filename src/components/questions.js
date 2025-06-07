@@ -1,3 +1,5 @@
+// src/components/questions.js
+
 const questions = {
   Q1: {
     text: "Q1. 七対子（ﾁｰﾄｲﾂ）ですか？",

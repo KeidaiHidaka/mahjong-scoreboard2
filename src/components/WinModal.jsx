@@ -1,7 +1,7 @@
-// WinModal.jsx
+// src/components/WinModal.jsx
 
 import React, { useState, useEffect } from "react";
-import FuCalculatorModal from "./FuCalculatorModal"; // ← 同じディレクトリなので './FuCalculatorModal' 
+import FuCalculatorModal from "./FuCalculatorModal";
 import "./WinModal.css";
 
 const validFuList = [20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110];
@@ -34,7 +34,7 @@ function WinModal({ visible, winnerIndex, players, onSubmit, onCancel, initialMe
       setMethod(initialMethod);
       setLoserIndex(null);
       setError("");
-      setShowFuCalculator(false); // 追加
+      setShowFuCalculator(false);
     }
   }, [visible, initialMethod]);
 
@@ -67,78 +67,106 @@ function WinModal({ visible, winnerIndex, players, onSubmit, onCancel, initialMe
 
   return (
     <div className="modal-backdrop">
-      <div className="modal">
-        <h2>和了入力</h2>
-        <div>
-          <label>翻（1〜13+）</label>
-          <select value={han} onChange={(e) => setHan(Number(e.target.value))}>
-            {Array.from({ length: 12 }, (_, i) => (
-              <option key={i + 1} value={i + 1}>
-                {i + 1}
-              </option>
-            ))}
-            <option value={13}>13+</option>
-          </select>
+      <div className="modal modal--medium win-modal">
+        <div className="modal__header">
+          <h2>和了入力</h2>
         </div>
-        <div>
-          <label>符（満貫以上は不要）</label>
-          <div className="fu-input-section">
-            <select
-              value={fu}
-              onChange={(e) => setFu(Number(e.target.value))}
-              disabled={han >= 5}
-            >
-              {[20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110].map((val) => (
-                <option key={val} value={val}>
-                  {val}
+        
+        <div className="modal__content">
+          <div className="form-group">
+            <label>翻（1〜13+）</label>
+            <select value={han} onChange={(e) => setHan(Number(e.target.value))}>
+              {Array.from({ length: 12 }, (_, i) => (
+                <option key={i + 1} value={i + 1}>
+                  {i + 1}
                 </option>
               ))}
+              <option value={13}>13+</option>
             </select>
-            {han < 5 && (
-              <div>
-              <button 
-                type="button"
-                onClick={() => setShowFuCalculator(true)}
-                className="fu-calculator-button"
+          </div>
+          
+          <div className="form-group">
+            <p></p>
+            <label>符（満貫以上は不要）</label>
+              <select
+                value={fu}
+                onChange={(e) => setFu(Number(e.target.value))}
                 disabled={han >= 5}
               >
-                符計算
-              </button>
-              </div>
-            )}
-          </div>
-        </div>
-        <div>
-          <label>和了方法</label>
-          <select value={method} onChange={(e) => setMethod(e.target.value)}>
-            <option value="ron">ロン</option>
-            <option value="tsumo">ツモ</option>
-          </select>
-        </div>
-        {method === "ron" && (
-          <div>
-            <label>放銃者</label>
-            <select
-              value={loserIndex ?? ""}
-              onChange={(e) => setLoserIndex(Number(e.target.value))}
-            >
-              <option value="" disabled>
-                選択してください
-              </option>
-              {players.map((p, i) =>
-                i !== winnerIndex ? (
-                  <option key={i} value={i}>
-                    {p.name}
+                {[20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110].map((val) => (
+                  <option key={val} value={val}>
+                    {val}
                   </option>
-                ) : null
+                ))}
+              </select>
+              <div >
+              {han < 5 && (
+                <button 
+                  type="button"
+                  onClick={() => setShowFuCalculator(true)}
+                  className="btn btn--light"
+                  disabled={han >= 5}
+                >
+                  符計算
+                </button>
               )}
-            </select>
+              </div>
           </div>
-        )}
-        {error && <p className="error">{error}</p>}
-        <div className="modal-buttons">
-          <button onClick={handleSubmit}>確定</button>
-          <button onClick={onCancel}>キャンセル</button>
+          
+          <div className="form-group">
+            <p></p>
+            <label>和了方法</label>
+            <div className="win-modal__method-options">
+              <label>
+                <input
+                  type="radio"
+                  value="ron"
+                  checked={method === "ron"}
+                  onChange={(e) => setMethod(e.target.value)}
+                />
+                ロン
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="tsumo"
+                  checked={method === "tsumo"}
+                  onChange={(e) => setMethod(e.target.value)}
+                />
+                ツモ
+              </label>
+            </div>
+          </div>
+          
+          {method === "ron" && (
+            <div className="form-group">
+              <label>放銃者</label>
+              <select
+                value={loserIndex ?? ""}
+                onChange={(e) => setLoserIndex(Number(e.target.value))}
+              >
+                <option value="" disabled>
+                  選択してください
+                </option>
+                {players.map((p, i) =>
+                  i !== winnerIndex ? (
+                    <option key={i} value={i}>
+                      {p.name}
+                    </option>
+                  ) : null
+                )}
+              </select>
+            </div>
+          )}
+          
+          {error && <p className="error-message">{error}</p>}
+        </div>
+        
+        <div className="modal__footer">
+          <div className="win-modal__actions">
+            <button className="btn btn--primary" onClick={handleSubmit}>確定</button>
+            <button className="btn btn--secondary" onClick={onCancel}>キャンセル</button>
+          </div>
         </div>
       </div>
 

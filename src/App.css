@@ -1,73 +1,30 @@
-/* src/App.css
 
-/* ライトモード強制 */
+/* ========================================
+   App.css - メインアプリケーション固有スタイル
+   ======================================== */
 
-body {
-  margin: 0;
-  font-family: sans-serif;
-  background-color: #ffffff !important;
-  color: #000000 !important;
-}
-
-.container {
+.mahjong-app {
   display: flex;
   flex-direction: column;
   height: 100vh;
   padding: 12px;
   box-sizing: border-box;
-  background-color: #ffffff !important;
-  color: #000000 !important;
 }
 
-.top-half,
-.bottom-half {
+.mahjong-app__top-half,
+.mahjong-app__bottom-half {
   display: flex;
   justify-content: space-around;
   flex: 1;
-  padding: 0 8px;
+  padding: 0 var(--spacing-sm);
 }
 
-.player-panel {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 8px;
-  width: 45%;
-  text-align: center;
-  background-color: #ffffff !important;
-  color: #000000 !important;
+.mahjong-app__center-info {
+  /* 共通の.panel--centerを継承 */
 }
 
-.player-panel.reversed {
-  transform: rotate(180deg);
-}
-
-.player-name {
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.player-name.dealer {
-  color: red;
-  font-weight: bold;
-}
-
-.player-buttons button {
-  margin: 4px;
-  padding: 4px 8px;
-}
-
-.center-info {
-  text-align: center;
-  padding: 8px;
-  margin: 8px 0;
-  background-color: #eeeeee !important;
-  color: #000000 !important;
-  border-radius: 8px;
-}
-
-.draw-button {
-  margin-top: 4px;
+.mahjong-app__draw-button {
+  margin-top: var(--spacing-xs);
   padding: 6px 12px;
   font-size: 16px;
 }
@@ -76,10 +33,5 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: var(--spacing-sm);
 }
-
-.player-score {
-  font-size: 1.5rem;
-  font-weight: bold;
-} 

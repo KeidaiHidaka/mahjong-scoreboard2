@@ -1,4 +1,5 @@
-// components/TenpaiModal.jsx
+// src/components/TenpaiModal.jsx
+
 import React, { useState, useEffect } from "react";
 import "./TenpaiModal.css";
 
@@ -19,20 +20,24 @@ function TenpaiModal({ visible, players, onConfirm, onCancel }) {
 
   return (
     <div className="modal-backdrop">
-      <div className="modal">
-        <h2>テンパイ者を選択</h2>
-        {players.map((p, i) => (
-          <label key={i}>
-            <input
-              type="checkbox"
-              checked={selectedIndexes.includes(i)}
-              onChange={() => toggleIndex(i)}
-            />
-            {p.name}
-          </label>
-        ))}
-        <button onClick={() => onConfirm(selectedIndexes)}>確定</button>
-        <button onClick={onCancel}>キャンセル</button>
+      <div className="modal modal--small tenpai-modal">
+        <h2 className="tenpai-modal__title">テンパイ者を選択</h2>
+        <div className="tenpai-modal__options">
+          {players.map((p, i) => (
+            <label key={i} className="tenpai-modal__option">
+              <input
+                type="checkbox"
+                checked={selectedIndexes.includes(i)}
+                onChange={() => toggleIndex(i)}
+              />
+              {p.name}
+            </label>
+          ))}
+        </div>
+        <div className="tenpai-modal__actions">
+          <button className="btn btn--primary" onClick={() => onConfirm(selectedIndexes)}>確定</button>
+          <button className="btn btn--secondary" onClick={onCancel}>キャンセル</button>
+        </div>
       </div>
     </div>
   );

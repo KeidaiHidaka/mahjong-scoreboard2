@@ -1,9 +1,9 @@
-// FuCalculatorModal.jsx
+// src/components/FuCalculatorModal.jsx
 
 import { useState, useEffect } from 'react';
-import questions from './questions'; // ← 同じディレクトリなので './questions'
-import Question from './Question';   // ← 同じディレクトリなので './Question'
-import Result from './Result';       // ← 同じディレクトリなので './Result'
+import questions from './questions';
+import Question from './Question';
+import Result from './Result';
 import './FuCalculatorModal.css';
 
 function FuCalculatorModal({ visible, onCalculated, onCancel }) {
@@ -119,44 +119,44 @@ function FuCalculatorModal({ visible, onCalculated, onCancel }) {
 
   return (
     <div className="modal-backdrop">
-      <div className="modal fu-calculator-modal">
-        <div className="modal-header">
+      <div className="modal modal--large fu-calculator-modal">
+        <div className="modal__header">
           <h2>符計算</h2>
-          <button className="close-button" onClick={handleModalCancel}>×</button>
+          <button className="btn btn--close" onClick={handleModalCancel}>×</button>
         </div>
         
-        <div className="modal-content">
+        <div className="modal__content">
           {currentId === "RESULT" ? (
-            <div className="result-container">
+            <div className="fu-calculator__result">
               <Result
                 roundUpPoints={roundUpPoints}
                 history={history}
                 totalPoints={totalPoints}
               />
-              <div className="result-actions">
-                <button onClick={handleBack} className="back-button">← 戻る</button>
+              <div className="fu-calculator__actions">
+                <button onClick={handleBack} className="btn btn--secondary">← 戻る</button>
                 <button 
                   onClick={() => handleConfirm(roundUpPoints)} 
-                  className="confirm-button"
+                  className="btn btn--success"
                 >
                   この符で確定 ({roundUpPoints}符)
                 </button>
               </div>
             </div>
           ) : (
-            <div className="question-container">
+            <div className="fu-calculator__question">
               <Question
                 question={questions[currentId]}
                 onAnswer={handleAnswer}
                 fixImagePath={fixImagePath}
               />
               
-              <div className="navigation">
-                <button onClick={handleBack} className="back-button">← 戻る</button>
+              <div className="fu-calculator__navigation">
+                <button onClick={handleBack} className="btn btn--secondary">← 戻る</button>
               </div>
 
               {history.length > 0 && (
-                <div className="history-section">
+                <div className="fu-calculator__history">
                   <h3>📝 選択履歴：</h3>
                   <ul>
                     {history.map((h, i) => (
@@ -174,8 +174,8 @@ function FuCalculatorModal({ visible, onCalculated, onCancel }) {
           )}
         </div>
 
-        <div className="modal-footer">
-          <button onClick={handleModalCancel} className="cancel-button">
+        <div className="modal__footer">
+          <button onClick={handleModalCancel} className="btn btn--secondary">
             キャンセル
           </button>
         </div>
