@@ -1,277 +1,100 @@
-.modal-backdrop {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  background: rgba(0, 0, 0, 0.5) !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  z-index: 9998 !important;
-}/* 符計算モーダルのスタイル */
+/* ========================================
+   FuCalculatorModal.css - 符計算モーダル固有スタイル
+   ======================================== */
+
 .fu-calculator-modal {
-  width: 95vw !important; /* 画面幅の95%に拡大 */
-  max-width: 1400px !important; /* 最大幅を拡大 */
-  min-width: 800px !important; /* 最小幅を設定 */
-  max-height: 90vh !important; /* 画面高さの90%に拡大 */
-  margin: 0 auto; /* 中央揃え */
-  background: white !important;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  /* 共通の.modal--largeを継承 */
+}
+
+.fu-calculator__question {
   display: flex;
   flex-direction: column;
-  z-index: 9999; /* 最前面に表示 */
+  gap: var(--spacing-lg);
 }
 
-/* モーダルヘッダー */
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid #eee;
-  background-color: #f8f9fa;
-  border-radius: 8px 8px 0 0;
-}
-
-.modal-header h2 {
-  margin: 0;
-  color: #333;
-  font-size: 1.3em;
-}
-
-.close-button {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #999;
-  padding: 0;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.close-button:hover {
-  color: #666;
-  background-color: #f0f0f0;
-  border-radius: 50%;
-}
-
-/* モーダルコンテンツ */
-.modal-content {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto; /* スクロール可能にする */
-}
-
-/* 質問コンテナ */
-.question-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.question-container h2 {
-  color: #333;
+.fu-calculator__question h2 {
+  color: var(--color-text);
   font-size: 1.2em;
   margin-bottom: 15px;
   text-align: center;
 }
 
-/* 選択肢ボタン */
-.question-container button {
-  padding: 12px 20px;
-  margin: 8px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+.fu-calculator__options .btn {
   min-height: 48px;
+  margin: var(--spacing-sm);
 }
 
-.question-container button:hover {
-  background-color: #0056b3;
-}
-
-/* ナビゲーション */
-.navigation {
+.fu-calculator__navigation {
   display: flex;
   justify-content: flex-start;
-  margin-top: 20px;
+  margin-top: var(--spacing-lg);
 }
 
-.back-button {
-  padding: 8px 16px;
-  background-color: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.back-button:hover {
-  background-color: #5a6268;
-}
-
-/* 結果画面の戻るボタンは灰色のまま */
-.result-actions .back-button {
-  padding: 12px 24px;
-  background-color: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.result-actions .back-button:hover {
-  background-color: #5a6268;
-}
-
-/* 履歴セクション */
-.history-section {
-  margin-top: 20px;
+.fu-calculator__history {
+  margin-top: var(--spacing-lg);
   padding: 15px;
-  background-color: #f8f9fa;
-  border-radius: 6px;
-  border: 1px solid #dee2e6;
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-border);
 }
 
-.history-section h3 {
+.fu-calculator__history h3 {
   margin: 0 0 10px 0;
-  color: #495057;
+  color: var(--color-text-muted);
   font-size: 1em;
 }
 
-.history-section ul {
+.fu-calculator__history ul {
   margin: 0;
   padding-left: 20px;
   list-style-type: disc;
 }
 
-.history-section li {
+.fu-calculator__history li {
   margin-bottom: 5px;
   line-height: 1.4;
 }
 
-.point-highlight {
-  color: #dc3545;
-  font-weight: bold;
-  margin-left: 8px;
-}
-
-/* 結果コンテナ */
-.result-container {
+.fu-calculator__result {
   text-align: center;
 }
 
-.result-container h2 {
-  color: #28a745;
+.fu-calculator__result h2 {
+  color: var(--color-success);
   font-size: 1.5em;
   margin-bottom: 10px;
 }
 
-.result-container h4 {
-  color: #6c757d;
-  margin-bottom: 20px;
+.fu-calculator__result h4 {
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-lg);
 }
 
-.result-actions {
+.fu-calculator__actions {
   display: flex;
   justify-content: center;
   gap: 15px;
-  margin-top: 20px;
+  margin-top: var(--spacing-lg);
 }
 
-.confirm-button {
-  padding: 12px 24px;
-  background-color: #28a745 !important;
-  color: white!important;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.confirm-button:hover {
-  background-color: #218838 !important;
-}
-
-/* モーダルフッター */
-.modal-footer {
-  padding: 16px 20px;
-  border-top: 1px solid #eee;
-  background-color: #f8f9fa;
-  border-radius: 0 0 8px 8px;
-  text-align: center;
-}
-
-.cancel-button {
-  padding: 10px 20px;
-  background-color: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.cancel-button:hover {
-  background-color: #5a6268;
-}
-
-/* 画像スタイル - FuCalculatorModal内での画像表示を改善 */
-.question-container img,
-.result-container img {
-  max-width: 100%;
-  height: auto;
-  margin: 10px auto;
-  display: block;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* 画像を含む質問項目のスタイル */
-.question-item-with-image {
+/* 画像表示スタイル */
+.fu-calculator__image-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
 }
 
-.question-item-with-image img {
+.fu-calculator__image {
   max-width: 200px;
   max-height: 150px;
   object-fit: contain;
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--box-shadow);
 }
 
-/* レスポンシブ対応 */
 @media (max-width: 768px) {
-  .fu-calculator-modal {
-    width: 98vw !important; /* モバイルでさらに拡大 */
-    max-height: 95vh !important;
-    min-width: unset !important; /* モバイルでは最小幅を無効化 */
-  }
-  
-  .modal-content {
-    padding: 15px;
-  }
-  
-  .question-container button {
-    font-size: 14px;
-    padding: 10px 16px;
-    margin: 6px;
-  }
-  
-  .question-item-with-image img {
+  .fu-calculator__image {
     max-width: 150px;
     max-height: 100px;
   }
