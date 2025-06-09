@@ -1,8 +1,9 @@
-// src/components/WinModal.jsx
+// src/components/ModalWin.jsx
 
 import React, { useState, useEffect } from "react";
-import FuCalculatorModal from "./FuCalculatorModal";
-import "./WinModal.css";
+import ModalFuCalculator from "./ModalFuCalculator";
+import "./styles/modals.css";
+import "./styles/ModalWin.css";
 
 const validFuList = [20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110];
 
@@ -17,7 +18,7 @@ function isValidHanFu(han, fu) {
   return !invalidCombinations.some(([h, f]) => h === han && f === fu);
 }
 
-function WinModal({ visible, winnerIndex, players, onSubmit, onCancel, initialMethod = "ron"}) {
+function ModalWin({ visible, winnerIndex, players, onSubmit, onCancel, initialMethod = "ron"}) {
   const [han, setHan] = useState(3);
   const [fu, setFu] = useState(30);
   const [method, setMethod] = useState(initialMethod);
@@ -171,7 +172,7 @@ function WinModal({ visible, winnerIndex, players, onSubmit, onCancel, initialMe
       </div>
 
       {/* 符計算モーダル */}
-      <FuCalculatorModal
+      <ModalFuCalculator
         visible={showFuCalculator}
         onCalculated={handleFuCalculated}
         onCancel={handleFuCalculatorCancel}
@@ -180,4 +181,4 @@ function WinModal({ visible, winnerIndex, players, onSubmit, onCancel, initialMe
   );
 }
 
-export default WinModal;
+export default ModalWin;

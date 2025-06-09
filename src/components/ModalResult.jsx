@@ -1,9 +1,10 @@
-// src/components/ResultModal.jsx
+// src/components/ModalResult.jsx
 
 import React from "react";
-import "./ResultModal.css";
+import "./styles/modals.css";
+import "./styles/ModalResult.css";
 
-function ResultModal({ visible, result, players, onClose }) {
+function ModalResult({ visible, result, players, onClose }) {
   if (!visible || !result) return null;
 
   const dealerName = players.find((p) => p.isDealer)?.name ?? "不明";
@@ -55,4 +56,4 @@ function ResultModal({ visible, result, players, onClose }) {
   );
 }
 
-export default ResultModal;
+export default ModalResult;

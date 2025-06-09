@@ -1,0 +1,88 @@
+/* ========================================
+   center-info.css - センター情報
+   ======================================== */
+
+.center-info {
+  text-align: center;
+}
+
+.round-info {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--color-white);
+  margin-bottom: var(--spacing-lg);
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.2);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  border: 2px solid var(--color-accent);
+}
+
+.reach-sticks {
+  font-size: 16px;
+  color: var(--color-gold);
+  margin-bottom: var(--spacing-xl);
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.center-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.mahjong-app__draw-button {
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: 18px;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff8c42, var(--color-warning));
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-md);
+}
+
+.mahjong-app__draw-button:hover {
+  background: linear-gradient(135deg, var(--color-warning), #e55a2b);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.mahjong-app__draw-button:active {
+  transform: translateY(0);
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+  .round-info {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .round-info {
+    font-size: 18px;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .mahjong-app__draw-button {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: 16px;
+  }
+}
+
+@media (max-height: 600px) {
+  .round-info {
+    font-size: 16px;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .mahjong-app__draw-button {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: 16px;
+  }
+}

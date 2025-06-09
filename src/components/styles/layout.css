@@ -1,0 +1,82 @@
+/* ========================================
+   layout.css - メインレイアウト
+   ======================================== */
+
+.mahjong-app {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f4c3a, #1a5c42);
+  display: grid;
+  grid-template-areas: 
+    ". top-player ."
+    "left-player center-info right-player"
+    ". bottom-player .";
+  grid-template-rows: 1fr 2fr 1fr;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  box-sizing: border-box;
+}
+
+/* 各エリアの配置 */
+.mahjong-app__top-half {
+  grid-area: top-player;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mahjong-app__bottom-half {
+  grid-area: bottom-player;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mahjong-app__center-info {
+  grid-area: center-info;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-xl);
+  border: 3px solid var(--color-accent);
+  padding: var(--spacing-xl);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-lg);
+  z-index: 10;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+  .mahjong-app {
+    grid-template-rows: 1fr 1.5fr 1fr;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+  }
+  
+  .mahjong-app__center-info {
+    padding: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .mahjong-app {
+    grid-template-rows: 80px 1fr 80px;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs);
+  }
+}
+
+@media (max-height: 600px) {
+  .mahjong-app {
+    grid-template-rows: 60px 1fr 60px;
+  }
+  
+  .mahjong-app__center-info {
+    padding: var(--spacing-md);
+  }
+}

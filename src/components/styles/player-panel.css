@@ -1,0 +1,153 @@
+/* ========================================
+   player-panel.css - プレイヤーパネル
+   ======================================== */
+
+.player-panel {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border: 2px solid var(--color-accent);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  color: var(--color-white);
+  box-shadow: var(--shadow-lg);
+  transition: all 0.3s ease;
+  min-width: 140px;
+  max-width: 200px;
+  text-align: center;
+  position: relative;
+}
+
+.player-panel:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-xl);
+  border-color: #66cc99;
+}
+
+/* プレイヤー配置 */
+.player-panel.panel--reversed {
+  transform: rotate(180deg);
+}
+
+.player-panel--left {
+  transform: rotate(-90deg);
+  transform-origin: center;
+  align-self: center;
+  justify-self: center;
+}
+
+.player-panel--right {
+  transform: rotate(90deg);
+  transform-origin: center;
+  align-self: center;
+  justify-self: center;
+}
+
+/* リーチ状態 */
+.player-panel.panel--reached {
+  border-color: var(--color-danger);
+  background: linear-gradient(135deg, #d32f2f, #c62828);
+  animation: reachGlow 2s infinite;
+}
+
+@keyframes reachGlow {
+  0%, 100% { 
+    box-shadow: var(--shadow-lg), 0 0 20px rgba(255, 23, 68, 0.3);
+  }
+  50% { 
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(255, 23, 68, 0.6);
+  }
+}
+
+/* プレイヤー情報 */
+.player-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.player-panel__name {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-white);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.player-panel__name:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.player-panel__name--dealer {
+  background: linear-gradient(45deg, var(--color-warning), #ff8c42);
+  color: var(--color-white);
+  border-radius: var(--border-radius-sm);
+  padding: 6px var(--spacing-md);
+  position: relative;
+}
+
+.player-panel__name--dealer::before {
+  content: "親";
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--color-danger);
+  color: var(--color-white);
+  font-size: 10px;
+  padding: 2px 4px;
+  border-radius: 50%;
+  line-height: 1;
+}
+
+.player-panel__score {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--color-gold);
+  margin-bottom: var(--spacing-sm);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.2);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+}
+
+/* プレイヤーボタン */
+.player-panel__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+  .player-panel {
+    min-width: 120px;
+    padding: var(--spacing-md);
+  }
+  
+  .player-panel__name {
+    font-size: 14px;
+  }
+  
+  .player-panel__score {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .player-panel {
+    min-width: 100px;
+    padding: var(--spacing-sm);
+  }
+  
+  .player-panel__name {
+    font-size: 12px;
+  }
+  
+  .player-panel__score {
+    font-size: 16px;
+  }
+}

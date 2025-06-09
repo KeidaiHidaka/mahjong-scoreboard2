@@ -1,9 +1,10 @@
-// src/components/TenpaiModal.jsx
+// src/components/ModalTenpai.jsx
 
 import React, { useState, useEffect } from "react";
-import "./TenpaiModal.css";
+import "./styles/modals.css";
+import "./styles/ModalTenpai.css";
 
-function TenpaiModal({ visible, players, onConfirm, onCancel }) {
+function ModalTenpai({ visible, players, onConfirm, onCancel }) {
   const [selectedIndexes, setSelectedIndexes] = useState([]);
 
   useEffect(() => {
@@ -43,4 +44,4 @@ function TenpaiModal({ visible, players, onConfirm, onCancel }) {
   );
 }
 
-export default TenpaiModal;
+export default ModalTenpai;

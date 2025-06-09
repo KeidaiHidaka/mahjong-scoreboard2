@@ -1,0 +1,352 @@
+/* ========================================
+   modals.css - モーダル共通スタイル
+   ======================================== */
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border: 3px solid var(--color-accent);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xxl);
+  color: var(--color-white);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  animation: slideIn 0.3s ease;
+  position: relative;
+}
+
+@keyframes slideIn {
+  from { 
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to { 
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal__header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.modal__title {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--color-white);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  margin-bottom: var(--spacing-lg);
+}
+
+.modal__content {
+  margin-bottom: var(--spacing-xl);
+}
+
+.modal__actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.modal__close {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  background: none;
+  border: none;
+  color: var(--color-white);
+  font-size: 24px;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-sm);
+  transition: background-color 0.2s;
+}
+
+.modal__close:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* フォーム要素 */
+.form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-weight: bold;
+  color: var(--color-white);
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #66cc99;
+  box-shadow: 0 0 0 2px rgba(102, 204, 153, 0.2);
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.form-select option {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* チェックボックス・ラジオボタン */
+.form-checkbox,
+.form-radio {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  cursor: pointer;
+}
+
+.form-checkbox input,
+.form-radio input {
+  margin: 0;
+  transform: scale(1.2);
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 480px) {
+  .modal {
+    padding: var(--spacing-lg);
+    margin: var(--spacing-md);
+  }
+  
+  .modal__title {
+    font-size: 20px;
+  }
+  
+  .modal__actions {
+    flex-direction: column;
+  }
+}
+
+
+
+/* src/components/ModalCancel.css */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-box {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+}
+.modal-box button {
+  margin: 8px;
+  padding: 8px 16px;
+}
+
+
+/* ========================================
+   ModalFuCalculator.css - 符計算モーダル固有スタイル
+   ======================================== */
+
+.fu-calculator-modal {
+  /* 共通の.modal--largeを継承 */
+}
+
+.fu-calculator__question {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.fu-calculator__question h2 {
+  color: var(--color-text);
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.fu-calculator__options .btn {
+  min-height: 48px;
+  margin: var(--spacing-sm);
+}
+
+.fu-calculator__navigation {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: var(--spacing-lg);
+}
+
+.fu-calculator__history {
+  margin-top: var(--spacing-lg);
+  padding: 15px;
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+.fu-calculator__history h3 {
+  margin: 0 0 10px 0;
+  color: var(--color-text-muted);
+  font-size: 1em;
+}
+
+.fu-calculator__history ul {
+  margin: 0;
+  padding-left: 20px;
+  list-style-type: disc;
+}
+
+.fu-calculator__history li {
+  margin-bottom: 5px;
+  line-height: 1.4;
+}
+
+.fu-calculator__result {
+  text-align: center;
+}
+
+.fu-calculator__result h2 {
+  color: var(--color-success);
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.fu-calculator__result h4 {
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-lg);
+}
+
+.fu-calculator__actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: var(--spacing-lg);
+}
+
+/* 画像表示スタイル */
+.fu-calculator__image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.fu-calculator__image {
+  max-width: 200px;
+  max-height: 150px;
+  object-fit: contain;
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--box-shadow);
+}
+
+@media (max-width: 768px) {
+  .fu-calculator__image {
+    max-width: 150px;
+    max-height: 100px;
+  }
+}
+
+
+
+/* ========================================
+   ModalTenpai.css - テンパイモーダル固有スタイル
+   ======================================== */
+
+.tenpai-modal {
+  /* 共通の.modal--smallを継承 */
+  max-width: 300px;
+}
+
+.tenpai-modal__title {
+  margin-bottom: var(--spacing-md);
+}
+
+.tenpai-modal__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.tenpai-modal__option {
+  display: block;
+  margin: 0.5rem 0;
+  text-align: left;
+}
+
+.tenpai-modal__actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  margin-top: var(--spacing-md);
+}
+
+
+
+/* ========================================
+   ModalResult.css - テンパイモーダル固有スタイル
+   ======================================== */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}

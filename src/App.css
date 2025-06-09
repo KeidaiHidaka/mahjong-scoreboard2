@@ -1,37 +1,26 @@
-
 /* ========================================
-   App.css - メインアプリケーション固有スタイル
+   App.css - メインアプリケーションのスタイル
    ======================================== */
 
+/* 全ての基本スタイルをインポート */
+@import './components/styles/globals.css';
+@import './components/styles/layout.css';
+@import './components/styles/player-panel.css';
+@import './components/styles/center-info.css';
+@import './components/styles/buttons.css';
+@import './components/styles/modals.css';
+
+
+/* アプリ固有の追加スタイル */
 .mahjong-app {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  padding: 12px;
-  box-sizing: border-box;
+  /* layout.cssで定義済み */
 }
 
-.mahjong-app__top-half,
-.mahjong-app__bottom-half {
-  display: flex;
-  justify-content: space-around;
-  flex: 1;
-  padding: 0 var(--spacing-sm);
+/* 特別な配置調整 */
+.player-panel--left {
+  grid-area: left-player;
 }
 
-.mahjong-app__center-info {
-  /* 共通の.panel--centerを継承 */
-}
-
-.mahjong-app__draw-button {
-  margin-top: var(--spacing-xs);
-  padding: 6px 12px;
-  font-size: 16px;
-}
-
-.player-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: var(--spacing-sm);
+.player-panel--right {
+  grid-area: right-player;
 }
