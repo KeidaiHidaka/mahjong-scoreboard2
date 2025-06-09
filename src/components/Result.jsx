@@ -1,4 +1,5 @@
-// Result.jsx
+// src/components/Result.jsx
+
 import questions from './questions'; // ← 同じディレクトリなので './questions'
 
 function Result({ roundUpPoints, history, totalPoints }) {

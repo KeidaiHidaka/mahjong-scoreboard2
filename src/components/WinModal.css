@@ -1,151 +1,182 @@
-/* src/components/WinModal.css */
-.modal-backdrop {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  background: rgba(0, 0, 0, 0.5) !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  z-index: 9998 !important;
-}
+/* ========================================
+   WinModal.css - 勝利モーダル固有スタイル
+   ======================================== */
 
-.modal-box {
-  background: #ffffff !important;
-  color: #000000 !important;
-  padding: 16px;
-  border-radius: 8px;
-  text-align: center;
-  width: 90vw !important; /* 画面幅の90%に拡大 */
-  max-width: 800px !important; /* 最大幅を設定 */
-  min-width: 600px !important; /* 最小幅も設定 */
-}
-
-.modal-box input,
-.modal-box select {
-  margin: 8px;
-  padding: 4px 8px;
-  width: 200px; /* 固定幅に変更 */
-  max-width: 80%; /* 最大幅も設定 */
-  background-color: #ffffff !important;
-  color: #000000 !important;
-  border: 1px solid #ccc;
-}
-
-.modal-box button {
-  margin: 8px;
-  padding: 8px 16px;
-  background-color: #f0f0f0;
-  color: #000000 !important;
-  border: 1px solid #ccc;
-  cursor: pointer;
-}
-
-.modal-box label {
-  display: block;
-  margin: 8px 0;
-  text-align: left;
-  color: #000000 !important;
-}
-
-.method-options {
-  display: flex;
-  gap: 1.5rem;
-  margin: 1rem 0;
-}
-
-.method-options label {
-  display: flex;
-  align-items: center;
-  font-size: 1rem;
-  cursor: pointer;
-  color: #000000 !important;
-}
-
-.method-options input[type="radio"] {
-  margin-right: 0.4rem;
-}
-
-/* Overlay */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Modal content */
 .win-modal {
-  background: #ffffff !important;
-  color: #000000 !important;
-  padding: 20px;
-  border-radius: 10px;
-  width: 90vw !important; /* 画面幅の90%に拡大 */
-  max-width: 800px !important; /* 最大幅を設定 */
-  min-width: 600px !important; /* 最小幅も設定 */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  /* 共通の.modal--mediumを継承 */
 }
 
-.centered-field {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 10px;
+.win-modal .form-group {
+  margin-bottom: var(--spacing-lg);
 }
 
-.centered-field label {
-  margin-bottom: 4px;
-  text-align: center;
-  color: #000000 !important;
+.win-modal .form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-text);
+  font-size: 1rem;
 }
 
-.centered-field select {
-  width: 120px; /* 符選択用に適切な幅 */
-  text-align: center;
-  margin: 0 auto;
-  background-color: #ffffff !important;
-  color: #000000 !important;
-  border: 1px solid #ccc;
+.win-modal .form-group select {
+  width: 12.5%; /* 8分の1 */
+  min-width: 80px; /* 最小幅を設定して小さすぎるのを防止 */
+  padding: var(--spacing-sm);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
 }
 
-.modal-buttons {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 15px;
+.win-modal .form-group select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-/* 符入力セクションのスタイル */
-.fu-input-section {
-  display: flex;
-  flex-direction: column; /* 縦並びにする */
-  gap: 8px; /* 要素間の間隔 */
+.win-modal .form-group select:disabled {
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
 }
 
 /* 符計算ボタンのスタイル */
-.fu-calculator-button {
-  padding: 6px 12px; /* 小さめのパディング */
-  font-size: 12px; /* 小さめのフォントサイズ */
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
+.win-modal .form-group > div {
+  margin-top: var(--spacing-sm);
+}
+
+.win-modal .btn--light {
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  color: var(--color-text);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
   cursor: pointer;
-  width: fit-content; /* ボタンの幅を内容に合わせる */
-  align-self: flex-start; /* 左寄せ */
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
 }
 
-.fu-calculator-button:hover {
-  background-color: #45a049;
+.win-modal .btn--light:hover:not(:disabled) {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
 }
 
-.fu-calculator-button:disabled {
-  background-color: #cccccc;
+.win-modal .btn--light:disabled {
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  border-color: var(--color-border-light);
   cursor: not-allowed;
+}
+
+/* ラジオボタンのスタイル */
+.win-modal__method-options {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-sm);
+}
+
+.win-modal__method-options label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: normal;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.win-modal__method-options input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+/* アクションボタンのスタイル */
+.win-modal__actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.win-modal__actions .btn {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  min-width: 100px;
+}
+
+.win-modal__actions .btn--primary {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.win-modal__actions .btn--primary:hover {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.win-modal__actions .btn--secondary {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.win-modal__actions .btn--secondary:hover {
+  background-color: var(--color-border-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 放銃者選択のセレクトボックスのみ横幅を広く */
+.win-modal .form-group select[data-loser-select],
+.win-modal .form-group select:has(option[value=""]:disabled) {
+  width: 75%; /* 25% × 3 = 75% */
+  min-width: 200px;
+}
+.win-modal .error-message {
+  color: var(--color-danger);
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius);
+  margin-top: var(--spacing-md);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .win-modal .form-group select {
+    width: 25%; /* スマホでは少し大きく */
+    min-width: 70px;
+  }
+  
+  .win-modal__method-options {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .win-modal__actions {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .win-modal__actions .btn {
+    width: 100%;
+  }
+  
+  .win-modal .form-group {
+    margin-bottom: var(--spacing-md);
+  }
 }

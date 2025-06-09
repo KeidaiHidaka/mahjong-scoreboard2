@@ -1,19 +1,16 @@
+// src/components/ResultModal.jsx
+
 import React from "react";
 import "./ResultModal.css";
 
 function ResultModal({ visible, result, players, onClose }) {
   if (!visible || !result) return null;
-  // console.log("players in ResultModal:", players);
-  // console.log("players in ResultModal:", players);
-  // players.forEach((p, i) => {
-  //   console.log(`Player ${i}:`, p.name, "isDealer:", p.isDealer);
-  // });
 
   const dealerName = players.find((p) => p.isDealer)?.name ?? "不明";
 
   return (
     <div className="modal-backdrop">
-      <div className="modal">
+      <div className="modal modal--small">
         <h2>{
           result.method === "ryukyoku"
                 ? "流局結果"
@@ -40,7 +37,6 @@ function ResultModal({ visible, result, players, onClose }) {
           <p>{result.han}翻 {result.fu}符</p>
         )}
 
-
         <ul>
           {result.details.map((item, idx) => (
             <li key={idx}>
@@ -53,7 +49,7 @@ function ResultModal({ visible, result, players, onClose }) {
         </ul>
         {result.reachBonus > 0 && <p>リーチ棒: +{result.reachBonus}点</p>}
         <p>合計得点: +{result.totalGain}点</p>
-        <button onClick={onClose}>OK</button>
+        <button className="btn btn--primary" onClick={onClose}>OK</button>
       </div>
     </div>
   );
