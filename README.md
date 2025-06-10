@@ -1,12 +1,14 @@
-# React + Vite
+# 使い方
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+以下リンクにスマホでアクセスし、雀卓の真ん中に置く<br>
+https://keidaihidaka.github.io/mahjong-scoreboard2/
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+※URLの末尾にパラメーターを渡すと色々指定できる、以下URL例　(?を最初につけて、複数指定するときは&で繋ぐ)<br>
+https://keidaihidaka.github.io/mahjong-scoreboard2/?player1=タナカ&player2=ヤマダ&player3=サトウ&player4=スズキ&dealerIndex=1
 
-## Expanding the ESLint configuration
+- player1～4：1が画面下で他は反時計回り　初期値：プレイヤー1～4
+- dealerIndex；0がplayer1で他は反時計回り 初期値：ランダム
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
