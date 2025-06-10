@@ -106,7 +106,7 @@
 }
 
 .player-panel__name {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   margin-bottom: var(--spacing-sm);
   color: var(--color-white);
@@ -136,14 +136,14 @@
   right: -8px;
   background: var(--color-danger);
   color: var(--color-white);
-  font-size: 10px;
+  font-size: 15px;
   padding: 2px 4px;
   border-radius: 50%;
   line-height: 1;
 }
 
 .player-panel__score {
-  font-size: 20px;
+  font-size: 23px;
   font-weight: bold;
   color: var(--color-gold);
   margin-bottom: var(--spacing-sm);
@@ -177,11 +177,11 @@
   }
   
   .player-panel__name {
-    font-size: 14px;
+    font-size: 18px;
   }
   
   .player-panel__score {
-    font-size: 18px;
+    font-size: 23px;
   }
 }
 

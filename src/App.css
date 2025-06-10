@@ -9,6 +9,7 @@
 @import './components/styles/center-info.css';
 @import './components/styles/buttons.css';
 @import './components/styles/modals.css';
+@import './components/styles/forms.css';
 
 /* アプリ固有の追加スタイル */
 .mahjong-app {

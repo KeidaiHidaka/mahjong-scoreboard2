@@ -88,7 +88,7 @@
 @media (max-width: 480px) {
   .btn {
     padding: 6px var(--spacing-md);
-    font-size: 12px;
+    font-size: 15px;
     min-width: 70px;
   }
 }
