@@ -27,40 +27,36 @@
   transform: rotate(180deg) !important;
 }
 
-/* 左右のプレイヤーパネルは横長にして、確実に中央配置 */
+/* 左右のプレイヤーパネル - 大幅に簡素化 */
 .player-panel.player-panel--left,
 .player-panel.player-panel--right {
-  min-width: 320px;
-  max-width: 320px;
-  height: 100px;
-  padding: var(--spacing-md) var(--spacing-lg);
+  width: 100px; /* 固定幅 */
+  height: 300px; /* 固定高さ */
+  padding: var(--spacing-md);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* 中央配置を確実にする */
-  margin: auto;
-  align-self: center;
-  justify-self: center;
+  margin: 0; /* マージンを削除 */
 }
 
-/* 左右のプレイヤーパネル内のプレイヤー情報を横並びに */
+/* 左右のプレイヤーパネル内のプレイヤー情報を縦並びに戻す */
 .player-panel.player-panel--left .player-info,
 .player-panel.player-panel--right .player-info {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   margin-bottom: var(--spacing-sm);
 }
 
-/* 左右のプレイヤーパネルのボタンを横並びに */
+/* 左右のプレイヤーパネルのボタンを縦並びに戻す */
 .player-panel.player-panel--left .player-panel__buttons,
 .player-panel.player-panel--right .player-panel__buttons {
   display: flex;
-  flex-direction: row;
-  gap: var(--spacing-sm);
+  flex-direction: column;
+  gap: var(--spacing-xs);
   align-items: center;
   justify-content: center;
 }
@@ -119,12 +115,6 @@
   transition: background-color 0.2s;
 }
 
-/* 左右のプレイヤーパネルではプレイヤー名のmargin-bottomを削除 */
-.player-panel.player-panel--left .player-panel__name,
-.player-panel.player-panel--right .player-panel__name {
-  margin-bottom: 0;
-}
-
 .player-panel__name:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
@@ -161,12 +151,6 @@
   border-radius: var(--border-radius-sm);
 }
 
-/* 左右のプレイヤーパネルでは得点のmargin-bottomを削除 */
-.player-panel.player-panel--left .player-panel__score,
-.player-panel.player-panel--right .player-panel__score {
-  margin-bottom: 0;
-}
-
 /* プレイヤーボタン */
 .player-panel__buttons {
   display: flex;
@@ -178,25 +162,16 @@
 /* レスポンシブ調整 */
 @media (max-width: 768px) {
   .player-panel {
-    min-width: 100px;
+    min-width: 120px;
     padding: var(--spacing-md);
   }
   
-  /* 左右のプレイヤーパネルを横長に調整 */
+  /* 左右のプレイヤーパネル */
   .player-panel.player-panel--left,
   .player-panel.player-panel--right {
-    min-width: 320px;
-    max-width: 320px;
-    height: 120px;
-    padding: var(--spacing-sm) var(--spacing-md);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    /* タブレットでも中央配置を維持 */
-    margin: auto;
-    align-self: center;
-    justify-self: center;
+    width: 90px;
+    height: 250px;
+    padding: var(--spacing-sm);
   }
   
   .player-panel__name {
@@ -212,40 +187,30 @@
   .player-panel {
     min-width: 100px;
     padding: var(--spacing-sm);
-    /* 通常の上下パネルをよりコンパクトに */
     max-height: 120px;
     overflow: hidden;
   }
   
-  /* スマホでは左右のプレイヤーパネルをコンパクトに */
+  /* スマホでは左右のプレイヤーパネルをさらにコンパクトに */
   .player-panel.player-panel--left,
   .player-panel.player-panel--right {
-    min-width: 100px; /* より小さく */
-    max-width: 130px; /* より小さく */
-    height: 80px; /* より低く */
-    padding: var(--spacing-xs) var(--spacing-sm);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    /* スマホでも中央配置を維持 */
-    margin: auto;
-    align-self: center;
-    justify-self: center;
+    width: 70px;
+    height: 200px;
+    padding: var(--spacing-xs);
   }
   
   .player-panel__name {
-    font-size: 11px; /* さらに小さく */
+    font-size: 11px;
     margin-bottom: 2px;
   }
   
   .player-panel__score {
-    font-size: 14px; /* さらに小さく */
+    font-size: 14px;
     margin-bottom: 2px;
   }
   
   .player-panel__buttons {
-    gap: 2px; /* ボタン間隔を狭く */
+    gap: 2px;
   }
   
   /* ボタンもコンパクトに */
@@ -253,10 +218,33 @@
     font-size: 10px;
     padding: 2px 6px;
   }
+}
+
+@media (max-height: 600px) {
+  .player-panel.player-panel--left,
+  .player-panel.player-panel--right {
+    height: 180px;
+  }
+}
+
+@media (max-width: 380px) {
+  .player-panel.player-panel--left,
+  .player-panel.player-panel--right {
+    width: 45px;
+    height: 150px;
+    padding: 2px;
+  }
   
-  /* スマホサイズでも左右のプレイヤーパネルの横並びレイアウトを維持 */
-  .player-panel.player-panel--left .player-panel__buttons,
-  .player-panel.player-panel--right .player-panel__buttons {
-    gap: 2px;
+  .player-panel__name {
+    font-size: 9px;
+  }
+  
+  .player-panel__score {
+    font-size: 10px;
+  }
+  
+  .player-panel .btn {
+    font-size: 8px;
+    padding: 1px 3px;
   }
 }
