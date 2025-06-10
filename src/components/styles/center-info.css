@@ -38,6 +38,29 @@
   align-items: center;
 }
 
+.mahjong-app__haipai-button {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: 16px;
+  font-weight: bold;
+  background: linear-gradient(135deg, var(--color-primary), #4a90e2);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-md);
+}
+
+.mahjong-app__haipai-button:hover {
+  background: linear-gradient(135deg, #4a90e2, var(--color-primary));
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.mahjong-app__haipai-button:active {
+  transform: translateY(0);
+}
+
 .mahjong-app__draw-button {
   padding: var(--spacing-md) var(--spacing-xl);
   font-size: 18px;

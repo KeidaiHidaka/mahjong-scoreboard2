@@ -11,9 +11,13 @@ import ModalWin from './components/ModalWin'
 import ModalTenpai from './components/ModalTenpai'
 import ModalResult from './components/ModalResult'
 import ModalCancel from './components/ModalCancel'
+import ModalHaipai from './components/ModalHaipai'
+
 import scoreTable  from './scoreTable'
 
 import './App.css'
+
+const winds = ["東", "南", "西", "北"];
 
 function calculateScore({ han, fu, isDealer, isTsumo }) {
   
@@ -129,6 +133,15 @@ function calculateScore({ han, fu, isDealer, isTsumo }) {
   }
 }
 
+// 配牌開始列を計算する関数を追加（calculateScore関数の後に）
+const generateHaipaiStart = () => {
+  // const winds = ["東", "南", "西", "北"];
+  const randomWind = winds[Math.floor(Math.random() * winds.length)];
+  const randomColumn = Math.floor(Math.random() * 11) + 2; // 2-12の範囲
+  return `${randomWind}家の右から${randomColumn}列`;
+};
+
+
 function App() {
   const [initialMethod, setInitialMethod] = useState("ron");
   const params = new URLSearchParams(window.location.search);
@@ -161,7 +174,17 @@ function App() {
   const [showModalTenpai, setShowModalTenpai] = useState(false);
   const [tenpaiIndexes, setTenpaiIndexes] = useState([]);
 
-  const winds = ["東", "南", "西", "北"];
+  
+  const [showModalHaipai, setShowModalHaipai] = useState(false);
+
+  // 配牌開始列ボタンのハンドラーを追加
+  const handleHaipai = () => {
+    setShowModalHaipai(true);
+  };
+
+  const handleHaipaiClose = () => {
+    setShowModalHaipai(false);
+  };
 
   // 自風を計算する関数
   const getPlayerWind = (playerIndex) => {
@@ -439,6 +462,7 @@ function App() {
         round={round} 
         reachSticks={reachSticks} 
         onDraw={handleDraw} 
+        onHaipai={handleHaipai}
         className="center-info" 
       />
 
@@ -500,6 +524,13 @@ function App() {
         onConfirm={handleTenpaiConfirm}
         onCancel={handleTenpaiCancel}
       />
+
+      <ModalHaipai
+        visible={showModalHaipai}
+        onClose={handleHaipaiClose}
+        generateStart={generateHaipaiStart}
+      />
+
     </div>
   );
 }
