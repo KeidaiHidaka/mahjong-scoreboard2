@@ -18,16 +18,18 @@ function ModalResult({ visible, result, players, onClose }) {
                   : "和了結果"
           }</h2>
           
-          <p>
-            <span className="modal-result__info-label">和了者:</span>
+          <span>
+            <span className="modal-result__info-label">和了者：</span>
             <span className="modal-result__info-value">{result.winner}</span>
-          </p>
-          <p>
-            <span className="modal-result__info-label">親:</span>
+          </span>
+          <p></p>
+          <span>
+            <span className="modal-result__info-label">親：</span>
             <span className="modal-result__info-value">{dealerName}</span>
-          </p>
-          <p>
-            <span className="modal-result__info-label">形式:</span>
+          </span>
+          <p></p>
+          <span>
+            <span className="modal-result__info-label">形式：</span>
             <span className="modal-result__info-value">{
               result.method === "ron"
                 ? "ロン"
@@ -37,7 +39,7 @@ function ModalResult({ visible, result, players, onClose }) {
                     ? "流局"
                     : ""
             }</span>
-          </p>
+          </span>
         </div>
 
         <div className="modal-result__score">
