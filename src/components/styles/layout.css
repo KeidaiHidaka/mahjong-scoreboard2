@@ -50,6 +50,21 @@
   z-index: 10;
 }
 
+/* 左右プレイヤーの直接配置 */
+.mahjong-app > .player-panel--left {
+  grid-area: left-player;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mahjong-app > .player-panel--right {
+  grid-area: right-player;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* レスポンシブ調整 */
 @media (max-width: 768px) {
   .mahjong-app {

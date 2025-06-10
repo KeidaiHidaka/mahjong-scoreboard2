@@ -10,13 +10,12 @@
 @import './components/styles/buttons.css';
 @import './components/styles/modals.css';
 
-
 /* アプリ固有の追加スタイル */
 .mahjong-app {
   /* layout.cssで定義済み */
 }
 
-/* 特別な配置調整 */
+/* 削除：grid-areaはlayout.cssで直接指定するように変更
 .player-panel--left {
   grid-area: left-player;
 }
@@ -24,3 +23,4 @@
 .player-panel--right {
   grid-area: right-player;
 }
+*/

@@ -22,23 +22,28 @@
   border-color: #66cc99;
 }
 
-/* プレイヤー配置 */
+/* プレイヤー配置 - transform優先度を上げる */
 .player-panel.panel--reversed {
-  transform: rotate(180deg);
+  transform: rotate(180deg) !important;
 }
 
-.player-panel--left {
-  transform: rotate(-90deg);
-  transform-origin: center;
-  align-self: center;
-  justify-self: center;
+.player-panel.player-panel--left {
+  transform: rotate(90deg) !important;
+  transform-origin: center !important;
+  /* ホバー時の拡大は回転と競合するため無効化 */
 }
 
-.player-panel--right {
-  transform: rotate(90deg);
-  transform-origin: center;
-  align-self: center;
-  justify-self: center;
+.player-panel.player-panel--left:hover {
+  transform: rotate(90deg) scale(1.05) !important;
+}
+
+.player-panel.player-panel--right {
+  transform: rotate(-90deg) !important;
+  transform-origin: center !important;
+}
+
+.player-panel.player-panel--right:hover {
+  transform: rotate(-90deg) scale(1.05) !important;
 }
 
 /* リーチ状態 */

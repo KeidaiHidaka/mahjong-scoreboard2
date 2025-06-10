@@ -2,12 +2,12 @@
 
 import React from "react";
 
-function CenterInfo({ round, reachSticks = 0, onDraw }) {
+function CenterInfo({ round, reachSticks = 0, onDraw, className }) {
   const wind = round?.wind ?? "東";
   const number = round?.number ?? 1;
 
   return (
-    <div className="panel panel--center">
+    <div className={`panel panel--center ${className || ''}`}>
       <div className="round">
         {wind}{number}局
       </div>

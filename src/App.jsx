@@ -438,13 +438,13 @@ function App() {
 
       {/* 左側プレイヤー（左向き） */}
       <PlayerPanel
-        {...players[1]}
+        {...players[3]}
         className="player-panel player-panel--left"
-        onReach={() => handleReach(1)}
-        onRequestCancel={() => handleRequestCancel(1)}
-        onWin={(method) => handleWin(1, method)}
-        isDealer={round.dealerIndex === 1}
-        onNameChange={(newName) => handleNameChange(1, newName)}
+        onReach={() => handleReach(3)}
+        onRequestCancel={() => handleRequestCancel(3)}
+        onWin={(method) => handleWin(3, method)}
+        isDealer={round.dealerIndex === 3}
+        onNameChange={(newName) => handleNameChange(3, newName)}
       />
 
       {/* センター情報 */}
@@ -457,13 +457,13 @@ function App() {
 
       {/* 右側プレイヤー（右向き） */}
       <PlayerPanel
-        {...players[3]}
+        {...players[1]}
         className="player-panel player-panel--right"
-        onReach={() => handleReach(3)}
-        onRequestCancel={() => handleRequestCancel(3)}
-        onWin={(method) => handleWin(3, method)}
-        isDealer={round.dealerIndex === 3}
-        onNameChange={(newName) => handleNameChange(3, newName)}
+        onReach={() => handleReach(1)}
+        onRequestCancel={() => handleRequestCancel(1)}
+        onWin={(method) => handleWin(1, method)}
+        isDealer={round.dealerIndex === 1}
+        onNameChange={(newName) => handleNameChange(1, newName)}
       />
 
       {/* 下側プレイヤー（通常） */}

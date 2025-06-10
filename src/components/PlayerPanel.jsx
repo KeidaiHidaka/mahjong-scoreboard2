@@ -12,6 +12,7 @@ function PlayerPanel({
   onWin,
   isDealer,
   onNameChange,
+  className, // ← この行を追加
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [inputName, setInputName] = useState(name);
@@ -31,6 +32,7 @@ function PlayerPanel({
     "panel",
     "panel--player",
     "player-panel",
+    className, // ← この行を追加（App.jsxから渡されたclassNameを含める）
     reversed ? "panel--reversed" : "",
     reached ? "panel--reached" : "",
     isDealer ? "panel--dealer" : "",
