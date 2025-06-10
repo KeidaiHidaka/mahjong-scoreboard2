@@ -1,6 +1,5 @@
 // src/App.jsx
 
-
 // ========================================
 // App.jsx - メインアプリケーション
 // ========================================
@@ -14,14 +13,7 @@ import ModalResult from './components/ModalResult'
 import ModalCancel from './components/ModalCancel'
 import scoreTable  from './scoreTable'
 
-
 import './App.css'
-
-
-
-
-
-
 
 function calculateScore({ han, fu, isDealer, isTsumo }) {
   
@@ -137,13 +129,6 @@ function calculateScore({ han, fu, isDealer, isTsumo }) {
   }
 }
 
-
-
-
-
-
-
-
 function App() {
   const [initialMethod, setInitialMethod] = useState("ron");
   const params = new URLSearchParams(window.location.search);
@@ -177,6 +162,13 @@ function App() {
   const [tenpaiIndexes, setTenpaiIndexes] = useState([]);
 
   const winds = ["東", "南", "西", "北"];
+
+  // 自風を計算する関数
+  const getPlayerWind = (playerIndex) => {
+    // 親（dealerIndex）が東風、そこから時計回りに南・西・北
+    const windIndex = (playerIndex - round.dealerIndex + 4) % 4;
+    return winds[windIndex];
+  };
 
   const handleNameChange = (index, newName) => {
     const updated = [...players];
@@ -276,12 +268,11 @@ function App() {
       details,
       reachBonus: 0,
       totalGain: totalPenalty,
-      dealerIndex: round.dealerIndex, // ← ★これを追加
+      dealerIndex: round.dealerIndex,
     });
 
     setShowModalResult(true);
     resetReach();
-    // setReachSticks(0);
     advanceRound(null, indexes);
   };
 
@@ -320,7 +311,7 @@ function App() {
     }
 
     let details = [];
-    let gain = 0; //場のリーチ棒も加算するため
+    let gain = 0;
 
     if (method === "ron") {
       const loser = updatedPlayers[loserIndex];
@@ -351,7 +342,6 @@ function App() {
           points: pay,
         });
       });
-
     }
 
     // リーチ棒
@@ -375,13 +365,12 @@ function App() {
       reachBonus,
       totalGain: gain,
       dealerIndex: round.dealerIndex,
-      label: result.type || null, // 表示ラベル（例：ロン（親））
+      label: result.type || null,
     });
 
     setShowModalResult(true);
     advanceRound(winnerIndex, []);
   };
-
 
   const handleWinCancel = () => {
     setShowModalWin(false);
@@ -389,9 +378,6 @@ function App() {
 
   const handleReach = (index) => {
     if (players[index].reached || players[index].score < 1000) return;
-    // const reachSound = new Audio();
-
-    // const reachSound = new Audio(import.meta.env.BASE_URL + 'sounds/reach.mp3');
     reachSound.play();
     const updated = [...players];
     updated[index].score -= 1000;
@@ -419,7 +405,6 @@ function App() {
   const handleModalCancel = () => {
     setCancelIndex(null);
   };
-
   return (
     <div className="mahjong-app">
       {/* 上側プレイヤー（逆さま） */}
@@ -433,6 +418,7 @@ function App() {
           onWin={(method) => handleWin(2, method)}
           isDealer={round.dealerIndex === 2}          
           onNameChange={(newName) => handleNameChange(2, newName)}
+          wind={getPlayerWind(2)}
         />
       </div>
 
@@ -445,6 +431,7 @@ function App() {
         onWin={(method) => handleWin(3, method)}
         isDealer={round.dealerIndex === 3}
         onNameChange={(newName) => handleNameChange(3, newName)}
+        wind={getPlayerWind(3)}
       />
 
       {/* センター情報 */}
@@ -464,6 +451,7 @@ function App() {
         onWin={(method) => handleWin(1, method)}
         isDealer={round.dealerIndex === 1}
         onNameChange={(newName) => handleNameChange(1, newName)}
+        wind={getPlayerWind(1)}
       />
 
       {/* 下側プレイヤー（通常） */}
@@ -476,6 +464,7 @@ function App() {
           onWin={(method) => handleWin(0, method)}
           isDealer={round.dealerIndex === 0}
           onNameChange={(newName) => handleNameChange(0, newName)}
+          wind={getPlayerWind(0)}
         />
       </div>
 
