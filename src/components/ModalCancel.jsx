@@ -1,9 +1,10 @@
 // src/components/CancelModal.jsx
 
 import React from "react";
-import "./CancelModal.css";
 
-function CancelModal({ visible, onConfirm, onCancel }) {
+import "./styles/modals.css";
+
+function ModalCancel({ visible, onConfirm, onCancel }) {
   if (!visible) return null;
 
   return (
@@ -17,4 +18,4 @@ function CancelModal({ visible, onConfirm, onCancel }) {
   );
 }
 
-export default CancelModal;
+export default ModalCancel;

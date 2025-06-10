@@ -12,6 +12,8 @@ function PlayerPanel({
   onWin,
   isDealer,
   onNameChange,
+  className,
+  wind, // 自風を受け取る
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [inputName, setInputName] = useState(name);
@@ -31,6 +33,7 @@ function PlayerPanel({
     "panel",
     "panel--player",
     "player-panel",
+    className,
     reversed ? "panel--reversed" : "",
     reached ? "panel--reached" : "",
     isDealer ? "panel--dealer" : "",
@@ -51,12 +54,15 @@ function PlayerPanel({
             autoFocus
           />
         ) : (
-          <span
-            className={`player-panel__name ${isDealer ? "player-panel__name--dealer" : ""}`}
-            onClick={handleNameClick}
-          >
-            {name}
-          </span>
+          <div className="player-panel__name-section">
+            <span
+              className={`player-panel__name ${isDealer ? "player-panel__name--dealer" : ""}`}
+              onClick={handleNameClick}
+            >
+              {name}
+            </span>
+            <span className="player-panel__wind">{wind}</span>
+          </div>
         )}
         <span className="player-panel__score">{score} 点</span>
       </div>

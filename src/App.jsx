@@ -1,6 +1,5 @@
 // src/App.jsx
 
-
 // ========================================
 // App.jsx - メインアプリケーション
 // ========================================
@@ -8,26 +7,21 @@
 import { useState, useEffect } from 'react'
 import PlayerPanel from './components/PlayerPanel'
 import CenterInfo from './components/CenterInfo'
-import WinModal from './components/WinModal'
-import TenpaiModal from './components/TenpaiModal'
-import ResultModal from './components/ResultModal'
-import CancelModal from './components/CancelModal'
+import ModalWin from './components/ModalWin'
+import ModalTenpai from './components/ModalTenpai'
+import ModalResult from './components/ModalResult'
+import ModalCancel from './components/ModalCancel'
+import ModalHaipai from './components/ModalHaipai'
+import ModalOthers from './components/ModalOthers'
+import ModalRanking from './components/ModalRanking'
+import ModalPenalty from './components/ModalPenalty'
+import ModalExport from './components/ModalExport'
+
 import scoreTable  from './scoreTable'
 
-// 共通スタイル（main.jsxで読み込み済み）
-// コンポーネント固有スタイル
-import './components/modals.css'    // モーダル共通
-import './components/buttons.css'   // ボタン共通
-import './components/panels.css'    // パネル共通
+import './App.css'
 
-// メインアプリ固有のスタイル
-import './App.css'  // または './pages/mahjong.css'
-
-
-
-
-
-
+const winds = ["東", "南", "西", "北"];
 
 function calculateScore({ han, fu, isDealer, isTsumo }) {
   
@@ -143,11 +137,13 @@ function calculateScore({ han, fu, isDealer, isTsumo }) {
   }
 }
 
-
-
-
-
-
+// 配牌開始列を計算する関数を追加（calculateScore関数の後に）
+const generateHaipaiStart = () => {
+  // const winds = ["東", "南", "西", "北"];
+  const randomWind = winds[Math.floor(Math.random() * winds.length)];
+  const randomColumn = Math.floor(Math.random() * 11) + 2; // 2-12の範囲
+  return `${randomWind}家の右から${randomColumn}列`;
+};
 
 
 function App() {
@@ -160,12 +156,6 @@ function App() {
     { name: params.get("player3") || "プレイヤー3", score: 25000, reached: false },
     { name: params.get("player4") || "プレイヤー4", score: 25000, reached: false },
   ];
-  // const initialPlayers = [
-  //   { name: "プレイヤー1", score: 25000, reached: false },
-  //   { name: "プレイヤー2", score: 25000, reached: false },
-  //   { name: "プレイヤー3", score: 25000, reached: false },
-  //   { name: "プレイヤー4", score: 25000, reached: false },
-  // ];
   const reachSound = new Audio(import.meta.env.BASE_URL + 'sounds/reach.wav');
   const ryuukyokuAudio = new Audio(import.meta.env.BASE_URL + 'sounds/ryuukyoku.wav');
   const ronAudio = new Audio(import.meta.env.BASE_URL + 'sounds/ron.wav');
@@ -176,19 +166,152 @@ function App() {
   const [players, setPlayers] = useState(initialPlayers);
   const [reachSticks, setReachSticks] = useState(0);
   const [cancelIndex, setCancelIndex] = useState(null);
-  const [showWinModal, setShowWinModal] = useState(false);
+  const [showModalWin, setShowModalWin] = useState(false);
   const [winnerIndex, setWinnerIndex] = useState(null);
-  const [showResultModal, setShowResultModal] = useState(false);
+  const [showModalResult, setShowModalResult] = useState(false);
   const [winResult, setWinResult] = useState(null);
   const [round, setRound] = useState({
     wind: "東",
     number: 1,
-    dealerIndex: isNaN(dealerIndexParam) ? 0 : dealerIndexParam,
+    dealerIndex: isNaN(dealerIndexParam) ? Math.floor(Math.random() * 4) : dealerIndexParam,
   });
-  const [showTenpaiModal, setShowTenpaiModal] = useState(false);
+  const [showModalTenpai, setShowModalTenpai] = useState(false);
   const [tenpaiIndexes, setTenpaiIndexes] = useState([]);
 
-  const winds = ["東", "南", "西", "北"];
+  
+  const [showModalHaipai, setShowModalHaipai] = useState(false);
+  const [showModalOthers, setShowModalOthers] = useState(false);
+  const [showModalRanking, setShowModalRanking] = useState(false);
+  const [showModalPenalty, setShowModalPenalty] = useState(false);
+  const [showModalExport, setShowModalExport] = useState(false);
+
+  // 配牌開始列ボタンのハンドラーを追加
+  const handleHaipai = () => {
+    setShowModalHaipai(true);
+  };
+
+  const handleHaipaiClose = () => {
+    setShowModalHaipai(false);
+  };
+
+  // その他ボタンのハンドラー
+  const handleOthers = () => {
+    setShowModalOthers(true);
+  };
+
+  const handleOthersClose = () => {
+    setShowModalOthers(false);
+  };
+
+  // 順位モーダルのハンドラー
+  const handleRanking = () => {
+    setShowModalOthers(false);
+    setShowModalRanking(true);
+  };
+
+  const handleRankingClose = () => {
+    setShowModalRanking(false);
+  };
+
+  // 罰符モーダルのハンドラー
+  const handlePenalty = () => {
+    setShowModalOthers(false);
+    setShowModalPenalty(true);
+  };
+
+  const handlePenaltyConfirm = (chonboPlayerIndex) => {
+    const updatedPlayers = [...players];
+    const chonboPlayer = updatedPlayers[chonboPlayerIndex];
+    const isChonboDealer = chonboPlayerIndex === round.dealerIndex;
+
+    let details = [];
+    let totalPenalty = 0;
+
+    if (isChonboDealer) {
+      // 親のチョンボ：他家全員に4000点ずつ支払い
+      updatedPlayers.forEach((player, index) => {
+        if (index !== chonboPlayerIndex) {
+          player.score += 4000;
+          chonboPlayer.score -= 4000;
+          totalPenalty += 4000;
+          details.push({
+            from: chonboPlayer.name,
+            to: player.name,
+            points: 4000,
+          });
+        }
+      });
+    } else {
+      // 子のチョンボ：親に4000点、他の子に2000点ずつ支払い
+      updatedPlayers.forEach((player, index) => {
+        if (index !== chonboPlayerIndex) {
+          const penalty = index === round.dealerIndex ? 4000 : 2000;
+          player.score += penalty;
+          chonboPlayer.score -= penalty;
+          totalPenalty += penalty;
+          details.push({
+            from: chonboPlayer.name,
+            to: player.name,
+            points: penalty,
+          });
+        }
+      });
+    }
+
+    setPlayers(updatedPlayers);
+    setShowModalPenalty(false);
+
+    // 結果表示
+    setWinResult({
+      winner: "チョンボ",
+      method: "penalty",
+      han: 0,
+      fu: 0,
+      details,
+      reachBonus: 0,
+      totalGain: totalPenalty,
+      dealerIndex: round.dealerIndex,
+      chonboPlayer: chonboPlayer.name,
+    });
+
+    setShowModalResult(true);
+  };
+
+  const handlePenaltyCancel = () => {
+    setShowModalPenalty(false);
+  };
+
+  // エクスポートモーダルのハンドラー
+  const handleExport = () => {
+    setShowModalOthers(false);
+    setShowModalExport(true);
+  };
+
+  const handleExportClose = () => {
+    setShowModalExport(false);
+  };
+
+  const handleCsvExport = (csvContent, filename) => {
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    setShowModalExport(false);
+  };
+
+  // 自風を計算する関数
+  const getPlayerWind = (playerIndex) => {
+    // 親（dealerIndex）が東風、そこから時計回りに南・西・北
+    const windIndex = (playerIndex - round.dealerIndex + 4) % 4;
+    return winds[windIndex];
+  };
 
   const handleNameChange = (index, newName) => {
     const updated = [...players];
@@ -250,11 +373,11 @@ function App() {
 
   const handleDraw = () => {
     ryuukyokuAudio.play();
-    setShowTenpaiModal(true);
+    setShowModalTenpai(true);
   };
 
   const handleTenpaiConfirm = (indexes) => {
-    setShowTenpaiModal(false);
+    setShowModalTenpai(false);
     setTenpaiIndexes(indexes);
 
     const updated = [...players];
@@ -288,17 +411,16 @@ function App() {
       details,
       reachBonus: 0,
       totalGain: totalPenalty,
-      dealerIndex: round.dealerIndex, // ← ★これを追加
+      dealerIndex: round.dealerIndex,
     });
 
-    setShowResultModal(true);
+    setShowModalResult(true);
     resetReach();
-    // setReachSticks(0);
     advanceRound(null, indexes);
   };
 
   const handleTenpaiCancel = () => {
-    setShowTenpaiModal(false);
+    setShowModalTenpai(false);
   };
 
   const handleWin = (index,mothod) => {
@@ -309,7 +431,7 @@ function App() {
     }
     setInitialMethod(mothod);
     setWinnerIndex(index);
-    setShowWinModal(true);
+    setShowModalWin(true);
   };
 
   const handleWinSubmit = ({ han, fu, method, loserIndex }) => {
@@ -332,7 +454,7 @@ function App() {
     }
 
     let details = [];
-    let gain = 0; //場のリーチ棒も加算するため
+    let gain = 0;
 
     if (method === "ron") {
       const loser = updatedPlayers[loserIndex];
@@ -363,7 +485,6 @@ function App() {
           points: pay,
         });
       });
-
     }
 
     // リーチ棒
@@ -376,7 +497,7 @@ function App() {
     const resetPlayers = updatedPlayers.map((p) => ({ ...p, reached: false }));
     setPlayers(resetPlayers);
     setReachSticks(0);
-    setShowWinModal(false);
+    setShowModalWin(false);
 
     setWinResult({
       winner: winner.name,
@@ -387,23 +508,19 @@ function App() {
       reachBonus,
       totalGain: gain,
       dealerIndex: round.dealerIndex,
-      label: result.type || null, // 表示ラベル（例：ロン（親））
+      label: result.type || null,
     });
 
-    setShowResultModal(true);
+    setShowModalResult(true);
     advanceRound(winnerIndex, []);
   };
 
-
   const handleWinCancel = () => {
-    setShowWinModal(false);
+    setShowModalWin(false);
   };
 
   const handleReach = (index) => {
     if (players[index].reached || players[index].score < 1000) return;
-    // const reachSound = new Audio();
-
-    // const reachSound = new Audio(import.meta.env.BASE_URL + 'sounds/reach.mp3');
     reachSound.play();
     const updated = [...players];
     updated[index].score -= 1000;
@@ -428,67 +545,85 @@ function App() {
     setCancelIndex(null);
   };
 
-  const handleCancelModal = () => {
+  const handleModalCancel = () => {
     setCancelIndex(null);
   };
 
+
   return (
     <div className="mahjong-app">
+      {/* 上側プレイヤー（逆さま） */}
       <div className="mahjong-app__top-half">
         <PlayerPanel
-          {...players[1]}
-          className="panel--reversed"
-          reversed
-          onReach={() => handleReach(1)}
-          onRequestCancel={() => handleRequestCancel(1)}
-          onWin={(method) => handleWin(1,method)}
-          isDealer={round.dealerIndex === 1}          
-          onNameChange={(newName) => handleNameChange(1, newName)} // 👈 追加
-        />
-        <PlayerPanel
-          {...players[0]}
-          className="panel--reversed"
-          reversed
-          onReach={() => handleReach(0)}
-          onRequestCancel={() => handleRequestCancel(0)}
-          onWin={(method) => handleWin(0,method)}
-          isDealer={round.dealerIndex === 0}
-          onNameChange={(newName) => handleNameChange(0, newName)} // 👈 追加
-
-        />
-      </div>
-
-      <CenterInfo round={round} reachSticks={reachSticks} onDraw={handleDraw} className="mahjong-app__center-info" />
-
-      <div className="mahjong-app__bottom-half">
-        <PlayerPanel
           {...players[2]}
+          className="player-panel panel--reversed player-panel--top"
+          reversed
           onReach={() => handleReach(2)}
           onRequestCancel={() => handleRequestCancel(2)}
-          onWin={(method) => handleWin(2,method)}
-          isDealer={round.dealerIndex === 2}
-          onNameChange={(newName) => handleNameChange(2, newName)} // 👈 追加
-
-        />
-        <PlayerPanel
-          {...players[3]}
-          onReach={() => handleReach(3)}
-          onRequestCancel={() => handleRequestCancel(3)}
-          onWin={(method) => handleWin(3,method)}
-          isDealer={round.dealerIndex === 3}
-          onNameChange={(newName) => handleNameChange(3, newName)} // 👈 追加
-
+          onWin={(method) => handleWin(2, method)}
+          isDealer={round.dealerIndex === 2}          
+          onNameChange={(newName) => handleNameChange(2, newName)}
+          wind={getPlayerWind(2)}
         />
       </div>
 
-      <CancelModal
-        visible={cancelIndex !== null}
-        onConfirm={handleConfirmCancel}
-        onCancel={handleCancelModal}
+      {/* 左側プレイヤー（左向き） */}
+      <PlayerPanel
+        {...players[3]}
+        className="player-panel player-panel--left"
+        onReach={() => handleReach(3)}
+        onRequestCancel={() => handleRequestCancel(3)}
+        onWin={(method) => handleWin(3, method)}
+        isDealer={round.dealerIndex === 3}
+        onNameChange={(newName) => handleNameChange(3, newName)}
+        wind={getPlayerWind(3)}
       />
 
-      <WinModal
-        visible={showWinModal}
+      {/* センター情報 */}
+      <CenterInfo 
+        round={round} 
+        reachSticks={reachSticks} 
+        onDraw={handleDraw} 
+        onHaipai={handleHaipai}
+        onOthers={handleOthers}
+        className="center-info" 
+      />
+
+      {/* 右側プレイヤー（右向き） */}
+      <PlayerPanel
+        {...players[1]}
+        className="player-panel player-panel--right"
+        onReach={() => handleReach(1)}
+        onRequestCancel={() => handleRequestCancel(1)}
+        onWin={(method) => handleWin(1, method)}
+        isDealer={round.dealerIndex === 1}
+        onNameChange={(newName) => handleNameChange(1, newName)}
+        wind={getPlayerWind(1)}
+      />
+
+      {/* 下側プレイヤー（通常） */}
+      <div className="mahjong-app__bottom-half">
+        <PlayerPanel
+          {...players[0]}
+          className="player-panel player-panel--bottom"
+          onReach={() => handleReach(0)}
+          onRequestCancel={() => handleRequestCancel(0)}
+          onWin={(method) => handleWin(0, method)}
+          isDealer={round.dealerIndex === 0}
+          onNameChange={(newName) => handleNameChange(0, newName)}
+          wind={getPlayerWind(0)}
+        />
+      </div>
+
+      {/* モーダル類はそのまま */}
+      <ModalCancel
+        visible={cancelIndex !== null}
+        onConfirm={handleConfirmCancel}
+        onCancel={handleModalCancel}
+      />
+
+      <ModalWin
+        visible={showModalWin}
         winnerIndex={winnerIndex}
         players={players}
         onSubmit={handleWinSubmit}
@@ -496,23 +631,60 @@ function App() {
         initialMethod={initialMethod}
       />
 
-      <ResultModal
-        visible={showResultModal}
+      <ModalResult
+        visible={showModalResult}
         result={winResult}
         players={players.map((p, i) => ({
           ...p,
-          isDealer: i === winResult?.dealerIndex, // ← winResultのdealerIndexを見る！
+          isDealer: i === winResult?.dealerIndex,
         }))}
-        onClose={() => setShowResultModal(false)}
+        onClose={() => setShowModalResult(false)}
       />
 
-
-      <TenpaiModal
-        visible={showTenpaiModal}
+      <ModalTenpai
+        visible={showModalTenpai}
         players={players}
         onConfirm={handleTenpaiConfirm}
         onCancel={handleTenpaiCancel}
       />
+
+      <ModalHaipai
+        visible={showModalHaipai}
+        onClose={handleHaipaiClose}
+        generateStart={generateHaipaiStart}
+      />
+
+
+      <ModalOthers
+        visible={showModalOthers}
+        onClose={handleOthersClose}
+        onRanking={handleRanking}
+        onPenalty={handlePenalty}
+        onExport={handleExport}
+      />
+
+      <ModalRanking
+        visible={showModalRanking}
+        players={players}
+        onClose={handleRankingClose}
+      />
+
+      <ModalPenalty
+        visible={showModalPenalty}
+        players={players}
+        round={round}
+        onConfirm={handlePenaltyConfirm}
+        onCancel={handlePenaltyCancel}
+      />
+
+      <ModalExport
+        visible={showModalExport}
+        players={players}
+        round={round}
+        onClose={handleExportClose}
+        onExport={handleCsvExport}
+      />
+
     </div>
   );
 }

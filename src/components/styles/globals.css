@@ -1,0 +1,54 @@
+/* ========================================
+   globals.css - 基本スタイル・リセット
+   ======================================== */
+
+:root {
+  --color-primary: #1a5c42;
+  --color-secondary: #2d8659;
+  --color-accent: #4aa373;
+  --color-gold: #ffd700;
+  --color-danger: #ff1744;
+  --color-warning: #ff6b35;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+  
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --border-radius-xl: 20px;
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 6px 20px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 8px 28px rgba(0, 0, 0, 0.5);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 20px;
+  background: linear-gradient(135deg, #0f4c3a, #1a5c42);
+  color: var(--color-white);
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+}

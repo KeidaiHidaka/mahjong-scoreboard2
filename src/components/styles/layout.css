@@ -1,0 +1,186 @@
+/* ========================================
+   layout.css - メインレイアウト (全画面対応版)
+   ======================================== */
+
+.mahjong-app {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh; /* 動的ビューポート高さ - より正確なモバイル対応 */
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f4c3a, #1a5c42);
+  display: grid;
+  grid-template-areas: 
+    ". top-player ."
+    "left-player center-info right-player"
+    ". bottom-player .";
+  grid-template-rows: 1.3fr 1.4fr 1.3fr;
+  grid-template-columns: 150px 1fr 150px;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  box-sizing: border-box;
+  align-items: center;
+  justify-items: center;
+}
+
+/* 各エリアの配置 */
+.mahjong-app__top-half {
+  grid-area: top-player;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mahjong-app__bottom-half {
+  grid-area: bottom-player;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mahjong-app__center-info {
+  grid-area: center-info;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-xl);
+  border: 3px solid var(--color-accent);
+  padding: var(--spacing-xl);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-lg);
+  z-index: 10;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* 左右プレイヤーの直接配置 */
+.mahjong-app > .player-panel--left {
+  grid-area: left-player;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mahjong-app > .player-panel--right {
+  grid-area: right-player;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* タブレット用調整 */
+@media (max-width: 768px) {
+  .mahjong-app {
+    height: 100vh;
+    height: 100dvh;
+    grid-template-rows: 1.2fr 1.6fr 1.2fr;
+    grid-template-columns: 130px 1fr 130px;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+  }
+  
+  .mahjong-app__center-info {
+    padding: var(--spacing-lg);
+  }
+}
+
+/* スマホ用調整 - 下部余白を確保 */
+@media (max-width: 480px) {
+  .mahjong-app {
+    height: 100vh;
+    height: 100dvh; /* 動的ビューポート高さでアドレスバーを考慮 */
+    grid-template-rows: minmax(80px, 1fr) 1.2fr minmax(80px, 1fr);
+    grid-template-columns: 110px 1fr 110px;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs);
+    padding-bottom: 20px; /* 下部に余白を追加 */
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  
+  .mahjong-app__center-info {
+    max-width: none;
+  }
+}
+
+/* 低い画面用 - 横向きや小さいスマホ */
+@media (max-height: 600px) {
+  .mahjong-app {
+    grid-template-rows: minmax(50px, 0.7fr) 1.6fr minmax(50px, 0.7fr);
+    grid-template-columns: 90px 1fr 90px;
+    gap: 4px;
+    padding: 4px;
+    padding-bottom: 15px; /* 下部余白を少し追加 */
+  }
+  
+  .mahjong-app__center-info {
+    padding: var(--spacing-md);
+    border-width: 2px;
+  }
+}
+
+/* 極小画面用 - 縦横両方が小さい場合 */
+@media (max-width: 380px) and (max-height: 700px) {
+  .mahjong-app {
+    grid-template-rows: minmax(45px, 0.8fr) 1.4fr minmax(45px, 0.8fr);
+    grid-template-columns: 70px 1fr 70px;
+    gap: 2px;
+    padding: 2px;
+    padding-bottom: 12px; /* 下部余白 */
+  }
+  
+  .mahjong-app__center-info {
+    padding: 6px;
+    border-width: 1px;
+  }
+}
+
+/* 非常に低い画面用 - 横向きスマホなど */
+@media (max-height: 500px) {
+  .mahjong-app {
+    grid-template-rows: minmax(40px, 0.7fr) 1.8fr minmax(40px, 0.7fr);
+    grid-template-columns: 80px 1fr 80px;
+    gap: 2px;
+    padding: 2px;
+    padding-bottom: 10px; /* 下部余白 */
+  }
+  
+  .mahjong-app__center-info {
+    padding: var(--spacing-xs);
+    border-width: 1px;
+  }
+}
+
+/* PWA対応 - 全画面表示 */
+@media (display-mode: standalone) {
+  .mahjong-app {
+    height: 100vh;
+    height: 100dvh;
+  }
+}
+
+/* iOSのSafari対応 - ビューポートの問題を回避 */
+@supports (-webkit-touch-callout: none) {
+  .mahjong-app {
+    height: -webkit-fill-available;
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* 縦横比に基づく調整 */
+@media (aspect-ratio < 1) {
+  /* 縦長画面（通常のスマホ縦向き） */
+  .mahjong-app {
+    grid-template-rows: 0.8fr 1.6fr 0.8fr;
+  }
+}
+
+@media (aspect-ratio > 1.5) {
+  /* 横長画面（スマホ横向き、タブレット横向き） */
+  .mahjong-app {
+    grid-template-rows: 1fr 1.2fr 1fr;
+    grid-template-columns: 120px 1fr 120px;
+  }
+}

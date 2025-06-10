@@ -1,0 +1,365 @@
+/* ========================================
+   player-panel.css - プレイヤーパネル
+   ======================================== */
+
+.player-panel {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border: 2px solid var(--color-accent);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  color: var(--color-white);
+  box-shadow: var(--shadow-lg);
+  transition: all 0.3s ease;
+  min-width: 140px;
+  max-width: 1200px;
+  text-align: center;
+  position: relative;
+}
+
+.player-panel:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-xl);
+  border-color: #66cc99;
+}
+
+/* プレイヤー配置 - transform優先度を上げる */
+.player-panel.panel--reversed {
+  transform: rotate(180deg) !important;
+}
+
+/* 左右のプレイヤーパネル - 横長レイアウト */
+.player-panel.player-panel--left,
+.player-panel.player-panel--right {
+  width: 420px;
+  height: 120px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+/* 左右のプレイヤーパネル内のプレイヤー情報を横並びに */
+.player-panel.player-panel--left .player-info,
+.player-panel.player-panel--right .player-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
+  width: 100%;
+}
+
+/* 左右のプレイヤーパネルのボタンを横並びに */
+.player-panel.player-panel--left .player-panel__buttons,
+.player-panel.player-panel--right .player-panel__buttons {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-xs);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.player-panel.player-panel--left {
+  transform: rotate(90deg) !important;
+  transform-origin: center center !important;
+}
+
+.player-panel.player-panel--left:hover {
+  transform: rotate(90deg) scale(1.05) !important;
+}
+
+.player-panel.player-panel--right {
+  transform: rotate(-90deg) !important;
+  transform-origin: center center !important;
+}
+
+.player-panel.player-panel--right:hover {
+  transform: rotate(-90deg) scale(1.05) !important;
+}
+
+/* リーチ状態 */
+.player-panel.panel--reached {
+  border-color: var(--color-danger);
+  background: linear-gradient(135deg, #d32f2f, #c62828);
+  animation: reachGlow 2s infinite;
+}
+
+@keyframes reachGlow {
+  0%, 100% { 
+    box-shadow: var(--shadow-lg), 0 0 20px rgba(255, 23, 68, 0.3);
+  }
+  50% { 
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(255, 23, 68, 0.6);
+  }
+}
+
+/* プレイヤー情報 */
+.player-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+/* プレイヤー名と自風のセクション */
+.player-panel__name-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.player-panel__name {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--color-white);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.player-panel__name:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.player-panel__name--dealer {
+  background: linear-gradient(45deg, var(--color-warning), #ff8c42);
+  color: var(--color-white);
+  border-radius: var(--border-radius-sm);
+  padding: 6px var(--spacing-md);
+  position: relative;
+}
+
+.player-panel__name--dealer::before {
+  content: "親";
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--color-danger);
+  color: var(--color-white);
+  font-size: 15px;
+  padding: 2px 4px;
+  border-radius: 50%;
+  line-height: 1;
+}
+
+/* 自風表示 */
+.player-panel__wind {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--color-gold);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.3);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-accent);
+  min-width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-panel__score {
+  font-size: 23px;
+  font-weight: bold;
+  color: var(--color-gold);
+  margin-bottom: var(--spacing-sm);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.2);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+}
+
+/* プレイヤーボタン */
+.player-panel__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+/* 上下のプレイヤーパネル - 縦長レイアウト */
+.player-panel.player-panel--top,
+.player-panel.player-panel--bottom {
+  width: 280px;
+  height: 200px;
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 上下のプレイヤーパネル内のプレイヤー情報は縦並び */
+.player-panel.player-panel--top .player-info,
+.player-panel.player-panel--bottom .player-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-md);
+  width: 100%;
+}
+
+/* 上下のプレイヤーパネルのボタンは縦並び */
+.player-panel.player-panel--top .player-panel__buttons,
+.player-panel.player-panel--bottom .player-panel__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+  .player-panel {
+    min-width: 120px;
+    padding: var(--spacing-md);
+  }
+  
+  .player-panel.player-panel--left,
+  .player-panel.player-panel--right {
+    width: 360px;
+    height: 110px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+  
+  .player-panel.player-panel--top,
+  .player-panel.player-panel--bottom {
+    width: 200px;
+    height: 280px;
+  }
+  
+  .player-panel__name {
+    font-size: 18px;
+  }
+  
+  .player-panel__wind {
+    font-size: 18px;
+  }
+  
+  .player-panel__score {
+    font-size: 23px;
+  }
+}
+
+@media (max-height: 600px) {
+  .player-panel.player-panel--left,
+  .player-panel.player-panel--right {
+    width: 330px;
+    height: 75px;
+  }
+  
+  .player-panel.player-panel--top,
+  .player-panel.player-panel--bottom {
+    height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .player-panel.player-panel--top,
+  .player-panel.player-panel--bottom {
+    width: 150px;
+    height: 270px;
+    padding: var(--spacing-sm);
+  }
+  
+  .player-panel__name {
+    font-size: 16px;
+  }
+  
+  .player-panel__wind {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 380px) {
+  .player-panel.player-panel--top,
+  .player-panel.player-panel--bottom {
+    width: 130px;
+    height: 220px;
+  }
+  
+  .player-panel__name {
+    font-size: 14px;
+  }
+  
+  .player-panel__wind {
+    font-size: 14px;
+  }
+}
+
+
+/* スマホでは左右のプレイヤーパネルをさらにコンパクトに */
+/* スマホ用サイズ調整 */
+/* ボタンもコンパクトに */
+
+/* @media (max-width: 480px) {
+  .player-panel {
+    min-width: 100px;
+    padding: var(--spacing-sm);
+    max-height: 120px;
+    overflow: hidden;
+  }
+  
+  
+  .player-panel.player-panel--left,
+  .player-panel.player-panel--right {
+    width: 300px; 
+    height: 85px;
+    padding: var(--spacing-xs);
+  }
+  
+  .player-panel__name {
+    font-size: 11px;
+    margin-bottom: 2px;
+  }
+  
+  .player-panel__score {
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+  
+  .player-panel__buttons {
+    gap: 2px;
+  }
+  
+  
+  .player-panel .btn {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+} */
+
+
+/* 極小画面用サイズ調整 */
+/* 
+@media (max-width: 380px) {
+  .player-panel.player-panel--left,
+  .player-panel.player-panel--right {
+    width: 240px; 
+    height: 60px;
+    padding: 2px;
+  }
+  
+  .player-panel__name {
+    font-size: 9px;
+  }
+  
+  .player-panel__score {
+    font-size: 10px;
+  }
+  
+  .player-panel .btn {
+    font-size: 8px;
+    padding: 1px 3px;
+  }
+} */

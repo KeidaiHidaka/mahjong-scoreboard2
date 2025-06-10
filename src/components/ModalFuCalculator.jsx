@@ -1,12 +1,12 @@
-// src/components/FuCalculatorModal.jsx
+// src/components/ModalFuCalculator.jsx
 
 import { useState, useEffect } from 'react';
 import questions from './questions';
 import Question from './Question';
 import Result from './Result';
-import './FuCalculatorModal.css';
+import "./styles/modals.css";
 
-function FuCalculatorModal({ visible, onCalculated, onCancel }) {
+function ModalFuCalculator({ visible, onCalculated, onCancel }) {
   const [currentId, setCurrentId] = useState("Q1");
   const [totalPoints, setTotalPoints] = useState(0);
   const [isChiitoitsu, setIsChiitoitsu] = useState(false);
@@ -122,7 +122,7 @@ function FuCalculatorModal({ visible, onCalculated, onCancel }) {
       <div className="modal modal--large fu-calculator-modal">
         <div className="modal__header">
           <h2>符計算</h2>
-          <button className="btn btn--close" onClick={handleModalCancel}>×</button>
+          
         </div>
         
         <div className="modal__content">
@@ -184,4 +184,4 @@ function FuCalculatorModal({ visible, onCalculated, onCancel }) {
   );
 }
 
-export default FuCalculatorModal;
+export default ModalFuCalculator;
