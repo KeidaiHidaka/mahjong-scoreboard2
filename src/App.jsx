@@ -12,6 +12,10 @@ import ModalTenpai from './components/ModalTenpai'
 import ModalResult from './components/ModalResult'
 import ModalCancel from './components/ModalCancel'
 import ModalHaipai from './components/ModalHaipai'
+import ModalOthers from './components/ModalOthers'
+import ModalRanking from './components/ModalRanking'
+import ModalPenalty from './components/ModalPenalty'
+import ModalExport from './components/ModalExport'
 
 import scoreTable  from './scoreTable'
 
@@ -176,6 +180,10 @@ function App() {
 
   
   const [showModalHaipai, setShowModalHaipai] = useState(false);
+  const [showModalOthers, setShowModalOthers] = useState(false);
+  const [showModalRanking, setShowModalRanking] = useState(false);
+  const [showModalPenalty, setShowModalPenalty] = useState(false);
+  const [showModalExport, setShowModalExport] = useState(false);
 
   // 配牌開始列ボタンのハンドラーを追加
   const handleHaipai = () => {
@@ -184,6 +192,118 @@ function App() {
 
   const handleHaipaiClose = () => {
     setShowModalHaipai(false);
+  };
+
+  // その他ボタンのハンドラー
+  const handleOthers = () => {
+    setShowModalOthers(true);
+  };
+
+  const handleOthersClose = () => {
+    setShowModalOthers(false);
+  };
+
+  // 順位モーダルのハンドラー
+  const handleRanking = () => {
+    setShowModalOthers(false);
+    setShowModalRanking(true);
+  };
+
+  const handleRankingClose = () => {
+    setShowModalRanking(false);
+  };
+
+  // 罰符モーダルのハンドラー
+  const handlePenalty = () => {
+    setShowModalOthers(false);
+    setShowModalPenalty(true);
+  };
+
+  const handlePenaltyConfirm = (chonboPlayerIndex) => {
+    const updatedPlayers = [...players];
+    const chonboPlayer = updatedPlayers[chonboPlayerIndex];
+    const isChonboDealer = chonboPlayerIndex === round.dealerIndex;
+
+    let details = [];
+    let totalPenalty = 0;
+
+    if (isChonboDealer) {
+      // 親のチョンボ：他家全員に4000点ずつ支払い
+      updatedPlayers.forEach((player, index) => {
+        if (index !== chonboPlayerIndex) {
+          player.score += 4000;
+          chonboPlayer.score -= 4000;
+          totalPenalty += 4000;
+          details.push({
+            from: chonboPlayer.name,
+            to: player.name,
+            points: 4000,
+          });
+        }
+      });
+    } else {
+      // 子のチョンボ：親に4000点、他の子に2000点ずつ支払い
+      updatedPlayers.forEach((player, index) => {
+        if (index !== chonboPlayerIndex) {
+          const penalty = index === round.dealerIndex ? 4000 : 2000;
+          player.score += penalty;
+          chonboPlayer.score -= penalty;
+          totalPenalty += penalty;
+          details.push({
+            from: chonboPlayer.name,
+            to: player.name,
+            points: penalty,
+          });
+        }
+      });
+    }
+
+    setPlayers(updatedPlayers);
+    setShowModalPenalty(false);
+
+    // 結果表示
+    setWinResult({
+      winner: "チョンボ",
+      method: "penalty",
+      han: 0,
+      fu: 0,
+      details,
+      reachBonus: 0,
+      totalGain: totalPenalty,
+      dealerIndex: round.dealerIndex,
+      chonboPlayer: chonboPlayer.name,
+    });
+
+    setShowModalResult(true);
+  };
+
+  const handlePenaltyCancel = () => {
+    setShowModalPenalty(false);
+  };
+
+  // エクスポートモーダルのハンドラー
+  const handleExport = () => {
+    setShowModalOthers(false);
+    setShowModalExport(true);
+  };
+
+  const handleExportClose = () => {
+    setShowModalExport(false);
+  };
+
+  const handleCsvExport = (csvContent, filename) => {
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    setShowModalExport(false);
   };
 
   // 自風を計算する関数
@@ -428,6 +548,8 @@ function App() {
   const handleModalCancel = () => {
     setCancelIndex(null);
   };
+
+
   return (
     <div className="mahjong-app">
       {/* 上側プレイヤー（逆さま） */}
@@ -463,6 +585,7 @@ function App() {
         reachSticks={reachSticks} 
         onDraw={handleDraw} 
         onHaipai={handleHaipai}
+        onOthers={handleOthers}
         className="center-info" 
       />
 
@@ -529,6 +652,37 @@ function App() {
         visible={showModalHaipai}
         onClose={handleHaipaiClose}
         generateStart={generateHaipaiStart}
+      />
+
+
+      <ModalOthers
+        visible={showModalOthers}
+        onClose={handleOthersClose}
+        onRanking={handleRanking}
+        onPenalty={handlePenalty}
+        onExport={handleExport}
+      />
+
+      <ModalRanking
+        visible={showModalRanking}
+        players={players}
+        onClose={handleRankingClose}
+      />
+
+      <ModalPenalty
+        visible={showModalPenalty}
+        players={players}
+        round={round}
+        onConfirm={handlePenaltyConfirm}
+        onCancel={handlePenaltyCancel}
+      />
+
+      <ModalExport
+        visible={showModalExport}
+        players={players}
+        round={round}
+        onClose={handleExportClose}
+        onExport={handleCsvExport}
       />
 
     </div>
