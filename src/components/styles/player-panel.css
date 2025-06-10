@@ -27,10 +27,26 @@
   transform: rotate(180deg) !important;
 }
 
+/* 左右のプレイヤーパネルは横長にして、確実に中央配置 */
+.player-panel.player-panel--left,
+.player-panel.player-panel--right {
+  min-width: 160px;
+  max-width: 200px;
+  height: 100px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* 中央配置を確実にする */
+  margin: auto;
+  align-self: center;
+  justify-self: center;
+}
+
 .player-panel.player-panel--left {
   transform: rotate(90deg) !important;
-  transform-origin: center !important;
-  /* ホバー時の拡大は回転と競合するため無効化 */
+  transform-origin: center center !important;
 }
 
 .player-panel.player-panel--left:hover {
@@ -39,7 +55,7 @@
 
 .player-panel.player-panel--right {
   transform: rotate(-90deg) !important;
-  transform-origin: center !important;
+  transform-origin: center center !important;
 }
 
 .player-panel.player-panel--right:hover {
@@ -133,6 +149,23 @@
     padding: var(--spacing-md);
   }
   
+  /* 左右のプレイヤーパネルを横長に調整 */
+  .player-panel.player-panel--left,
+  .player-panel.player-panel--right {
+    min-width: 140px;
+    max-width: 170px;
+    height: 85px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* タブレットでも中央配置を維持 */
+    margin: auto;
+    align-self: center;
+    justify-self: center;
+  }
+  
   .player-panel__name {
     font-size: 14px;
   }
@@ -146,13 +179,45 @@
   .player-panel {
     min-width: 100px;
     padding: var(--spacing-sm);
+    /* 通常の上下パネルをよりコンパクトに */
+    max-height: 120px;
+    overflow: hidden;
+  }
+  
+  /* スマホでは左右のプレイヤーパネルをコンパクトに */
+  .player-panel.player-panel--left,
+  .player-panel.player-panel--right {
+    min-width: 100px; /* より小さく */
+    max-width: 130px; /* より小さく */
+    height: 80px; /* より低く */
+    padding: var(--spacing-xs) var(--spacing-sm);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* スマホでも中央配置を維持 */
+    margin: auto;
+    align-self: center;
+    justify-self: center;
   }
   
   .player-panel__name {
-    font-size: 12px;
+    font-size: 11px; /* さらに小さく */
+    margin-bottom: 2px;
   }
   
   .player-panel__score {
-    font-size: 16px;
+    font-size: 14px; /* さらに小さく */
+    margin-bottom: 2px;
+  }
+  
+  .player-panel__buttons {
+    gap: 2px; /* ボタン間隔を狭く */
+  }
+  
+  /* ボタンもコンパクトに */
+  .player-panel .btn {
+    font-size: 10px;
+    padding: 2px 6px;
   }
 }
