@@ -8,7 +8,7 @@ function CenterInfo({ round, reachSticks = 0, onDraw, className }) {
 
   return (
     <div className={`panel panel--center ${className || ''}`}>
-      <div className="round">
+      <div className="round-info">
         {wind}{number}局
       </div>
       <div className="reach-sticks">リーチ棒：{reachSticks}</div>

@@ -12,7 +12,7 @@
 }
 
 .round-info {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
   color: var(--color-white);
   margin-bottom: var(--spacing-lg);
@@ -64,13 +64,13 @@
 /* レスポンシブ調整 */
 @media (max-width: 768px) {
   .round-info {
-    font-size: 20px;
+    font-size: 30px;
   }
 }
 
 @media (max-width: 480px) {
   .round-info {
-    font-size: 16px;
+    font-size: 30px;
     margin-bottom: var(--spacing-sm);
     padding: 4px var(--spacing-md); /* パディングを縮小 */
   }
@@ -88,7 +88,7 @@
 
 @media (max-height: 600px) {
   .round-info {
-    font-size: 14px;
+    font-size: 30px;
     margin-bottom: 4px; /* さらに縮小 */
     padding: 2px var(--spacing-sm);
   }
@@ -107,7 +107,7 @@
 /* 極小画面用 */
 @media (max-width: 380px) {
   .round-info {
-    font-size: 14px;
+    font-size: 30px;
     margin-bottom: 2px;
     padding: 2px 8px;
   }
