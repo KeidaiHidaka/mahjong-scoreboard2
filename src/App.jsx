@@ -426,7 +426,7 @@ function App() {
       <div className="mahjong-app__top-half">
         <PlayerPanel
           {...players[2]}
-          className="player-panel panel--reversed"
+          className="player-panel panel--reversed player-panel--top"
           reversed
           onReach={() => handleReach(2)}
           onRequestCancel={() => handleRequestCancel(2)}
@@ -470,7 +470,7 @@ function App() {
       <div className="mahjong-app__bottom-half">
         <PlayerPanel
           {...players[0]}
-          className="player-panel"
+          className="player-panel player-panel--bottom"
           onReach={() => handleReach(0)}
           onRequestCancel={() => handleRequestCancel(0)}
           onWin={(method) => handleWin(0, method)}

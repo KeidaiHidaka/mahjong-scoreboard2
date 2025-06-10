@@ -11,7 +11,7 @@
   box-shadow: var(--shadow-lg);
   transition: all 0.3s ease;
   min-width: 140px;
-  max-width: 200px;
+  max-width: 1200px;
   text-align: center;
   position: relative;
 }
@@ -27,38 +27,40 @@
   transform: rotate(180deg) !important;
 }
 
-/* 左右のプレイヤーパネル - 大幅に簡素化 */
+/* 左右のプレイヤーパネル - 横長レイアウト */
 .player-panel.player-panel--left,
 .player-panel.player-panel--right {
-  width: 100px; /* 固定幅 */
-  height: 300px; /* 固定高さ */
-  padding: var(--spacing-md);
+  width: 420px; /* 横幅を1.5倍に (280px * 1.5) */
+  height: 120px; /* 縦幅を少し長く (100px → 120px) */
+  padding: var(--spacing-sm) var(--spacing-md);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0; /* マージンを削除 */
+  margin: 0;
 }
 
-/* 左右のプレイヤーパネル内のプレイヤー情報を縦並びに戻す */
+/* 左右のプレイヤーパネル内のプレイヤー情報を横並びに */
 .player-panel.player-panel--left .player-info,
 .player-panel.player-panel--right .player-info {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-lg);
   margin-bottom: var(--spacing-sm);
+  width: 100%;
 }
 
-/* 左右のプレイヤーパネルのボタンを縦並びに戻す */
+/* 左右のプレイヤーパネルのボタンを横並びに */
 .player-panel.player-panel--left .player-panel__buttons,
 .player-panel.player-panel--right .player-panel__buttons {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: var(--spacing-xs);
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
 .player-panel.player-panel--left {
@@ -169,9 +171,9 @@
   /* 左右のプレイヤーパネル */
   .player-panel.player-panel--left,
   .player-panel.player-panel--right {
-    width: 90px;
-    height: 250px;
-    padding: var(--spacing-sm);
+    width: 360px; /* タブレット用サイズ調整 */
+    height: 110px;
+    padding: var(--spacing-xs) var(--spacing-sm);
   }
   
   .player-panel__name {
@@ -183,7 +185,90 @@
   }
 }
 
+@media (max-height: 600px) {
+  .player-panel.player-panel--left,
+  .player-panel.player-panel--right {
+    width: 330px; /* 低い画面用サイズ調整 */
+    height: 75px;
+  }
+}
+
+/* player-panel.css の既存コードに以下を追加 */
+
+/* 上下のプレイヤーパネル - 縦長レイアウト */
+.player-panel.player-panel--top,
+.player-panel.player-panel--bottom {
+  width: 280px; /* 通常の横幅 */
+  height: 200px; /* 縦幅を長く（120px → 160px） */
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 上下のプレイヤーパネル内のプレイヤー情報は縦並び */
+.player-panel.player-panel--top .player-info,
+.player-panel.player-panel--bottom .player-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-md);
+  width: 100%;
+}
+
+/* 上下のプレイヤーパネルのボタンは縦並び */
+.player-panel.player-panel--top .player-panel__buttons,
+.player-panel.player-panel--bottom .player-panel__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+  .player-panel.player-panel--top,
+  .player-panel.player-panel--bottom {
+    width: 200px;
+    height: 280px; /* タブレット用サイズ調整 */
+  }
+}
+
 @media (max-width: 480px) {
+  .player-panel.player-panel--top,
+  .player-panel.player-panel--bottom {
+    width: 150px;
+    height: 270px; /* スマホ用サイズ調整 */
+    padding: var(--spacing-sm);
+  }
+}
+
+@media (max-height: 600px) {
+  .player-panel.player-panel--top,
+  .player-panel.player-panel--bottom {
+    height: 100px; /* 低い画面用サイズ調整 */
+  }
+}
+
+@media (max-width: 380px) {
+  .player-panel.player-panel--top,
+  .player-panel.player-panel--bottom {
+    width: 130px;
+    height: 220px; /* 極小画面用サイズ調整 */
+  }
+}
+
+
+
+/* スマホでは左右のプレイヤーパネルをさらにコンパクトに */
+/* スマホ用サイズ調整 */
+/* ボタンもコンパクトに */
+
+/* @media (max-width: 480px) {
   .player-panel {
     min-width: 100px;
     padding: var(--spacing-sm);
@@ -191,11 +276,11 @@
     overflow: hidden;
   }
   
-  /* スマホでは左右のプレイヤーパネルをさらにコンパクトに */
+  
   .player-panel.player-panel--left,
   .player-panel.player-panel--right {
-    width: 70px;
-    height: 200px;
+    width: 300px; 
+    height: 85px;
     padding: var(--spacing-xs);
   }
   
@@ -213,25 +298,21 @@
     gap: 2px;
   }
   
-  /* ボタンもコンパクトに */
+  
   .player-panel .btn {
     font-size: 10px;
     padding: 2px 6px;
   }
-}
+} */
 
-@media (max-height: 600px) {
-  .player-panel.player-panel--left,
-  .player-panel.player-panel--right {
-    height: 180px;
-  }
-}
 
+/* 極小画面用サイズ調整 */
+/* 
 @media (max-width: 380px) {
   .player-panel.player-panel--left,
   .player-panel.player-panel--right {
-    width: 45px;
-    height: 150px;
+    width: 240px; 
+    height: 60px;
     padding: 2px;
   }
   
@@ -247,4 +328,4 @@
     font-size: 8px;
     padding: 1px 3px;
   }
-}
+} */

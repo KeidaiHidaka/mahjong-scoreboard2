@@ -13,8 +13,8 @@
     ". top-player ."
     "left-player center-info right-player"
     ". bottom-player .";
-  grid-template-rows: 1fr 2fr 1fr;
-  grid-template-columns: 120px 1fr 120px; /* 左右を固定幅に変更 */
+  grid-template-rows: 1.3fr 1.4fr 1.3fr;
+  grid-template-columns: 150px 1fr 150px; /* 左右の余白を増加 */
   gap: var(--spacing-md);
   padding: var(--spacing-md);
   box-sizing: border-box;
@@ -72,8 +72,8 @@
 /* レスポンシブ調整 */
 @media (max-width: 768px) {
   .mahjong-app {
-    grid-template-rows: 1fr 1.5fr 1fr;
-    grid-template-columns: 100px 1fr 100px; /* タブレット用調整 */
+    grid-template-rows: 1.2fr 1.6fr 1.2fr;
+    grid-template-columns: 130px 1fr 130px; /* タブレット用調整 */
     gap: var(--spacing-sm);
     padding: var(--spacing-sm);
   }
@@ -85,8 +85,8 @@
 
 @media (max-width: 480px) {
   .mahjong-app {
-    grid-template-rows: minmax(60px, 0.8fr) 1.4fr minmax(60px, 0.8fr);
-    grid-template-columns: 80px 1fr 80px; /* スマホ用により小さく */
+    grid-template-rows: minmax(80px, 1fr) 1.2fr minmax(80px, 1fr);
+    grid-template-columns: 110px 1fr 110px; /* スマホ用により小さく */
     gap: var(--spacing-xs);
     padding: var(--spacing-xs);
     min-height: 100vh;
@@ -101,7 +101,7 @@
 @media (max-height: 600px) {
   .mahjong-app {
     grid-template-rows: minmax(50px, 0.7fr) 1.6fr minmax(50px, 0.7fr);
-    grid-template-columns: 70px 1fr 70px; /* 低い画面用 */
+    grid-template-columns: 90px 1fr 90px; /* 低い画面用 */
     gap: 4px;
     padding: 4px;
   }
@@ -115,7 +115,7 @@
 @media (max-width: 480px) and (max-height: 700px) {
   .mahjong-app {
     grid-template-rows: minmax(50px, 0.75fr) 1.5fr minmax(50px, 0.75fr);
-    grid-template-columns: 60px 1fr 60px; /* さらに小さく */
+    grid-template-columns: 80px 1fr 80px; /* さらに小さく */
     gap: 2px;
     padding: 2px;
   }
@@ -130,7 +130,7 @@
 @media (max-width: 380px) {
   .mahjong-app {
     grid-template-rows: minmax(45px, 0.7fr) 1.6fr minmax(45px, 0.7fr);
-    grid-template-columns: 50px 1fr 50px; /* 極小サイズ */
+    grid-template-columns: 70px 1fr 70px; /* 極小サイズ */
     gap: 1px;
     padding: 1px;
   }
