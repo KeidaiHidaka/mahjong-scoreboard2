@@ -3,7 +3,6 @@
 import React from "react";
 
 import "./styles/modals.css";
-import "./styles/ModalCancel.css";
 
 function ModalCancel({ visible, onConfirm, onCancel }) {
   if (!visible) return null;

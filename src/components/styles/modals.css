@@ -1,7 +1,10 @@
-/* ========================================
-   modals.css - モーダル共通スタイル
-   ======================================== */
+/* ===================================================================================================================
+   modals.css - モーダル統合スタイル
+   =================================================================================================================== */
 
+/* ===================================================================================================================
+   ベースモーダルスタイル
+   =================================================================================================================== */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -47,6 +50,31 @@
   }
 }
 
+/* モーダルサイズバリエーション */
+.modal--small {
+  max-width: 300px;
+}
+
+.modal--medium {
+  max-width: 500px;
+}
+
+.modal--large {
+  max-width: 800px;
+}
+
+/* シンプルモーダル（キャンセル用など） */
+.modal--simple {
+  background: white;
+  color: var(--color-text);
+  border: none;
+  padding: var(--spacing-lg);
+  max-width: 400px;
+}
+
+/* ===================================================================================================================
+   モーダル共通要素
+   =================================================================================================================== */
 .modal__header {
   text-align: center;
   margin-bottom: var(--spacing-xl);
@@ -58,6 +86,11 @@
   color: var(--color-white);
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   margin-bottom: var(--spacing-lg);
+}
+
+.modal--simple .modal__title {
+  color: var(--color-text);
+  text-shadow: none;
 }
 
 .modal__content {
@@ -89,7 +122,677 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* フォーム要素 */
+.modal--simple .modal__close {
+  color: var(--color-text);
+}
+
+
+/* ===================================================================================================================
+   キャンセルモーダル
+   =================================================================================================================== */
+.modal-cancel {
+  /* .modal--simple を継承 */
+}
+
+/* modal-boxクラス用のスタイル追加 */
+.modal-box {
+  text-align: center;
+}
+
+.modal-box p {
+  margin-bottom: var(--spacing-lg);
+}
+
+.modal-box button {
+  margin: 0 var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.modal-cancel .modal__actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.modal-cancel .modal__actions button {
+  /* marginを削除してgapに統一 */
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+
+/* ===================================================================================================================
+   結果モーダル - 和了・流局結果表示
+   =================================================================================================================== */
+
+.modal-result {
+  /* .modal--medium を継承 */
+  max-width: 450px;
+  text-align: center;
+}
+
+.modal-result h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--color-white);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--color-accent);
+}
+
+/* 和了情報セクション */
+.modal-result__info {
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal-result__info p {
+  margin: var(--spacing-sm) 0;
+  font-size: 16px;
+  line-height: 1.5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-result__info p:first-child {
+  font-size: 18px;
+  font-weight: bold;
+  color: #66cc99;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.modal-result__info-label {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: normal;
+}
+
+.modal-result__info-value {
+  color: var(--color-white);
+  font-weight: bold;
+}
+
+/* 点数情報（翻・符） */
+.modal-result__score {
+  background: linear-gradient(135deg, rgba(102, 204, 153, 0.2), rgba(255, 255, 255, 0.1));
+  border: 2px solid #66cc99;
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-md);
+  margin: var(--spacing-md) 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #66cc99;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 点数移動リスト */
+.modal-result__details {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-md);
+  margin: var(--spacing-lg) 0;
+}
+
+.modal-result__details h3 {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  margin-bottom: var(--spacing-sm);
+  text-align: center;
+}
+
+.modal-result__details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-result__details li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-bottom: var(--spacing-xs);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--border-radius-sm);
+  border-left: 3px solid var(--color-accent);
+  transition: background-color 0.2s ease;
+}
+
+.modal-result__details li:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.modal-result__details li:last-child {
+  margin-bottom: 0;
+}
+
+.modal-result__transfer {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+}
+
+.modal-result__points {
+  color: var(--color-white);
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.modal-result__points--positive {
+  color: #66cc99;
+}
+
+.modal-result__points--negative {
+  color: #ff6b6b;
+}
+
+/* リーチ棒ボーナス */
+.modal-result__reach-bonus {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 255, 255, 0.1));
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin: var(--spacing-md) 0;
+  color: #ffd700;
+  font-weight: bold;
+  text-align: center;
+  font-size: 15px;
+}
+
+/* 合計得点 */
+.modal-result__total {
+  background: linear-gradient(135deg, #66cc99, #55bb88);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-md);
+  margin: var(--spacing-lg) 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--color-white);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 流局用のスタイル */
+.modal-result--ryukyoku .modal-result__info p:first-child {
+  color: #ffa500;
+}
+
+.modal-result--ryukyoku .modal-result__score {
+  background: linear-gradient(135deg, rgba(255, 165, 0, 0.2), rgba(255, 255, 255, 0.1));
+  border-color: #ffa500;
+  color: #ffa500;
+}
+
+.modal-result--ryukyoku .modal-result__total {
+  background: linear-gradient(135deg, #ffa500, #ff8c00);
+}
+
+/* アクションボタン */
+.modal-result__actions {
+  margin-top: var(--spacing-xl);
+}
+
+.modal-result .btn--primary {
+  background: linear-gradient(135deg, #66cc99, #55bb88);
+  border: none;
+  color: var(--color-white);
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  min-width: 120px;
+}
+
+.modal-result .btn--primary:hover {
+  background: linear-gradient(135deg, #55bb88, #44aa77);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.modal-result .btn--primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .modal-result {
+    max-width: 95vw;
+    padding: var(--spacing-lg);
+  }
+  
+  .modal-result h2 {
+    font-size: 20px;
+  }
+  
+  .modal-result__info p {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    text-align: center;
+  }
+  
+  .modal-result__details li {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    text-align: center;
+  }
+  
+  .modal-result__score {
+    font-size: 16px;
+  }
+  
+  .modal-result__total {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-result {
+    padding: var(--spacing-md);
+  }
+  
+  .modal-result h2 {
+    font-size: 18px;
+  }
+  
+  .modal-result__info,
+  .modal-result__details {
+    padding: var(--spacing-sm);
+  }
+  
+  .modal-result__score {
+    font-size: 15px;
+    padding: var(--spacing-sm);
+  }
+  
+  .modal-result__total {
+    font-size: 16px;
+    padding: var(--spacing-sm);
+  }
+}
+
+
+/* ===================================================================================================================
+   テンパイモーダル
+   =================================================================================================================== */
+.tenpai-modal {
+  /* .modal--small を継承 */
+}
+
+.tenpai-modal__title {
+  margin-bottom: var(--spacing-md);
+}
+
+.tenpai-modal__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.tenpai-modal__option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin: 0.5rem 0;
+  text-align: left;
+  padding-left: var(--spacing-sm);
+}
+
+.tenpai-modal__option input[type="checkbox"] {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.tenpai-modal__actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  margin-top: var(--spacing-md);
+}
+
+
+/* ===================================================================================================================
+   勝利モーダル
+   =================================================================================================================== */
+
+
+.win-modal {
+  /* .modal--medium を継承 */
+}
+
+.win-modal .form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.win-modal .form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-white);
+  font-size: 1rem;
+  text-align: left; /* ラベルは左寄せ */
+}
+
+/* セレクトボックスのコンテナを中央寄せ */
+.win-modal .form-group select {
+  display: block;
+  margin: 0 auto; /* セレクトボックスだけ中央寄せ */
+}
+
+.win-modal .form-group select {
+  width: 12.5%; /* 8分の1 */
+  min-width: 80px;
+  padding: var(--spacing-sm);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.win-modal .form-group select:focus {
+  outline: none;
+  border-color: #66cc99;
+  box-shadow: 0 0 0 2px rgba(102, 204, 153, 0.2);
+}
+
+.win-modal .form-group select:disabled {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
+}
+
+.win-modal .form-group select option {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* 放銃者選択のセレクトボックス */
+.win-modal .form-group select[data-loser-select],
+.win-modal .form-group select:has(option[value=""]:disabled) {
+  width: 75%;
+  min-width: 200px;
+}
+
+/* 符計算ボタン */
+.win-modal .form-group > div {
+  margin-top: var(--spacing-sm);
+  display: flex;
+  justify-content: center; /* 中央寄せ追加 */
+}
+
+.win-modal .btn--light {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid var(--color-accent);
+  color: var(--color-white);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.win-modal .btn--light:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: #66cc99;
+}
+
+.win-modal .btn--light:disabled {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+  cursor: not-allowed;
+}
+
+/* ラジオボタン */
+.win-modal__method-options {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-sm);
+  justify-content: center; /* 中央寄せ追加 */
+  text-align: center; /* 追加：親要素の左寄せを上書き */
+}
+
+.win-modal__method-options label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: normal;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+/* ラジオボタンのラベルは中央寄せを維持（詳細度を上げる） */
+.win-modal .win-modal__method-options label {
+  text-align: center;
+}
+
+.win-modal__method-options input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #66cc99;
+  cursor: pointer;
+}
+
+/* アクションボタン */
+.win-modal__actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.win-modal__actions .btn {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--border-radius-sm);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  min-width: 100px;
+}
+
+.win-modal__actions .btn--primary {
+  background-color: #66cc99;
+  color: var(--color-white);
+  border-color: #66cc99;
+}
+
+.win-modal__actions .btn--primary:hover {
+  background-color: #55bb88;
+  border-color: #55bb88;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.win-modal__actions .btn--secondary {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+  border-color: var(--color-accent);
+}
+
+.win-modal__actions .btn--secondary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.win-modal .error-message {
+  color: #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  margin-top: var(--spacing-md);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+
+
+/* ===================================================================================================================
+   符計算モーダル
+   =================================================================================================================== */
+.fu-calculator-modal {
+  /* .modal--large を継承 */
+}
+
+.fu-calculator__question {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.fu-calculator__question h2 {
+  color: var(--color-white);
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* 符計算モーダル - Question コンポーネントのボタン中央寄せ */
+.fu-calculator__options {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  width: 100%;
+  text-align: center;
+  flex-wrap: wrap;
+}
+
+.fu-calculator__options .btn {
+  min-height: 48px;
+  margin: var(--spacing-sm);
+  align-self: center;
+}
+
+/* 符計算モーダル - ボタン中央寄せ強化 */
+.fu-calculator-modal .modal__content > div,
+.fu-calculator-modal .fu-calculator__question > div:not(.fu-calculator__navigation):not(.fu-calculator__history),
+.fu-calculator-modal .fu-calculator__question > div > div {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 100%;
+  flex-wrap: wrap !important;
+}
+
+.fu-calculator-modal .btn {
+  align-self: center !important;
+  margin: var(--spacing-sm) auto !important;
+}
+
+.fu-calculator__navigation {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: var(--spacing-lg);
+}
+
+.fu-calculator__history {
+  margin-top: var(--spacing-lg);
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-accent);
+}
+
+.fu-calculator__history h3 {
+  margin: 0 0 10px 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1em;
+}
+
+.fu-calculator__history ul {
+  margin: 0;
+  padding-left: 20px;
+  list-style-type: disc;
+}
+
+.fu-calculator__history li {
+  margin-bottom: 5px;
+  line-height: 1.4;
+}
+
+.fu-calculator__result {
+  text-align: center;
+}
+
+.fu-calculator__result h2 {
+  color: #66cc99;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.fu-calculator__result h4 {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: var(--spacing-lg);
+}
+
+.fu-calculator__actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: var(--spacing-lg);
+}
+
+/* 画像表示 - 修正版 */
+.fu-calculator__image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.fu-calculator__image {
+  width: 95%;
+  max-width: 95%;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--box-shadow);
+  display: block;
+  margin: 0 auto;
+}
+
+/* レスポンシブ対応 - 符計算モーダル */
+@media (max-width: 768px) {
+  .fu-calculator__image {
+    width: 95%;
+    max-width: 95%;
+    max-height: 300px;
+  }
+  
+  .fu-calculator__options {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .fu-calculator__image {
+    width: 95%;
+    max-width: 95%;
+    max-height: 250px;
+  }
+}
+
+/* ===================================================================================================================
+   フォーム共通要素
+   =================================================================================================================== */
 .form-group {
   margin-bottom: var(--spacing-lg);
 }
@@ -145,11 +848,14 @@
   transform: scale(1.2);
 }
 
-/* レスポンシブ調整 */
-@media (max-width: 480px) {
+/* ===================================================================================================================
+   レスポンシブ対応
+   =================================================================================================================== */
+@media (max-width: 768px) {
   .modal {
     padding: var(--spacing-lg);
     margin: var(--spacing-md);
+    max-width: 95vw;
   }
   
   .modal__title {
@@ -159,194 +865,39 @@
   .modal__actions {
     flex-direction: column;
   }
-}
-
-
-
-/* src/components/ModalCancel.css */
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-box {
-  background: white;
-  padding: 16px;
-  border-radius: 8px;
-  text-align: center;
-}
-.modal-box button {
-  margin: 8px;
-  padding: 8px 16px;
-}
-
-
-/* ========================================
-   ModalFuCalculator.css - 符計算モーダル固有スタイル
-   ======================================== */
-
-.fu-calculator-modal {
-  /* 共通の.modal--largeを継承 */
-}
-
-.fu-calculator__question {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-lg);
-}
-
-.fu-calculator__question h2 {
-  color: var(--color-text);
-  font-size: 1.2em;
-  margin-bottom: 15px;
-  text-align: center;
-}
-
-.fu-calculator__options .btn {
-  min-height: 48px;
-  margin: var(--spacing-sm);
-}
-
-.fu-calculator__navigation {
-  display: flex;
-  justify-content: flex-start;
-  margin-top: var(--spacing-lg);
-}
-
-.fu-calculator__history {
-  margin-top: var(--spacing-lg);
-  padding: 15px;
-  background-color: var(--color-surface);
-  border-radius: var(--border-radius-sm);
-  border: 1px solid var(--color-border);
-}
-
-.fu-calculator__history h3 {
-  margin: 0 0 10px 0;
-  color: var(--color-text-muted);
-  font-size: 1em;
-}
-
-.fu-calculator__history ul {
-  margin: 0;
-  padding-left: 20px;
-  list-style-type: disc;
-}
-
-.fu-calculator__history li {
-  margin-bottom: 5px;
-  line-height: 1.4;
-}
-
-.fu-calculator__result {
-  text-align: center;
-}
-
-.fu-calculator__result h2 {
-  color: var(--color-success);
-  font-size: 1.5em;
-  margin-bottom: 10px;
-}
-
-.fu-calculator__result h4 {
-  color: var(--color-text-muted);
-  margin-bottom: var(--spacing-lg);
-}
-
-.fu-calculator__actions {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: var(--spacing-lg);
-}
-
-/* 画像表示スタイル */
-.fu-calculator__image-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.fu-calculator__image {
-  max-width: 200px;
-  max-height: 150px;
-  object-fit: contain;
-  border-radius: var(--border-radius-sm);
-  box-shadow: var(--box-shadow);
-}
-
-@media (max-width: 768px) {
-  .fu-calculator__image {
-    max-width: 150px;
-    max-height: 100px;
+  
+  /* 勝利モーダル */
+  .win-modal .form-group select {
+    width: 25%;
+    min-width: 70px;
+  }
+  
+  .win-modal__method-options {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .win-modal__actions {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .win-modal__actions .btn {
+    width: 100%;
+  }
+  
+  .win-modal .form-group {
+    margin-bottom: var(--spacing-md);
   }
 }
 
-
-
-/* ========================================
-   ModalTenpai.css - テンパイモーダル固有スタイル
-   ======================================== */
-
-.tenpai-modal {
-  /* 共通の.modal--smallを継承 */
-  max-width: 300px;
-}
-
-.tenpai-modal__title {
-  margin-bottom: var(--spacing-md);
-}
-
-.tenpai-modal__options {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-}
-
-.tenpai-modal__option {
-  display: block;
-  margin: 0.5rem 0;
-  text-align: left;
-}
-
-.tenpai-modal__actions {
-  display: flex;
-  gap: var(--spacing-sm);
-  justify-content: center;
-  margin-top: var(--spacing-md);
-}
-
-
-
-/* ========================================
-   ModalResult.css - テンパイモーダル固有スタイル
-   ======================================== */
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
-
-.modal {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
+@media (max-width: 480px) {
+  .modal {
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm);
+  }
+  
+  .modal__title {
+    font-size: 18px;
+  }
 }

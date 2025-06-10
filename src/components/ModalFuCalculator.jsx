@@ -5,7 +5,6 @@ import questions from './questions';
 import Question from './Question';
 import Result from './Result';
 import "./styles/modals.css";
-import './styles/ModalFuCalculator.css';
 
 function ModalFuCalculator({ visible, onCalculated, onCancel }) {
   const [currentId, setCurrentId] = useState("Q1");
@@ -123,7 +122,7 @@ function ModalFuCalculator({ visible, onCalculated, onCancel }) {
       <div className="modal modal--large fu-calculator-modal">
         <div className="modal__header">
           <h2>符計算</h2>
-          <button className="btn btn--close" onClick={handleModalCancel}>×</button>
+          
         </div>
         
         <div className="modal__content">

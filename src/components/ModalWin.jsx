@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import ModalFuCalculator from "./ModalFuCalculator";
 import "./styles/modals.css";
-import "./styles/ModalWin.css";
 
 const validFuList = [20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110];
 

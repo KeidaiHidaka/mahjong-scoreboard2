@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import "./styles/modals.css";
-import "./styles/ModalTenpai.css";
 
 function ModalTenpai({ visible, players, onConfirm, onCancel }) {
   const [selectedIndexes, setSelectedIndexes] = useState([]);
