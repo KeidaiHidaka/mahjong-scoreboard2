@@ -9,6 +9,6 @@ https://keidaihidaka.github.io/mahjong-scoreboard2/
 https://keidaihidaka.github.io/mahjong-scoreboard2/?player1=タナカ&player2=ヤマダ&player3=サトウ&player4=スズキ&dealerIndex=1
 
 - player1～4：1が画面下で他は反時計回り　初期値：プレイヤー1～4
-- dealerIndex；0がplayer1で他は反時計回り 初期値：ランダム
+- dealerIndex：0がplayer1で他は反時計回り 初期値：ランダム
 
 
