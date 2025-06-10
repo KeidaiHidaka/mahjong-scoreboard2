@@ -169,7 +169,7 @@ function App() {
   const [round, setRound] = useState({
     wind: "東",
     number: 1,
-    dealerIndex: isNaN(dealerIndexParam) ? 0 : dealerIndexParam,
+    dealerIndex: isNaN(dealerIndexParam) ? Math.floor(Math.random() * 4) : dealerIndexParam,
   });
   const [showModalTenpai, setShowModalTenpai] = useState(false);
   const [tenpaiIndexes, setTenpaiIndexes] = useState([]);
