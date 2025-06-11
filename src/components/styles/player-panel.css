@@ -235,7 +235,7 @@
   .player-panel.player-panel--top,
   .player-panel.player-panel--bottom {
     width: 200px;
-    height: 280px;
+    height: 250px;
   }
   
   .player-panel__name {
@@ -247,20 +247,7 @@
   }
   
   .player-panel__score {
-    font-size: 23px;
-  }
-}
-
-@media (max-height: 600px) {
-  .player-panel.player-panel--left,
-  .player-panel.player-panel--right {
-    width: 330px;
-    height: 75px;
-  }
-  
-  .player-panel.player-panel--top,
-  .player-panel.player-panel--bottom {
-    height: 100px;
+    font-size: 20px;
   }
 }
 
@@ -285,7 +272,7 @@
   .player-panel.player-panel--top,
   .player-panel.player-panel--bottom {
     width: 130px;
-    height: 220px;
+    height: 250px;
   }
   
   .player-panel__name {
@@ -294,6 +281,21 @@
   
   .player-panel__wind {
     font-size: 14px;
+  }
+}
+
+
+@media (max-height: 750px) {
+  .player-panel.player-panel--left,
+  .player-panel.player-panel--right {
+    width: 330px;
+    height: 100px;
+    font-size: 14px;
+  }
+  
+  .player-panel.player-panel--top,
+  .player-panel.player-panel--bottom {
+    height: 250px;
   }
 }
 
