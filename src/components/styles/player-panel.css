@@ -284,7 +284,6 @@
   }
 }
 
-
 @media (max-height: 750px) {
   .player-panel.player-panel--left,
   .player-panel.player-panel--right {
@@ -299,69 +298,72 @@
   }
 }
 
-
-/* スマホでは左右のプレイヤーパネルをさらにコンパクトに */
-/* スマホ用サイズ調整 */
-/* ボタンもコンパクトに */
-
-/* @media (max-width: 480px) {
-  .player-panel {
-    min-width: 100px;
-    padding: var(--spacing-sm);
-    max-height: 120px;
-    overflow: hidden;
-  }
-  
-  
+/* 横幅380px以下かつ縦幅700px以下の場合の特別調整 */
+@media (max-width: 380px) and (max-height: 700px) {
   .player-panel.player-panel--left,
   .player-panel.player-panel--right {
-    width: 300px; 
-    height: 85px;
+    width: 280px; /* さらに幅を縮小 */
+    height: 85px; /* 高さも縮小 */
     padding: var(--spacing-xs);
   }
   
+  .player-panel.player-panel--left .player-info,
+  .player-panel.player-panel--right .player-info {
+    gap: var(--spacing-sm); /* 要素間の間隔を縮小 */
+  }
+  
+  .player-panel.player-panel--left .player-panel__buttons,
+  .player-panel.player-panel--right .player-panel__buttons {
+    gap: 2px; /* ボタン間の間隔を縮小 */
+  }
+  
   .player-panel__name {
-    font-size: 11px;
-    margin-bottom: 2px;
+    font-size: 15px;
+  }
+  
+  .player-panel__wind {
+    font-size: 12px;
+    min-width: 25px;
+    padding: 2px 4px;
   }
   
   .player-panel__score {
-    font-size: 14px;
-    margin-bottom: 2px;
+    font-size: 15px;
+    padding: 2px 4px;
   }
-  
-  .player-panel__buttons {
-    gap: 2px;
-  }
-  
   
   .player-panel .btn {
-    font-size: 10px;
-    padding: 2px 6px;
+    font-size: 12px;
+    padding: 2px 4px;
   }
-} */
+}
 
-
-/* 極小画面用サイズ調整 */
-/* 
-@media (max-width: 380px) {
+/* さらに極小画面（320px以下かつ700px以下）の場合 */
+@media (max-width: 320px) and (max-height: 700px) {
   .player-panel.player-panel--left,
   .player-panel.player-panel--right {
-    width: 240px; 
-    height: 60px;
+    width: 240px; /* さらに幅を縮小 */
+    height: 75px;
     padding: 2px;
   }
   
   .player-panel__name {
-    font-size: 9px;
+    font-size: 15px;
+  }
+  
+  .player-panel__wind {
+    font-size: 10px;
+    min-width: 20px;
+    padding: 1px 3px;
   }
   
   .player-panel__score {
-    font-size: 10px;
+    font-size: 15px;
+    padding: 1px 3px;
   }
   
   .player-panel .btn {
-    font-size: 8px;
+    font-size: 10px;
     padding: 1px 3px;
   }
-} */
+}
