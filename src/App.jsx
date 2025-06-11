@@ -373,7 +373,9 @@ function App() {
 
   const handleDraw = () => {
     ryuukyokuAudio.play();
+    setShowModalOthers(false);
     setShowModalTenpai(true);
+    
   };
 
   const handleTenpaiConfirm = (indexes) => {
@@ -583,7 +585,6 @@ function App() {
       <CenterInfo 
         round={round} 
         reachSticks={reachSticks} 
-        onDraw={handleDraw} 
         onHaipai={handleHaipai}
         onOthers={handleOthers}
         className="center-info" 
@@ -661,6 +662,9 @@ function App() {
         onRanking={handleRanking}
         onPenalty={handlePenalty}
         onExport={handleExport}
+        onConfirm={handleTenpaiConfirm}
+        onCancel={handleTenpaiCancel}
+        onDraw={handleDraw} 
       />
 
       <ModalRanking
