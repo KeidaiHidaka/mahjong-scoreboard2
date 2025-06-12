@@ -1634,3 +1634,111 @@
     gap: 0.25rem;
   }
 }
+
+
+/* URL Generator Styles - modals.cssに追加 */
+
+.url-generator {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.url-generator__description {
+  color: #f8f9fa;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.url-generator__players h3 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+.url-generator__player-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.url-generator__player-item {
+  padding: 0.25rem 0;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.url-generator__player-item:not(:last-child) {
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.url-generator__url-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.url-generator__label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.url-generator__url-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.url-generator__url-text {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  resize: vertical;
+  min-height: 80px;
+  background: #f8f9fa;
+  color: #333;
+}
+
+.url-generator__url-text:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.url-generator__copy-btn {
+  align-self: flex-start;
+  min-width: 120px;
+  transition: all 0.2s ease;
+}
+
+.url-generator__copy-btn.btn--success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.url-generator__copy-btn.btn--success:hover {
+  background-color: #1e7e34;
+  border-color: #1c7430;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .url-generator__url-text {
+    font-size: 0.75rem;
+  }
+  
+  .url-generator__copy-btn {
+    width: 100%;
+  }
+}

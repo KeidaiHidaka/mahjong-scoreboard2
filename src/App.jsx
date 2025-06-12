@@ -17,6 +17,7 @@ import ModalRanking from './components/ModalRanking'
 import ModalPenalty from './components/ModalPenalty'
 import ModalExport from './components/ModalExport'
 import ModalScoreHistory from './components/ModalScoreHistory'
+import ModalUrlGenerator from './components/ModalUrlGenerator'
 
 import scoreTable  from './scoreTable'
 
@@ -189,8 +190,24 @@ function App() {
   const [showModalScoreHistory, setShowModalScoreHistory] = useState(false);
   const [showModalUndoConfirm, setShowModalUndoConfirm] = useState(false);
   const [undoPreview, setUndoPreview] = useState(null);
+  const [showModalUrlGenerate, setShowModalUrlGenerate] = useState(false);
 
   //handle集
+
+
+    // URL生成関連のハンドラー（他のハンドラーと一緒に追加）
+  
+    // URL生成モーダルを開く
+    const handleUrlGenerate = () => {
+      setShowModalOthers(false);
+      setShowModalUrlGenerate(true);
+    };
+
+    // URL生成モーダルを閉じる
+    const handleUrlGenerateClose = () => {
+      setShowModalUrlGenerate(false);
+    };
+    
     // 配牌開始列ボタンのハンドラーを追加
     const handleHaipai = () => {
       setShowModalHaipai(true);
@@ -792,199 +809,205 @@ function App() {
 
 
 
-  return (
-    <div className="mahjong-app">
-      {/* 上側プレイヤー（逆さま） */}
-      <div className="mahjong-app__top-half">
-        <PlayerPanel
-          {...players[2]}
-          className="player-panel panel--reversed player-panel--top"
-          reversed
-          onReach={() => handleReach(2)}
-          onRequestCancel={() => handleRequestCancel(2)}
-          onWin={(method) => handleWin(2, method)}
-          isDealer={round.dealerIndex === 2}          
-          onNameChange={(newName) => handleNameChange(2, newName)}
-          wind={getPlayerWind(2)}
-        />
-      </div>
-
-      {/* 左側プレイヤー（左向き） */}
-      <PlayerPanel
-        {...players[3]}
-        className="player-panel player-panel--left"
-        onReach={() => handleReach(3)}
-        onRequestCancel={() => handleRequestCancel(3)}
-        onWin={(method) => handleWin(3, method)}
-        isDealer={round.dealerIndex === 3}
-        onNameChange={(newName) => handleNameChange(3, newName)}
-        wind={getPlayerWind(3)}
-      />
-
-      {/* センター情報 */}
-      <CenterInfo 
-        round={round} 
-        reachSticks={reachSticks} 
-        onHaipai={handleHaipai}
-        onOthers={handleOthers}
-        className="center-info" 
-      />
-
-      {/* 右側プレイヤー（右向き） */}
-      <PlayerPanel
-        {...players[1]}
-        className="player-panel player-panel--right"
-        onReach={() => handleReach(1)}
-        onRequestCancel={() => handleRequestCancel(1)}
-        onWin={(method) => handleWin(1, method)}
-        isDealer={round.dealerIndex === 1}
-        onNameChange={(newName) => handleNameChange(1, newName)}
-        wind={getPlayerWind(1)}
-      />
-
-      {/* 下側プレイヤー（通常） */}
-      <div className="mahjong-app__bottom-half">
-        <PlayerPanel
-          {...players[0]}
-          className="player-panel player-panel--bottom"
-          onReach={() => handleReach(0)}
-          onRequestCancel={() => handleRequestCancel(0)}
-          onWin={(method) => handleWin(0, method)}
-          isDealer={round.dealerIndex === 0}
-          onNameChange={(newName) => handleNameChange(0, newName)}
-          wind={getPlayerWind(0)}
-        />
-      </div>
-
-      {/* モーダル類はそのまま */}
-      <ModalCancel
-        visible={cancelIndex !== null}
-        onConfirm={handleConfirmCancel}
-        onCancel={handleModalCancel}
-      />
-
-      <ModalWin
-        visible={showModalWin}
-        winnerIndex={winnerIndex}
-        players={players}
-        onSubmit={handleWinSubmit}
-        onCancel={handleWinCancel}
-        initialMethod={initialMethod}
-      />
-
-      <ModalResult
-        visible={showModalResult}
-        result={winResult}
-        players={players.map((p, i) => ({
-          ...p,
-          isDealer: i === winResult?.dealerIndex,
-        }))}
-        onClose={() => setShowModalResult(false)}
-      />
-
-      <ModalTenpai
-        visible={showModalTenpai}
-        players={players}
-        onConfirm={handleTenpaiConfirm}
-        onCancel={handleTenpaiCancel}
-      />
-
-      <ModalHaipai
-        visible={showModalHaipai}
-        onClose={handleHaipaiClose}
-        generateStart={generateHaipaiStart}
-      />
-
-
-      <ModalOthers
-        visible={showModalOthers}
-        onClose={handleOthersClose}
-        onRanking={handleRanking}
-        onPenalty={handlePenalty}
-        onExport={handleExport}
-        onScoreHistory={handleScoreHistory}
-        onConfirm={handleTenpaiConfirm}
-        onCancel={handleTenpaiCancel}
-        onDraw={handleDraw}
-        onUndo={handleUndoRequest}  // 追加
-      />
-
-      <ModalRanking
-        visible={showModalRanking}
-        players={players}
-        onClose={handleRankingClose}
-      />
-
-      <ModalPenalty
-        visible={showModalPenalty}
-        players={players}
-        round={round}
-        onConfirm={handlePenaltyConfirm}
-        onCancel={handlePenaltyCancel}
-      />
-
-      <ModalExport
-        visible={showModalExport}
-        players={players}
-        round={round}
-        onClose={handleExportClose}
-        onExport={handleCsvExport}
-      />
-
-      <ModalScoreHistory
-        visible={showModalScoreHistory}
-        history={scoreHistory}
-        onClose={handleScoreHistoryClose}
-        onCsvExport={handleScoreHistoryCsvExport}
-      />
-
-      {showModalUndoConfirm && (
-        <div className="modal-backdrop">
-          <div className="modal modal--medium">
-            <div className="modal__header">
-              <h2 className="modal__title">1つ戻る確認</h2>
-            </div>
-            <div className="modal__content">
-              <p>本当に1つ戻しますか？</p>
-              {undoPreview && (
-                <div className="undo-preview">
-                  <h3>削除される履歴:</h3>
-                  <div className="undo-preview__item">
-                    <div className="undo-preview__header">
-                      <span className="undo-preview__round">{undoPreview.wind}{undoPreview.number}局</span>
-                      <span className="undo-preview__time">{undoPreview.timestamp}</span>
-                    </div>
-                    <div className="undo-preview__type">{undoPreview.type}</div>
-                    <div className="undo-preview__changes">
-                      {undoPreview.scoreChanges.map((change, index) => {
-                        const changeClass = change.change > 0 ? 'undo-preview__change--positive' : 
-                                          change.change < 0 ? 'undo-preview__change--negative' : 
-                                          'undo-preview__change--neutral';
-                        return (
-                          <div key={index} className={`undo-preview__change ${changeClass}`}>
-                            {change.name}: {change.change > 0 ? '+' : ''}{change.change}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="modal__actions">
-              <button className="btn btn--danger" onClick={handleUndoConfirm}>
-                はい
-              </button>
-              <button className="btn btn--secondary" onClick={handleUndoCancel}>
-                いいえ
-              </button>
-            </div>
+    return (
+        <div className="mahjong-app">
+          {/* 上側プレイヤー（逆さま） */}
+          <div className="mahjong-app__top-half">
+            <PlayerPanel
+              {...players[2]}
+              className="player-panel panel--reversed player-panel--top"
+              reversed
+              onReach={() => handleReach(2)}
+              onRequestCancel={() => handleRequestCancel(2)}
+              onWin={(method) => handleWin(2, method)}
+              isDealer={round.dealerIndex === 2}          
+              onNameChange={(newName) => handleNameChange(2, newName)}
+              wind={getPlayerWind(2)}
+            />
           </div>
-        </div>
-      )}
 
-    </div>
-  );
+          {/* 左側プレイヤー（左向き） */}
+          <PlayerPanel
+            {...players[3]}
+            className="player-panel player-panel--left"
+            onReach={() => handleReach(3)}
+            onRequestCancel={() => handleRequestCancel(3)}
+            onWin={(method) => handleWin(3, method)}
+            isDealer={round.dealerIndex === 3}
+            onNameChange={(newName) => handleNameChange(3, newName)}
+            wind={getPlayerWind(3)}
+          />
+
+          {/* センター情報 */}
+          <CenterInfo 
+            round={round} 
+            reachSticks={reachSticks} 
+            onHaipai={handleHaipai}
+            onOthers={handleOthers}
+            className="center-info" 
+          />
+
+          {/* 右側プレイヤー（右向き） */}
+          <PlayerPanel
+            {...players[1]}
+            className="player-panel player-panel--right"
+            onReach={() => handleReach(1)}
+            onRequestCancel={() => handleRequestCancel(1)}
+            onWin={(method) => handleWin(1, method)}
+            isDealer={round.dealerIndex === 1}
+            onNameChange={(newName) => handleNameChange(1, newName)}
+            wind={getPlayerWind(1)}
+          />
+
+          {/* 下側プレイヤー（通常） */}
+          <div className="mahjong-app__bottom-half">
+            <PlayerPanel
+              {...players[0]}
+              className="player-panel player-panel--bottom"
+              onReach={() => handleReach(0)}
+              onRequestCancel={() => handleRequestCancel(0)}
+              onWin={(method) => handleWin(0, method)}
+              isDealer={round.dealerIndex === 0}
+              onNameChange={(newName) => handleNameChange(0, newName)}
+              wind={getPlayerWind(0)}
+            />
+          </div>
+
+          {/* モーダル類 */}
+          <ModalCancel
+            visible={cancelIndex !== null}
+            onConfirm={handleConfirmCancel}
+            onCancel={handleModalCancel}
+          />
+
+          <ModalWin
+            visible={showModalWin}
+            winnerIndex={winnerIndex}
+            players={players}
+            onSubmit={handleWinSubmit}
+            onCancel={handleWinCancel}
+            initialMethod={initialMethod}
+          />
+
+          <ModalResult
+            visible={showModalResult}
+            result={winResult}
+            players={players.map((p, i) => ({
+              ...p,
+              isDealer: i === winResult?.dealerIndex,
+            }))}
+            onClose={() => setShowModalResult(false)}
+          />
+
+          <ModalTenpai
+            visible={showModalTenpai}
+            players={players}
+            onConfirm={handleTenpaiConfirm}
+            onCancel={handleTenpaiCancel}
+          />
+
+          <ModalHaipai
+            visible={showModalHaipai}
+            onClose={handleHaipaiClose}
+            generateStart={generateHaipaiStart}
+          />
+
+          <ModalOthers
+            visible={showModalOthers}
+            onClose={handleOthersClose}
+            onRanking={handleRanking}
+            onPenalty={handlePenalty}
+            onExport={handleExport}
+            onScoreHistory={handleScoreHistory}
+            onConfirm={handleTenpaiConfirm}
+            onCancel={handleTenpaiCancel}
+            onDraw={handleDraw}
+            onUndo={handleUndoRequest}
+            onUrlGenerate={handleUrlGenerate}
+          />
+
+          <ModalRanking
+            visible={showModalRanking}
+            players={players}
+            onClose={handleRankingClose}
+          />
+
+          <ModalPenalty
+            visible={showModalPenalty}
+            players={players}
+            round={round}
+            onConfirm={handlePenaltyConfirm}
+            onCancel={handlePenaltyCancel}
+          />
+
+          <ModalExport
+            visible={showModalExport}
+            players={players}
+            round={round}
+            onClose={handleExportClose}
+            onExport={handleCsvExport}
+          />
+
+          <ModalScoreHistory
+            visible={showModalScoreHistory}
+            history={scoreHistory}
+            onClose={handleScoreHistoryClose}
+            onCsvExport={handleScoreHistoryCsvExport}
+          />
+
+          <ModalUrlGenerator
+            visible={showModalUrlGenerate}
+            players={players}
+            onClose={handleUrlGenerateClose}
+          />
+
+          {showModalUndoConfirm && (
+            <div className="modal-backdrop">
+              <div className="modal modal--medium">
+                <div className="modal__header">
+                  <h2 className="modal__title">1つ戻る確認</h2>
+                </div>
+                <div className="modal__content">
+                  <p>本当に1つ戻しますか？</p>
+                  {undoPreview && (
+                    <div className="undo-preview">
+                      <h3>削除される履歴:</h3>
+                      <div className="undo-preview__item">
+                        <div className="undo-preview__header">
+                          <span className="undo-preview__round">{undoPreview.wind}{undoPreview.number}局</span>
+                          <span className="undo-preview__time">{undoPreview.timestamp}</span>
+                        </div>
+                        <div className="undo-preview__type">{undoPreview.type}</div>
+                        <div className="undo-preview__changes">
+                          {undoPreview.scoreChanges.map((change, index) => {
+                            const changeClass = change.change > 0 ? 'undo-preview__change--positive' : 
+                                              change.change < 0 ? 'undo-preview__change--negative' : 
+                                              'undo-preview__change--neutral';
+                            return (
+                              <div key={index} className={`undo-preview__change ${changeClass}`}>
+                                {change.name}: {change.change > 0 ? '+' : ''}{change.change}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className="modal__actions">
+                  <button className="btn btn--danger" onClick={handleUndoConfirm}>
+                    はい
+                  </button>
+                  <button className="btn btn--secondary" onClick={handleUndoCancel}>
+                    いいえ
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+        </div>
+    );
 }
 
 export default App;

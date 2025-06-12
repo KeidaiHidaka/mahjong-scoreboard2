@@ -3,7 +3,7 @@
 import React from "react";
 import "./styles/modals.css";
 
-function ModalOthers({ visible, onClose, onRanking, onPenalty, onExport, onScoreHistory, onConfirm, onCancel, onDraw, onUndo }) {
+function ModalOthers({ visible, onClose, onRanking, onPenalty, onExport, onScoreHistory, onConfirm, onCancel, onDraw, onUndo, onUrlGenerate }) {
   if (!visible) return null;
 
   return (
@@ -30,6 +30,9 @@ function ModalOthers({ visible, onClose, onRanking, onPenalty, onExport, onScore
             </button>
             <button className="btn btn--primary others-button" onClick={onExport}>
               試合結果出力
+            </button>
+            <button className="btn btn--info others-button" onClick={onUrlGenerate}>
+              URL生成
             </button>
           </div>
         </div>
