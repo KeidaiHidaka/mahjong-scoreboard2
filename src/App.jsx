@@ -16,6 +16,7 @@ import ModalOthers from './components/ModalOthers'
 import ModalRanking from './components/ModalRanking'
 import ModalPenalty from './components/ModalPenalty'
 import ModalExport from './components/ModalExport'
+import ModalScoreHistory from './components/ModalScoreHistory'
 
 import scoreTable  from './scoreTable'
 
@@ -184,372 +185,464 @@ function App() {
   const [showModalRanking, setShowModalRanking] = useState(false);
   const [showModalPenalty, setShowModalPenalty] = useState(false);
   const [showModalExport, setShowModalExport] = useState(false);
+  const [scoreHistory, setScoreHistory] = useState([]);
+  const [showModalScoreHistory, setShowModalScoreHistory] = useState(false);
 
-  // 配牌開始列ボタンのハンドラーを追加
-  const handleHaipai = () => {
-    setShowModalHaipai(true);
-  };
+  //handle集
+    // 配牌開始列ボタンのハンドラーを追加
+    const handleHaipai = () => {
+      setShowModalHaipai(true);
+    };
 
-  const handleHaipaiClose = () => {
-    setShowModalHaipai(false);
-  };
+    const handleHaipaiClose = () => {
+      setShowModalHaipai(false);
+    };
 
-  // その他ボタンのハンドラー
-  const handleOthers = () => {
-    setShowModalOthers(true);
-  };
+    // その他ボタンのハンドラー
+    const handleOthers = () => {
+      setShowModalOthers(true);
+    };
 
-  const handleOthersClose = () => {
-    setShowModalOthers(false);
-  };
+    const handleOthersClose = () => {
+      setShowModalOthers(false);
+    };
 
-  // 順位モーダルのハンドラー
-  const handleRanking = () => {
-    setShowModalOthers(false);
-    setShowModalRanking(true);
-  };
+    // 順位モーダルのハンドラー
+    const handleRanking = () => {
+      setShowModalOthers(false);
+      setShowModalRanking(true);
+    };
 
-  const handleRankingClose = () => {
-    setShowModalRanking(false);
-  };
+    const handleRankingClose = () => {
+      setShowModalRanking(false);
+    };
 
-  // 罰符モーダルのハンドラー
-  const handlePenalty = () => {
-    setShowModalOthers(false);
-    setShowModalPenalty(true);
-  };
+    // 罰符モーダルのハンドラー
+    const handlePenalty = () => {
+      setShowModalOthers(false);
+      setShowModalPenalty(true);
+    };
 
-  const handlePenaltyConfirm = (chonboPlayerIndex) => {
-    const updatedPlayers = [...players];
-    const chonboPlayer = updatedPlayers[chonboPlayerIndex];
-    const isChonboDealer = chonboPlayerIndex === round.dealerIndex;
+    const handlePenaltyConfirm = (chonboPlayerIndex) => {
+      const originalScores = players.map(p => p.score); // 履歴用に元の点数を保存
+      const updatedPlayers = [...players];
+      const chonboPlayer = updatedPlayers[chonboPlayerIndex];
+      const isChonboDealer = chonboPlayerIndex === round.dealerIndex;
 
-    let details = [];
-    let totalPenalty = 0;
+      let details = [];
+      let totalPenalty = 0;
 
-    if (isChonboDealer) {
-      // 親のチョンボ：他家全員に4000点ずつ支払い
-      updatedPlayers.forEach((player, index) => {
-        if (index !== chonboPlayerIndex) {
-          player.score += 4000;
-          chonboPlayer.score -= 4000;
-          totalPenalty += 4000;
-          details.push({
-            from: chonboPlayer.name,
-            to: player.name,
-            points: 4000,
-          });
-        }
-      });
-    } else {
-      // 子のチョンボ：親に4000点、他の子に2000点ずつ支払い
-      updatedPlayers.forEach((player, index) => {
-        if (index !== chonboPlayerIndex) {
-          const penalty = index === round.dealerIndex ? 4000 : 2000;
-          player.score += penalty;
-          chonboPlayer.score -= penalty;
-          totalPenalty += penalty;
-          details.push({
-            from: chonboPlayer.name,
-            to: player.name,
-            points: penalty,
-          });
-        }
-      });
-    }
-
-    setPlayers(updatedPlayers);
-    setShowModalPenalty(false);
-
-    // 結果表示
-    setWinResult({
-      winner: "チョンボ",
-      method: "penalty",
-      han: 0,
-      fu: 0,
-      details,
-      reachBonus: 0,
-      totalGain: totalPenalty,
-      dealerIndex: round.dealerIndex,
-      chonboPlayer: chonboPlayer.name,
-    });
-
-    setShowModalResult(true);
-  };
-
-  const handlePenaltyCancel = () => {
-    setShowModalPenalty(false);
-  };
-
-  // エクスポートモーダルのハンドラー
-  const handleExport = () => {
-    setShowModalOthers(false);
-    setShowModalExport(true);
-  };
-
-  const handleExportClose = () => {
-    setShowModalExport(false);
-  };
-
-  const handleCsvExport = (csvContent, filename) => {
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    if (link.download !== undefined) {
-      const url = URL.createObjectURL(blob);
-      link.setAttribute('href', url);
-      link.setAttribute('download', filename);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-    setShowModalExport(false);
-  };
-
-  // 自風を計算する関数
-  const getPlayerWind = (playerIndex) => {
-    // 親（dealerIndex）が東風、そこから時計回りに南・西・北
-    const windIndex = (playerIndex - round.dealerIndex + 4) % 4;
-    return winds[windIndex];
-  };
-
-  const handleNameChange = (index, newName) => {
-    const updated = [...players];
-    updated[index].name = newName;
-    setPlayers(updated);
-  };
-
-  const advanceRound = (winnerIndex = null, tenpaiIndexes = []) => {
-    setRound((prev) => {
-      let dealerIndex = prev.dealerIndex;
-      let nextDealerIndex = dealerIndex;
-      let nextNumber = prev.number;
-      let nextWind = prev.wind;
-
-      if (winnerIndex !== null) {
-        const dealerWon = winnerIndex === dealerIndex;
-        if (!dealerWon) {
-          nextDealerIndex = (dealerIndex + 1) % 4;
-          nextNumber++;
-        }
+      if (isChonboDealer) {
+        // 親のチョンボ：他家全員に4000点ずつ支払い
+        updatedPlayers.forEach((player, index) => {
+          if (index !== chonboPlayerIndex) {
+            player.score += 4000;
+            chonboPlayer.score -= 4000;
+            totalPenalty += 4000;
+            details.push({
+              from: chonboPlayer.name,
+              to: player.name,
+              points: 4000,
+            });
+          }
+        });
       } else {
-        if (tenpaiIndexes.length === 0) {
-          // 全員ノーテン → 親継続
-        } else if (tenpaiIndexes.length === 4) {
-          // 全員テンパイ → 親交代
-          nextDealerIndex = (dealerIndex + 1) % 4;
-          nextNumber++;
-        } else {
-          if (!tenpaiIndexes.includes(dealerIndex)) {
+        // 子のチョンボ：親に4000点、他の子に2000点ずつ支払い
+        updatedPlayers.forEach((player, index) => {
+          if (index !== chonboPlayerIndex) {
+            const penalty = index === round.dealerIndex ? 4000 : 2000;
+            player.score += penalty;
+            chonboPlayer.score -= penalty;
+            totalPenalty += penalty;
+            details.push({
+              from: chonboPlayer.name,
+              to: player.name,
+              points: penalty,
+            });
+          }
+        });
+      }
+
+      // 点数変動を計算
+      const scoreChanges = updatedPlayers.map((player, index) => ({
+        name: player.name,
+        change: player.score - originalScores[index]
+      }));
+
+      setPlayers(updatedPlayers);
+      setShowModalPenalty(false);
+
+      // 履歴に追加
+      addToHistory(`チョンボ（${chonboPlayer.name}）`, details, 0, scoreChanges, players[round.dealerIndex].name);
+
+      // 結果表示
+      setWinResult({
+        winner: "チョンボ",
+        method: "penalty",
+        han: 0,
+        fu: 0,
+        details,
+        reachBonus: 0,
+        totalGain: totalPenalty,
+        dealerIndex: round.dealerIndex,
+        chonboPlayer: chonboPlayer.name,
+      });
+
+      setShowModalResult(true);
+    };
+
+    const handlePenaltyCancel = () => {
+      setShowModalPenalty(false);
+    };
+
+    // エクスポートモーダルのハンドラー
+    const handleExport = () => {
+      setShowModalOthers(false);
+      setShowModalExport(true);
+    };
+
+    const handleExportClose = () => {
+      setShowModalExport(false);
+    };
+
+    const handleCsvExport = (csvContent, filename) => {
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+      setShowModalExport(false);
+    };
+
+    // 自風を計算する関数
+    const getPlayerWind = (playerIndex) => {
+      // 親（dealerIndex）が東風、そこから時計回りに南・西・北
+      const windIndex = (playerIndex - round.dealerIndex + 4) % 4;
+      return winds[windIndex];
+    };
+
+    const handleNameChange = (index, newName) => {
+      const updated = [...players];
+      updated[index].name = newName;
+      setPlayers(updated);
+    };
+
+    const advanceRound = (winnerIndex = null, tenpaiIndexes = []) => {
+      setRound((prev) => {
+        let dealerIndex = prev.dealerIndex;
+        let nextDealerIndex = dealerIndex;
+        let nextNumber = prev.number;
+        let nextWind = prev.wind;
+
+        if (winnerIndex !== null) {
+          const dealerWon = winnerIndex === dealerIndex;
+          if (!dealerWon) {
             nextDealerIndex = (dealerIndex + 1) % 4;
             nextNumber++;
           }
-        }
-      }
-
-      if (nextNumber > 4) {
-        const nextWindIndex = winds.indexOf(prev.wind) + 1;
-        if (nextWindIndex < winds.length) {
-          nextWind = winds[nextWindIndex];
-          nextNumber = 1;
         } else {
-          nextWind = "終了";
-          nextNumber = 0;
+          if (tenpaiIndexes.length === 0) {
+            // 全員ノーテン → 親継続
+          } else if (tenpaiIndexes.length === 4) {
+            // 全員テンパイ → 親交代
+            nextDealerIndex = (dealerIndex + 1) % 4;
+            nextNumber++;
+          } else {
+            if (!tenpaiIndexes.includes(dealerIndex)) {
+              nextDealerIndex = (dealerIndex + 1) % 4;
+              nextNumber++;
+            }
+          }
         }
+
+        if (nextNumber > 4) {
+          const nextWindIndex = winds.indexOf(prev.wind) + 1;
+          if (nextWindIndex < winds.length) {
+            nextWind = winds[nextWindIndex];
+            nextNumber = 1;
+          } else {
+            nextWind = "終了";
+            nextNumber = 0;
+          }
+        }
+
+        return {
+          dealerIndex: nextDealerIndex,
+          wind: nextWind,
+          number: nextNumber,
+        };
+      });
+    };
+
+    const resetReach = () => {
+      const reset = players.map((p) => ({ ...p, reached: false }));
+      setPlayers(reset);
+    };
+
+    const handleDraw = () => {
+      ryuukyokuAudio.play();
+      setShowModalOthers(false);
+      setShowModalTenpai(true);
+      
+    };
+
+    // 6. handleTenpaiConfirm の更新（既存の関数を置き換え）
+    const handleTenpaiConfirm = (indexes) => {
+      setShowModalTenpai(false);
+      setTenpaiIndexes(indexes);
+
+      const originalScores = players.map(p => p.score); // 履歴用に元の点数を保存
+      const updated = [...players];
+      const tenpai = indexes;
+      const noten = players.map((_, i) => i).filter((i) => !tenpai.includes(i));
+
+      let details = [];
+      let totalPenalty = 0;
+
+      if (tenpai.length > 0 && noten.length > 0) {
+        totalPenalty = 3000;
+        const eachPenalty = Math.floor(totalPenalty / noten.length);
+        const eachReward = Math.floor(totalPenalty / tenpai.length);
+
+        noten.forEach((i) => (updated[i].score -= eachPenalty));
+        tenpai.forEach((i) => (updated[i].score += eachReward));
+
+        details = tenpai.map((i) => ({
+          from: "ノーテン",
+          to: players[i].name,
+          points: eachReward,
+        }));
       }
 
-      return {
-        dealerIndex: nextDealerIndex,
-        wind: nextWind,
-        number: nextNumber,
-      };
-    });
-  };
-
-  const resetReach = () => {
-    const reset = players.map((p) => ({ ...p, reached: false }));
-    setPlayers(reset);
-  };
-
-  const handleDraw = () => {
-    ryuukyokuAudio.play();
-    setShowModalOthers(false);
-    setShowModalTenpai(true);
-    
-  };
-
-  const handleTenpaiConfirm = (indexes) => {
-    setShowModalTenpai(false);
-    setTenpaiIndexes(indexes);
-
-    const updated = [...players];
-    const tenpai = indexes;
-    const noten = players.map((_, i) => i).filter((i) => !tenpai.includes(i));
-
-    let details = [];
-    let totalPenalty = 0;
-
-    if (tenpai.length > 0 && noten.length > 0) {
-      totalPenalty = 3000;
-      const eachPenalty = Math.floor(totalPenalty / noten.length);
-      const eachReward = Math.floor(totalPenalty / tenpai.length);
-
-      noten.forEach((i) => (updated[i].score -= eachPenalty));
-      tenpai.forEach((i) => (updated[i].score += eachReward));
-
-      details = tenpai.map((i) => ({
-        from: "ノーテン",
-        to: players[i].name,
-        points: eachReward,
+      // 点数変動を計算
+      const scoreChanges = updated.map((player, index) => ({
+        name: player.name,
+        change: player.score - originalScores[index]
       }));
-    }
 
-    setPlayers(updated);
-    setWinResult({
-      winner: "流局",
-      method: "ryukyoku",
-      han: 0,
-      fu: 0,
-      details,
-      reachBonus: 0,
-      totalGain: totalPenalty,
-      dealerIndex: round.dealerIndex,
-    });
-
-    setShowModalResult(true);
-    resetReach();
-    advanceRound(null, indexes);
-  };
-
-  const handleTenpaiCancel = () => {
-    setShowModalTenpai(false);
-  };
-
-  const handleWin = (index,mothod) => {
-    if (mothod === "tsumo") {
-      tsumoAudio.play();
-    } else{
-      ronAudio.play();
-    }
-    setInitialMethod(mothod);
-    setWinnerIndex(index);
-    setShowModalWin(true);
-  };
-
-  const handleWinSubmit = ({ han, fu, method, loserIndex }) => {
-    const updatedPlayers = [...players];
-    const winner = updatedPlayers[winnerIndex];
-    const winnerIsDealer = winnerIndex === round.dealerIndex;
-
-    const result = calculateScore({
-      han,
-      fu,
-      isDealer: winnerIsDealer,
-      isTsumo: method === "tsumo",
-    });
-
-    console.log("🧮 計算結果:", result);
-
-    if (result.error) {
-      alert(result.error);
-      return;
-    }
-
-    let details = [];
-    let gain = 0;
-
-    if (method === "ron") {
-      const loser = updatedPlayers[loserIndex];
-      loser.score -= result.total;
-      winner.score += result.total;
-      gain += result.total;
-      details.push({
-        from: loser.name,
-        to: winner.name,
-        points: result.total,
-      });
-    } else {
-      // tsumo（自摸）
-      updatedPlayers.forEach((p, i) => {
-        if (i === winnerIndex) return;
-        const isDealer = i === round.dealerIndex;
-        const pay = winnerIsDealer
-          ? result.child
-          : isDealer
-          ? result.parent
-          : result.child;
-        p.score -= pay;
-        winner.score += pay;
-        gain += pay;
-        details.push({
-          from: p.name,
-          to: winner.name,
-          points: pay,
-        });
-      });
-    }
-
-    // リーチ棒
-    const reachBonus = reachSticks * 1000;
-    if (reachSticks > 0) {
-      winner.score += reachBonus;
-      gain += reachBonus;
-    }
-
-    const resetPlayers = updatedPlayers.map((p) => ({ ...p, reached: false }));
-    setPlayers(resetPlayers);
-    setReachSticks(0);
-    setShowModalWin(false);
-
-    setWinResult({
-      winner: winner.name,
-      han,
-      fu,
-      method,
-      details,
-      reachBonus,
-      totalGain: gain,
-      dealerIndex: round.dealerIndex,
-      label: result.type || null,
-    });
-
-    setShowModalResult(true);
-    advanceRound(winnerIndex, []);
-  };
-
-  const handleWinCancel = () => {
-    setShowModalWin(false);
-  };
-
-  const handleReach = (index) => {
-    if (players[index].reached || players[index].score < 1000) return;
-    reachSound.play();
-    const updated = [...players];
-    updated[index].score -= 1000;
-    updated[index].reached = true;
-    setPlayers(updated);
-    setReachSticks(reachSticks + 1);
-  };
-
-  const handleRequestCancel = (index) => {
-    setCancelIndex(index);
-  };
-
-  const handleConfirmCancel = () => {
-    const updated = [...players];
-    const index = cancelIndex;
-    if (updated[index].reached) {
-      updated[index].score += 1000;
-      updated[index].reached = false;
       setPlayers(updated);
-      setReachSticks((r) => Math.max(0, r - 1));
-    }
-    setCancelIndex(null);
-  };
 
-  const handleModalCancel = () => {
-    setCancelIndex(null);
-  };
+      // 履歴に追加
+      const tenpaiNames = tenpai.map(i => players[i].name).join(', ');
+      const historyType = tenpai.length === 0 ? "流局（全員ノーテン）" : 
+                        tenpai.length === 4 ? "流局（全員テンパイ）" : 
+                        `流局（テンパイ: ${tenpaiNames}）`;
+      addToHistory(historyType, details, 0, scoreChanges, players[round.dealerIndex].name);
+
+      setWinResult({
+        winner: "流局",
+        method: "ryukyoku",
+        han: 0,
+        fu: 0,
+        details,
+        reachBonus: 0,
+        totalGain: totalPenalty,
+        dealerIndex: round.dealerIndex,
+      });
+
+      setShowModalResult(true);
+      resetReach();
+      advanceRound(null, indexes);
+    };
+
+
+    const handleTenpaiCancel = () => {
+      setShowModalTenpai(false);
+    };
+
+    const handleWin = (index,mothod) => {
+      if (mothod === "tsumo") {
+        tsumoAudio.play();
+      } else{
+        ronAudio.play();
+      }
+      setInitialMethod(mothod);
+      setWinnerIndex(index);
+      setShowModalWin(true);
+    };
+
+    // 7. handleWinSubmit の更新（既存の関数を置き換え）
+    const handleWinSubmit = ({ han, fu, method, loserIndex }) => {
+      const originalScores = players.map(p => p.score); // 履歴用に元の点数を保存
+      const updatedPlayers = [...players];
+      const winner = updatedPlayers[winnerIndex];
+      const winnerIsDealer = winnerIndex === round.dealerIndex;
+
+      const result = calculateScore({
+        han,
+        fu,
+        isDealer: winnerIsDealer,
+        isTsumo: method === "tsumo",
+      });
+
+      console.log("🧮 計算結果:", result);
+
+      if (result.error) {
+        alert(result.error);
+        return;
+      }
+
+      let details = [];
+      let gain = 0;
+
+      if (method === "ron") {
+        const loser = updatedPlayers[loserIndex];
+        loser.score -= result.total;
+        winner.score += result.total;
+        gain += result.total;
+        details.push({
+          from: loser.name,
+          to: winner.name,
+          points: result.total,
+        });
+      } else {
+        // tsumo（自摸）
+        updatedPlayers.forEach((p, i) => {
+          if (i === winnerIndex) return;
+          const isDealer = i === round.dealerIndex;
+          const pay = winnerIsDealer
+            ? result.child
+            : isDealer
+            ? result.parent
+            : result.child;
+          p.score -= pay;
+          winner.score += pay;
+          gain += pay;
+          details.push({
+            from: p.name,
+            to: winner.name,
+            points: pay,
+          });
+        });
+      }
+
+      // リーチ棒
+      const reachBonus = reachSticks * 1000;
+      if (reachSticks > 0) {
+        winner.score += reachBonus;
+        gain += reachBonus;
+      }
+
+      // 点数変動を計算
+      const scoreChanges = updatedPlayers.map((player, index) => ({
+        name: player.name,
+        change: player.score - originalScores[index]
+      }));
+
+      const resetPlayers = updatedPlayers.map((p) => ({ ...p, reached: false }));
+      setPlayers(resetPlayers);
+      setReachSticks(0);
+      setShowModalWin(false);
+
+      // 履歴に追加
+      const historyType = `${winner.name} ${method === "tsumo" ? "ツモ" : "ロン"} ${han}翻${fu}符`;
+      addToHistory(historyType, details, reachBonus, scoreChanges, players[round.dealerIndex].name);
+
+      setWinResult({
+        winner: winner.name,
+        han,
+        fu,
+        method,
+        details,
+        reachBonus,
+        totalGain: gain,
+        dealerIndex: round.dealerIndex,
+        label: result.type || null,
+      });
+
+      setShowModalResult(true);
+      advanceRound(winnerIndex, []);
+    };
+
+
+    const handleWinCancel = () => {
+      setShowModalWin(false);
+    };
+
+    const handleReach = (index) => {
+      if (players[index].reached || players[index].score < 1000) return;
+      reachSound.play();
+      const updated = [...players];
+      updated[index].score -= 1000;
+      updated[index].reached = true;
+      setPlayers(updated);
+      setReachSticks(reachSticks + 1);
+    };
+
+    const handleRequestCancel = (index) => {
+      setCancelIndex(index);
+    };
+
+    const handleConfirmCancel = () => {
+      const updated = [...players];
+      const index = cancelIndex;
+      if (updated[index].reached) {
+        updated[index].score += 1000;
+        updated[index].reached = false;
+        setPlayers(updated);
+        setReachSticks((r) => Math.max(0, r - 1));
+      }
+      setCancelIndex(null);
+    };
+
+    const handleModalCancel = () => {
+      setCancelIndex(null);
+    };
+
+    // 3. 履歴に項目を追加する関数（他のハンドラー関数と一緒に追加）
+    const addToHistory = (type, details, reachBonus = 0, scoreChanges = [], dealerName = "") => {
+      const timestamp = new Date().toLocaleTimeString('ja-JP', { 
+        hour12: false, 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      });
+      
+      const historyItem = {
+        wind: round.wind,
+        number: round.number,
+        type,
+        details,
+        reachBonus,
+        scoreChanges,
+        dealerName,
+        timestamp,
+      };
+      
+      setScoreHistory(prev => [...prev, historyItem]);
+    };
+
+  // 4. 点数移動履歴モーダルのハンドラー（他のモーダルハンドラーと一緒に追加）
+    const handleScoreHistory = () => {
+      setShowModalOthers(false);
+      setShowModalScoreHistory(true);
+    };
+
+    const handleScoreHistoryClose = () => {
+      setShowModalScoreHistory(false);
+    };
+
+    const handleScoreHistoryCsvExport = (csvContent, filename) => {
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+      setShowModalScoreHistory(false);
+    };
+
+
 
 
   return (
@@ -662,6 +755,7 @@ function App() {
         onRanking={handleRanking}
         onPenalty={handlePenalty}
         onExport={handleExport}
+        onScoreHistory={handleScoreHistory}
         onConfirm={handleTenpaiConfirm}
         onCancel={handleTenpaiCancel}
         onDraw={handleDraw} 
@@ -687,6 +781,13 @@ function App() {
         round={round}
         onClose={handleExportClose}
         onExport={handleCsvExport}
+      />
+
+      <ModalScoreHistory
+        visible={showModalScoreHistory}
+        history={scoreHistory}
+        onClose={handleScoreHistoryClose}
+        onCsvExport={handleScoreHistoryCsvExport}
       />
 
     </div>

@@ -3,7 +3,7 @@
 import React from "react";
 import "./styles/modals.css";
 
-function ModalOthers({ visible, onClose, onRanking, onPenalty, onExport, onConfirm, onCancel, onDraw }) {
+function ModalOthers({ visible, onClose, onRanking, onPenalty, onExport, onScoreHistory, onConfirm, onCancel, onDraw }) {
   if (!visible) return null;
 
   return (
@@ -18,6 +18,9 @@ function ModalOthers({ visible, onClose, onRanking, onPenalty, onExport, onConfi
             <button className="btn btn--light mahjong-app__draw-button" onClick={onDraw}>流局</button>
             <button className="btn btn--primary others-button" onClick={onRanking}>
               現在の順位
+            </button>
+            <button className="btn btn--primary others-button" onClick={onScoreHistory}>
+              点数移動履歴
             </button>
             <button className="btn btn--primary others-button" onClick={onPenalty}>
               満貫罰符
