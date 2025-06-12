@@ -1510,3 +1510,127 @@
   }
 }
 
+/* ========================================
+   1つ戻るモーダルのスタイル
+   ======================================== */
+
+/* 戻る確認モーダルのプレビュー部分 */
+.undo-preview {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.undo-preview h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.undo-preview__item {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 0.75rem;
+}
+
+.undo-preview__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.undo-preview__round {
+  font-weight: 600;
+  color: var(--primary-color);
+  font-size: 0.9rem;
+}
+
+.undo-preview__time {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-family: monospace;
+}
+
+.undo-preview__type {
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.undo-preview__changes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+}
+
+.undo-preview__change {
+  padding: 0.4rem 0.6rem;
+  background-color: var(--bg-secondary);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+  border: 1px solid var(--border-light);
+}
+
+.undo-preview__change:has-text("+") {
+  color: var(--success-color);
+  background-color: rgba(34, 197, 94, 0.1);
+  border-color: var(--success-color);
+}
+
+.undo-preview__change:has-text("-") {
+  color: var(--danger-color);
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: var(--danger-color);
+}
+
+/* プラス・マイナスの値に応じた色分け（JavaScriptで動的にクラスを追加する場合） */
+.undo-preview__change--positive {
+  color: var(--success-color);
+  background-color: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.undo-preview__change--negative {
+  color: var(--danger-color);
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.undo-preview__change--neutral {
+  color: var(--text-secondary);
+  background-color: var(--bg-secondary);
+  border-color: var(--border-light);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 480px) {
+  .undo-preview {
+    padding: 0.75rem;
+  }
+  
+  .undo-preview__changes {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.4rem;
+  }
+  
+  .undo-preview__change {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .undo-preview__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}

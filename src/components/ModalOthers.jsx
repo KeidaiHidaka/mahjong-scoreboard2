@@ -3,7 +3,7 @@
 import React from "react";
 import "./styles/modals.css";
 
-function ModalOthers({ visible, onClose, onRanking, onPenalty, onExport, onScoreHistory, onConfirm, onCancel, onDraw }) {
+function ModalOthers({ visible, onClose, onRanking, onPenalty, onExport, onScoreHistory, onConfirm, onCancel, onDraw, onUndo }) {
   if (!visible) return null;
 
   return (
@@ -16,6 +16,9 @@ function ModalOthers({ visible, onClose, onRanking, onPenalty, onExport, onScore
         <div className="modal__content">
           <div className="others-buttons">
             <button className="btn btn--light mahjong-app__draw-button" onClick={onDraw}>流局</button>
+            <button className="btn btn--warning undo-button" onClick={onUndo}>
+              ← 1つ戻る
+            </button>
             <button className="btn btn--primary others-button" onClick={onRanking}>
               現在の順位
             </button>

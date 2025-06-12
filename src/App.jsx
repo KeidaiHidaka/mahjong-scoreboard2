@@ -187,6 +187,8 @@ function App() {
   const [showModalExport, setShowModalExport] = useState(false);
   const [scoreHistory, setScoreHistory] = useState([]);
   const [showModalScoreHistory, setShowModalScoreHistory] = useState(false);
+  const [showModalUndoConfirm, setShowModalUndoConfirm] = useState(false);
+  const [undoPreview, setUndoPreview] = useState(null);
 
   //handle集
     // 配牌開始列ボタンのハンドラーを追加
@@ -205,6 +207,108 @@ function App() {
 
     const handleOthersClose = () => {
       setShowModalOthers(false);
+    };
+
+    // 2. handleUndoRequest - 1つ戻るボタンが押された時（handleOthers関数の後に追加）
+    const handleUndoRequest = () => {
+      if (scoreHistory.length === 0) {
+        alert('戻る履歴がありません');
+        return;
+      }
+      
+      const lastHistory = scoreHistory[scoreHistory.length - 1];
+      
+      // 現在リーチしている人をチェック
+      const currentReachPlayers = players
+        .map((player, index) => ({ ...player, index }))
+        .filter(player => player.reached);
+      
+      console.log("現在リーチしているプレイヤー:", currentReachPlayers);
+      
+      // プレビューに現在のリーチ情報も含める
+      const enhancedPreview = {
+        ...lastHistory,
+        currentReachPlayers: currentReachPlayers.map(p => p.name),
+        currentReachCount: currentReachPlayers.length
+      };
+      
+      setUndoPreview(enhancedPreview);
+      setShowModalUndoConfirm(true);
+    };
+
+    // 3. handleUndoConfirm - 戻ることを確認した時
+    const handleUndoConfirm = () => {
+      if (scoreHistory.length === 0) return;
+      
+      const lastHistory = scoreHistory[scoreHistory.length - 1];
+      const updatedPlayers = [...players];
+      
+      // 履歴データの整合性チェック
+      if (!lastHistory || !lastHistory.reachStates || !Array.isArray(lastHistory.reachStates) || 
+          !lastHistory.scoreChanges || !Array.isArray(lastHistory.scoreChanges)) {
+        alert('履歴データが不完全で復元できません');
+        setShowModalUndoConfirm(false);
+        setUndoPreview(null);
+        return;
+      }
+      
+      // 現在リーチしている人の情報を保存
+      const currentReachPlayers = players
+        .map((player, index) => ({ ...player, index }))
+        .filter(player => player.reached);
+      
+      console.log("戻る前の現在リーチプレイヤー:", currentReachPlayers);
+      console.log("復元するリーチ状態:", lastHistory.reachStates);
+      
+      // まず点数変動を逆算して復元
+      lastHistory.scoreChanges.forEach((change, index) => {
+        if (change && typeof change.change === 'number') {
+          updatedPlayers[index].score -= change.change;
+        }
+      });
+      
+      // 現在リーチしている全ての人をまず解除し、1000点を戻す
+      // これにより、履歴後に行われたリーチを全て取り消す
+      currentReachPlayers.forEach(({ index }) => {
+        updatedPlayers[index].score += 1000;
+        updatedPlayers[index].reached = false;
+        console.log(`${updatedPlayers[index].name}のリーチを解除し、1000点を復元`);
+      });
+      
+      // 次に、履歴時点でリーチしていた人を復元
+      // この時点で既にすべてのリーチは解除されているので、単純に設定するだけ
+      lastHistory.reachStates.forEach((wasReached, index) => {
+        if (wasReached && index < updatedPlayers.length) {
+          updatedPlayers[index].reached = true;
+          // 履歴時点でリーチしていた場合は1000点を差し引く必要はない
+          // （元の点数復元で既に処理済み）
+        }
+      });
+      
+      // リーチ棒の復元（履歴に保存された値、または0）
+      setReachSticks(lastHistory.currentReachSticks || 0);
+      
+      // 局情報の復元
+      if (lastHistory.roundInfo) {
+        setRound(lastHistory.roundInfo);
+      }
+      
+      // 履歴から最後の項目を削除
+      setScoreHistory(prev => prev.slice(0, -1));
+      
+      // プレイヤー状態を更新
+      setPlayers(updatedPlayers);
+      
+      // モーダルを閉じる
+      setShowModalUndoConfirm(false);
+      setShowModalOthers(false);
+      setUndoPreview(null);
+    };
+
+    // 4. handleUndoCancel - 戻ることをキャンセルした時
+    const handleUndoCancel = () => {
+      setShowModalUndoConfirm(false);
+      setUndoPreview(null);
     };
 
     // 順位モーダルのハンドラー
@@ -468,8 +572,13 @@ function App() {
     };
 
     // 7. handleWinSubmit の更新（既存の関数を置き換え）
+
     const handleWinSubmit = ({ han, fu, method, loserIndex }) => {
-      const originalScores = players.map(p => p.score); // 履歴用に元の点数を保存
+      const originalScores = players.map(p => p.score);
+      const originalRound = { ...round }; // 現在の局情報を保存
+      const originalReachStates = players.map(p => p.reached);
+      const originalReachSticks = reachSticks;
+      
       const updatedPlayers = [...players];
       const winner = updatedPlayers[winnerIndex];
       const winnerIsDealer = winnerIndex === round.dealerIndex;
@@ -481,8 +590,6 @@ function App() {
         isTsumo: method === "tsumo",
       });
 
-      console.log("🧮 計算結果:", result);
-
       if (result.error) {
         alert(result.error);
         return;
@@ -490,44 +597,62 @@ function App() {
 
       let details = [];
       let gain = 0;
+      let reachBonus = 0; // reachBonusを定義
 
-      if (method === "ron") {
+      if (method === "tsumo") {
+        // ツモの場合
+        if (winnerIsDealer) {
+          // 親ツモ
+          const childPay = result.child;
+          updatedPlayers.forEach((player, index) => {
+            if (index !== winnerIndex) {
+              player.score -= childPay;
+              details.push({
+                from: player.name,
+                to: winner.name,
+                points: childPay,
+              });
+            }
+          });
+          gain = childPay * 3;
+        } else {
+          // 子ツモ
+          const parentPay = result.parent;
+          const childPay = result.child;
+          updatedPlayers.forEach((player, index) => {
+            if (index !== winnerIndex) {
+              const payment = index === round.dealerIndex ? parentPay : childPay;
+              player.score -= payment;
+              details.push({
+                from: player.name,
+                to: winner.name,
+                points: payment,
+              });
+            }
+          });
+          gain = parentPay + (childPay * 2);
+        }
+      } else {
+        // ロンの場合
         const loser = updatedPlayers[loserIndex];
-        loser.score -= result.total;
-        winner.score += result.total;
-        gain += result.total;
+        const payment = result.total;
+        loser.score -= payment;
+        gain = payment;
         details.push({
           from: loser.name,
           to: winner.name,
-          points: result.total,
-        });
-      } else {
-        // tsumo（自摸）
-        updatedPlayers.forEach((p, i) => {
-          if (i === winnerIndex) return;
-          const isDealer = i === round.dealerIndex;
-          const pay = winnerIsDealer
-            ? result.child
-            : isDealer
-            ? result.parent
-            : result.child;
-          p.score -= pay;
-          winner.score += pay;
-          gain += pay;
-          details.push({
-            from: p.name,
-            to: winner.name,
-            points: pay,
-          });
+          points: payment,
         });
       }
 
-      // リーチ棒
-      const reachBonus = reachSticks * 1000;
+      // リーチボーナスの計算
       if (reachSticks > 0) {
-        winner.score += reachBonus;
+        reachBonus = reachSticks * 1000;
         gain += reachBonus;
       }
+
+      // 勝者に得点を加算
+      winner.score += gain;
 
       // 点数変動を計算
       const scoreChanges = updatedPlayers.map((player, index) => ({
@@ -540,9 +665,22 @@ function App() {
       setReachSticks(0);
       setShowModalWin(false);
 
-      // 履歴に追加
+      // 履歴に追加（advanceRoundより前）
       const historyType = `${winner.name} ${method === "tsumo" ? "ツモ" : "ロン"} ${han}翻${fu}符`;
-      addToHistory(historyType, details, reachBonus, scoreChanges, players[round.dealerIndex].name);
+      const historyItem = {
+        wind: originalRound.wind,
+        number: originalRound.number,
+        type: historyType,
+        details,
+        reachBonus: reachBonus,
+        scoreChanges,
+        dealerName: players[originalRound.dealerIndex].name,
+        timestamp: new Date().toLocaleTimeString('ja-JP', { hour12: false, hour: '2-digit', minute: '2-digit' }),
+        roundInfo: originalRound, // 元の局情報
+        reachStates: originalReachStates,
+        currentReachSticks: originalReachSticks
+      };
+      setScoreHistory(prev => [...prev, historyItem]);
 
       setWinResult({
         winner: winner.name,
@@ -557,9 +695,9 @@ function App() {
       });
 
       setShowModalResult(true);
-      advanceRound(winnerIndex, []);
+      advanceRound(winnerIndex, []); // これを最後に実行
     };
-
+      
 
     const handleWinCancel = () => {
       setShowModalWin(false);
@@ -612,6 +750,15 @@ function App() {
         scoreChanges,
         dealerName,
         timestamp,
+        // 局情報を保存（undo用）
+        roundInfo: {
+          wind: round.wind,
+          number: round.number,
+          dealerIndex: round.dealerIndex
+        },
+        // リーチ状態も保存
+        reachStates: players.map(p => p.reached),
+        currentReachSticks: reachSticks
       };
       
       setScoreHistory(prev => [...prev, historyItem]);
@@ -758,7 +905,8 @@ function App() {
         onScoreHistory={handleScoreHistory}
         onConfirm={handleTenpaiConfirm}
         onCancel={handleTenpaiCancel}
-        onDraw={handleDraw} 
+        onDraw={handleDraw}
+        onUndo={handleUndoRequest}  // 追加
       />
 
       <ModalRanking
@@ -789,6 +937,51 @@ function App() {
         onClose={handleScoreHistoryClose}
         onCsvExport={handleScoreHistoryCsvExport}
       />
+
+      {showModalUndoConfirm && (
+        <div className="modal-backdrop">
+          <div className="modal modal--medium">
+            <div className="modal__header">
+              <h2 className="modal__title">1つ戻る確認</h2>
+            </div>
+            <div className="modal__content">
+              <p>本当に1つ戻しますか？</p>
+              {undoPreview && (
+                <div className="undo-preview">
+                  <h3>削除される履歴:</h3>
+                  <div className="undo-preview__item">
+                    <div className="undo-preview__header">
+                      <span className="undo-preview__round">{undoPreview.wind}{undoPreview.number}局</span>
+                      <span className="undo-preview__time">{undoPreview.timestamp}</span>
+                    </div>
+                    <div className="undo-preview__type">{undoPreview.type}</div>
+                    <div className="undo-preview__changes">
+                      {undoPreview.scoreChanges.map((change, index) => {
+                        const changeClass = change.change > 0 ? 'undo-preview__change--positive' : 
+                                          change.change < 0 ? 'undo-preview__change--negative' : 
+                                          'undo-preview__change--neutral';
+                        return (
+                          <div key={index} className={`undo-preview__change ${changeClass}`}>
+                            {change.name}: {change.change > 0 ? '+' : ''}{change.change}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="modal__actions">
+              <button className="btn btn--danger" onClick={handleUndoConfirm}>
+                はい
+              </button>
+              <button className="btn btn--secondary" onClick={handleUndoCancel}>
+                いいえ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );
